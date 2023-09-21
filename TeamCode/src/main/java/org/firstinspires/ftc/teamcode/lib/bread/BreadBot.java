@@ -21,9 +21,7 @@ public class BreadBot {
         //load drive
         this.drive = new BreadDrive(hardwareMap);
 
-        //load motors
 
-        //load servos
 
     }
 

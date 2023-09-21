@@ -13,7 +13,9 @@ public abstract class BreadTeleOp extends BreadOpMode{
     public static double ROTATION_POWER = 0.5;
 
     public void setup(){
+
         initialize(hardwareMap);
+
     }
 
     public void update(){
@@ -29,7 +31,7 @@ public abstract class BreadTeleOp extends BreadOpMode{
         Vector2d rotationVector = new Vector2d(-gamepad1.right_stick_y, -gamepad1.right_stick_x);
         double rotate = this.getDesiredDriveRotation(rotationVector, rate);
 
-        this.bread.drive.driveFieldOriented(forward, strafe, rotate);
+        //this.bread.drive.driveFieldOriented(forward, strafe, rotate);
 
     }
 
