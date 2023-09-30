@@ -66,10 +66,10 @@ public class PlainFODTest extends LinearOpMode {
             // double br = forward + strafe - rotate; 
 
             // * that wack method that Ahmed found
-            // cred at Gavin Ford: https://www.youtube.com/watch?v=gnSW2QpkGXQ
+            // * cred at Gavin Ford: https://www.youtube.com/watch?v=gnSW2QpkGXQ
 
             double theta = Math.atan2(forward, strafe);
-            double power = Math.hypot(foreward, strafe);
+            double power = Math.hypot(forward, strafe);
 
             double sin = Math.sin(theta - Math.PI * 0.25d);
             double cos = Math.cos(theta - Math.PI * 0.25d);
@@ -82,9 +82,11 @@ public class PlainFODTest extends LinearOpMode {
             double fr = power * sin * inverseScaledPower - rotate;
             double bl = power * sin * inverseScaledPower + rotate;
             double br = power * cos * inverseScaledPower - rotate;
+            
+            // ? maybe change this to actual max output? max ( all motors )
+            // TODO: try this on actual bot
 
-            // ? maybe change this to actual max output? max ( all motors)
-            double maxOutput = Math.abs(power + turn);
+            double maxOutput = Math.abs(power + rotate);
 
             if (maxOutput > 1) {
                 fl /= maxOutput;
