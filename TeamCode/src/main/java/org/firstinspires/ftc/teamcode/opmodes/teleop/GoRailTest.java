@@ -30,10 +30,12 @@ public class GoRailTest extends LinearOpMode {
         DcMotorEx leftRail = hardwareMap.get(DcMotorEx.class, "leftRail");
         DcMotorEx rightRail = hardwareMap.get(DcMotorEx.class, "rightRail");
 
-        leftRail.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRail.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftRail.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightRail.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRail.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightRail.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Imu imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
 
@@ -49,6 +51,7 @@ public class GoRailTest extends LinearOpMode {
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE); //might be wrong ones, i gotta tinker with this one
+
 
         double gyroOffset = 0.0;
 
@@ -81,15 +84,19 @@ public class GoRailTest extends LinearOpMode {
             backLeft.setPower(bl);
             backRight.setPower(br);
 
-            if (gamepadEx1.b_pressed){
+            if (gamepad1.b){
                 leftRail.setTargetPosition(10280);
                 rightRail.setTargetPosition(10280);
+                leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 leftRail.setVelocity(2000);
                 rightRail.setVelocity(2000);
             }
-            else if (gamepadEx1.a_pressed){
+            else {
                 leftRail.setTargetPosition(0);
                 rightRail.setTargetPosition(0);
+                leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 leftRail.setVelocity(2000);
                 rightRail.setVelocity(2000);
             }
