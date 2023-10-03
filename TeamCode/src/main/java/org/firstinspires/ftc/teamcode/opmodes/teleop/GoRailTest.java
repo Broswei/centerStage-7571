@@ -32,8 +32,8 @@ public class GoRailTest extends LinearOpMode {
 
         leftRail.setDirection(DcMotorSimple.Direction.FORWARD);
         rightRail.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rightRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
