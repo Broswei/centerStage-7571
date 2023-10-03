@@ -93,4 +93,12 @@ public class BreadDrive {
         this.desiredMovement = new Pose2d(x, y, r);
     }
 
+    public void noRoadRunnerDriveFieldOriented(double forward, double strafe, double rotate){
+        double fl = forward + strafe + rotate;
+        double fr = forward - strafe - rotate;
+        double bl = forward - strafe + rotate;
+        double br = forward + strafe - rotate;
+
+        roadrunnerDrive.setMotorPowers(fl, bl, br, fr);
+    }
 }
