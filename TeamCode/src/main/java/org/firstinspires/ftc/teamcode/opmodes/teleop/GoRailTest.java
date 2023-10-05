@@ -84,21 +84,24 @@ public class GoRailTest extends LinearOpMode {
             backLeft.setPower(bl);
             backRight.setPower(br);
 
-            if (gamepad1.b){
+            if (gamepadEx1.b_pressed){
                 leftRail.setTargetPosition(10280);
                 rightRail.setTargetPosition(10280);
                 leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 leftRail.setVelocity(2000);
                 rightRail.setVelocity(2000);
+                while (leftRail.isBusy() && rightRail.isBusy()){}
             }
-            else {
+
+            if (gamepadEx1.a_pressed){
                 leftRail.setTargetPosition(0);
                 rightRail.setTargetPosition(0);
                 leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 leftRail.setVelocity(2000);
                 rightRail.setVelocity(2000);
+                while (leftRail.isBusy() && rightRail.isBusy()){}
             }
 
 
