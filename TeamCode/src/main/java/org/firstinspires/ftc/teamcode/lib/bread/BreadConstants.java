@@ -16,6 +16,12 @@ public class BreadConstants {
 
     // drive related... //
 
+    // towers related //
+    public static double TOWERS_TPR = 384.5;
+    public static double TOWERS_GEAR_RATIO = 1;
+    public static double TOWERS_BASE_LENGTH_MMS;
+    public static double TOWERS_MAX_EXTENSION_MMS;
+
     // claw related... //
 
 }

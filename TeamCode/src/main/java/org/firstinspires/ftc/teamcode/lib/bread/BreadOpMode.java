@@ -35,6 +35,10 @@ public abstract class BreadOpMode extends LinearOpMode {
     // bot config
     public BreadBot bread;
 
+
+    /**
+     * @return the amount of time passed since the last resetDelta call
+     */
     /**
      * @return the time in seconds since initialize() has last been called
      */
@@ -69,5 +73,10 @@ public abstract class BreadOpMode extends LinearOpMode {
 
         this.gamepadEx1 = new GamepadEx(gamepad1);
         this.gamepadEx2 = new GamepadEx(gamepad2);
+    }
+
+    public void updateControllerStates(){
+        gamepadEx1.updateControllerStates();
+        gamepadEx2.updateControllerStates();
     }
 }
