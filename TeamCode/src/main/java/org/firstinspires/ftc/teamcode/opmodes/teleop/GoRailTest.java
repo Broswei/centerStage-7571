@@ -64,6 +64,9 @@ public class GoRailTest extends LinearOpMode {
 
             gamepadEx1.updateControllerStates();
 
+            boolean ascending = gamepadEx1.b_pressed;
+            boolean descending = gamepadEx1.a_pressed;
+
             if(gamepad1.y){
                 gyroOffset = imu.getAngleRadians();
             }
@@ -86,7 +89,7 @@ public class GoRailTest extends LinearOpMode {
             backLeft.setPower(bl);
             backRight.setPower(br);
 
-            if (gamepadEx1.b_pressed){
+            if (ascending){
                 leftRail.setTargetPosition(10280);
                 rightRail.setTargetPosition(10280);
                 leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -96,7 +99,7 @@ public class GoRailTest extends LinearOpMode {
                 while (leftRail.isBusy() && rightRail.isBusy()){}
             }
 
-            if (gamepadEx1.a_pressed){
+            if (descending){
                 leftRail.setTargetPosition(0);
                 rightRail.setTargetPosition(0);
                 leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
