@@ -50,9 +50,11 @@ public class PlainFODTest extends LinearOpMode {
                 gyroOffset = imu.getAngleRadians();
             }
 
-            double forward = Range.clip(-gamepad1.left_stick_y, -0.8, 0.8);
-            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1);
-            double rotate = Range.clip(gamepad1.right_stick_x, -0.5, 0.5);
+            // get more input space out of controller; objectively better
+
+            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * 0.8;
+            double strafe  = Range.clip( gamepad1.left_stick_x, -1, 1);
+            double rotate  = Range.clip(gamepad1.right_stick_x, -1, 1) * 0.5;
 
             double temp = strafe*Math.cos(imu.getAngleRadians()-gyroOffset)+forward*Math.sin(imu.getAngleRadians()-gyroOffset);
             forward = -strafe*Math.sin(imu.getAngleRadians()-gyroOffset)+forward*Math.cos(imu.getAngleRadians()-gyroOffset);
