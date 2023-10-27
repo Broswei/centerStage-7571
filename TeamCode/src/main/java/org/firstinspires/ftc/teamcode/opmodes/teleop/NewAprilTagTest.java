@@ -11,20 +11,20 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import org.firstinspires.ftc.vision.VisionPortal;
 
-
-
 @TeleOp(group = "Tests")
 public class NewAprilTagTest extends LinearOpMode {
     
     @Override
     public void runOpMode() throws InterruptedException {
-
+        // TODO: set lens intrinsics
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
             .setDrawAxes(true)
             .setDrawCubeProjection(true)
             .setDrawTagID(true)
             .setDrawTagOutline(true)
+            .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
             .build();
+
         
         VisionPortal visionPortal = new VisionPortal.Builder()
             .addProcessor(tagProcessor)
