@@ -28,7 +28,7 @@ public class NewAprilTagTest extends LinearOpMode {
         
         VisionPortal visionPortal = new VisionPortal.Builder()
             .addProcessor(tagProcessor)
-            .setCamera(hardwareMap.get(WebcamName.class, "webcam1")) // TODO: set webcam
+            .setCamera(hardwareMap.get(WebcamName.class, "webcam")) // TODO: set webcam
             .setCameraResolution(new Size(640, 480)) // TODO: experiment with sizes, this is half resolution
             .build();
 
