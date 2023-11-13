@@ -100,10 +100,10 @@ public class SampleMecanumDrive extends MecanumDrive {
           //      DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         //imu.initialize(parameters);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "TopLeftDrive");
-        leftRear = hardwareMap.get(DcMotorEx.class, "BottomLeftDrive");
-        rightRear = hardwareMap.get(DcMotorEx.class, "BottomRightDrive");
-        rightFront = hardwareMap.get(DcMotorEx.class, "TopRightDrive");
+        leftFront = hardwareMap.get(DcMotorEx.class, "fl");
+        leftRear = hardwareMap.get(DcMotorEx.class, "bl");
+        rightRear = hardwareMap.get(DcMotorEx.class, "br");
+        rightFront = hardwareMap.get(DcMotorEx.class, "fr");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -288,6 +288,27 @@ public class SampleMecanumDrive extends MecanumDrive {
         leftRear.setPower(v1);
         rightRear.setPower(v2);
         rightFront.setPower(v3);
+    }
+
+    public void setMotorVelocities(int v){
+        leftFront.setVelocity(v);
+        rightRear.setVelocity(v);
+        leftRear.setVelocity(v);
+        rightFront.setVelocity(v);
+    }
+
+    public void setMotorPositions(int v, int v1, int v2, int v3){
+        rightFront.setTargetPosition(v);
+        leftFront.setTargetPosition(v1);
+        rightRear.setTargetPosition(v2);
+        leftRear.setTargetPosition(v3);
+    }
+
+    public void setMotorPositions(int v){
+        rightFront.setTargetPosition(v);
+        leftFront.setTargetPosition(v);
+        rightRear.setTargetPosition(v);
+        leftRear.setTargetPosition(v);
     }
 
     @Override

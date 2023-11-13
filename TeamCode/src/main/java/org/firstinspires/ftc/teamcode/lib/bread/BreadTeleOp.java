@@ -18,6 +18,20 @@ public abstract class BreadTeleOp extends BreadOpMode{
 
     public double gyroOffset = 0.0;
 
+    public enum ControlMode {
+        GRABBING,
+        DEPOSITING
+    }
+
+    public enum GrabMode {
+        GROUND,
+        STACK
+    }
+
+    private ControlMode currentControlMode = ControlMode.GRABBING;
+    private GrabMode currentGrabMode = GrabMode.GROUND;
+    private int alignStackHeight = 5;
+
     public void setup(){
 
         initialize(hardwareMap);
@@ -58,19 +72,44 @@ public abstract class BreadTeleOp extends BreadOpMode{
         this.bread.drive.noRoadRunnerDriveFieldOriented(forward, strafe, rotate);
         //this.bread.drive.driveFieldOriented(forward, strafe, rotate);
 
-        //controller states
-        boolean rising = gamepadEx2.dpad_up_pressed;
-        boolean lowering = gamepadEx2.dpad_down_pressed;
+        switch (this.currentControlMode){
+            case GRABBING:
+                //controller states
+                boolean stackUp = gamepadEx2.dpad_up_pressed;
+                boolean stackDown = gamepadEx1.dpad_down_pressed;
+                boolean switchMode = gamepadEx2.a_pressed;
+                boolean slurping = gamepad2.right_trigger > 0.01;
+                boolean vomiting = gamepad2.left_trigger > 0.01;
 
-        //slides behavior
-        if (rising){
 
+
+
+                if (switchMode){
+                    this.currentControlMode = ControlMode.DEPOSITING;
+                }
+
+            case DEPOSITING:
+                //controller states
+
+                boolean spit = gamepadEx2.y_pressed;
+
+                if (spit){
+
+                }
         }
-        if (lowering){
 
-        }
 
     }
+
+
+
+
+
+
+
+
+
+
 
     public double getDesiredDriveRotation(Vector2d aimVector, double speed){
         if(aimVector.norm() < 0.25) return 0.0;

@@ -6,7 +6,9 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.lib.motion.LinearRails;
 import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
+import org.firstinspires.ftc.teamcode.lib.motion.PositionableServo;
 import org.firstinspires.ftc.teamcode.lib.util.Imu;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,6 +19,7 @@ public class BreadBot {
 
     public final BreadDrive drive;
     public Imu imu;
+    public BreadHand hand;
 
     public BreadBot(HardwareMap hardwareMap){
 
@@ -29,9 +32,19 @@ public class BreadBot {
         //load imu
         imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
 
-        //load motors
-        PositionableMotor leftTower = new PositionableMotor(hardware.leftRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR, BreadConstants.TOWERS_BASE_LENGTH_MMS, BreadConstants.TOWERS_MAX_EXTENSION_MMS);
-        PositionableMotor rightTower = new PositionableMotor(hardware.leftRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR, BreadConstants.TOWERS_BASE_LENGTH_MMS, BreadConstants.TOWERS_MAX_EXTENSION_MMS);
+        //load motor
+        PositionableMotor rotator = new PositionableMotor(hardware.rotator, BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
+
+        //load servos
+        Servo launcher = hardware.launcher;
+        PositionableServo angleAdjuster = new PositionableServo(hardware.angleAdjuster);
+        PositionableServo wristServo = new PositionableServo(hardware.wristServo);
+
+        //load rails
+        LinearRails towers = new LinearRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
+
+        //load hand
+        hand = new BreadHand(wristServo, hardware.clawServo);
     }
 
 

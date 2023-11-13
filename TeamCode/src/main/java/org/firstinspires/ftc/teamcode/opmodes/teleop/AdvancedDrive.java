@@ -18,7 +18,7 @@ public abstract class AdvancedDrive extends BreadTeleOp {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        initialize(hardwareMap);
+        setup();
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -12,18 +13,22 @@ public class BreadConfig {
         // goRail motors
         public DcMotorEx rightRail;
         public DcMotorEx leftRail;
-/*
+
+        // arm motor
+        public DcMotorEx rotator;
+
         // scoring mech servos
-        public Servo droneServo;
-        public Servo intakeServo1;
-        public Servo intakeServo2;
+        public Servo angleAdjuster;
+        public Servo launcher;
+        public CRServo leftIntake;
+        public CRServo rightIntake;
 
         //arm servos
         public Servo wristServo;
-        public Servo clawServo; */
+        public Servo clawServo;
 
         public boolean complete(){   //make sure all hardware is configured (!null)
-            return this.rightRail != null && this.leftRail !=null; //&& droneServo != null && intakeServo1 !=null && intakeServo2 != null && wristServo !=null && clawServo != null;
+            return this.rightRail != null && this.leftRail !=null && angleAdjuster != null && launcher !=null && rotator != null; // &&  leftIntake !=null && rightIntake != null; //&& wristServo !=null && clawServo != null;
 
         }
     }
@@ -44,14 +49,20 @@ public class BreadConfig {
 
         hardware.leftRail.setDirection(DcMotorSimple.Direction.FORWARD);
         hardware.rightRail.setDirection(DcMotorSimple.Direction.FORWARD);
-/*
-        hardware.intakeServo1 = hardwareMap.get(Servo.class, "intake1");
-        hardware.intakeServo2 = hardwareMap.get(Servo.class, "intake2");
-        hardware.droneServo = hardwareMap.get(Servo.class, "droneServo");
 
-        hardware.wristServo = hardwareMap.get(Servo.class, "wristServo");
-        hardware.clawServo = hardwareMap.get(Servo.class, "clawServo");
-        */
+        hardware.rotator = hardwareMap.get(DcMotorEx.class, "rotator");
+
+        //hardware.leftIntake = hardwareMap.get(CRServo.class, "intake1");
+        //hardware.rightIntake = hardwareMap.get(CRServo.class, "intake2");
+
+        hardware.angleAdjuster = hardwareMap.get(Servo.class, "angleAdjuster");
+        hardware.launcher = hardwareMap.get(Servo.class, "launcher");
+        hardware.angleAdjuster.setDirection(Servo.Direction.REVERSE);
+        hardware.launcher.setDirection(Servo.Direction.REVERSE);
+
+        //hardware.wristServo = hardwareMap.get(Servo.class, "wristServo");
+        //hardware.clawServo = hardwareMap.get(Servo.class, "clawServo");
+
         return hardware;
     }
 }
