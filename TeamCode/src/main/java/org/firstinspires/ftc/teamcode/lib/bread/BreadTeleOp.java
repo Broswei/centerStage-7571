@@ -155,10 +155,6 @@ public abstract class BreadTeleOp extends BreadOpMode{
                 //controller states
                 boolean spit = gamepadEx2.y_pressed;
 
-
-                if (spit){
-                    this.bread.hand.unclamp();
-                }
         }
 
 
