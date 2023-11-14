@@ -13,12 +13,13 @@ import org.firstinspires.ftc.teamcode.lib.util.Imu;
 
 @TeleOp(group="Comp")
 
-public abstract class AdvancedDrive extends BreadTeleOp {
+public class AdvancedDrive extends BreadTeleOp {
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         setup();
+        this.bread.angleAdjuster.setPosition(0);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

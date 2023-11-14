@@ -20,6 +20,10 @@ public class BreadBot {
     public final BreadDrive drive;
     public Imu imu;
     public BreadHand hand;
+    public LinearRails towers;
+    public BreadArm arm;
+    public Servo launcher;
+    public Servo angleAdjuster;
 
     public BreadBot(HardwareMap hardwareMap){
 
@@ -27,7 +31,7 @@ public class BreadBot {
         BreadConfig.Hardware hardware = BreadConfig.loadHardware(hardwareMap);
 
         //load drive
-        this.drive = new BreadDrive(hardwareMap);
+        drive = new BreadDrive(hardwareMap);
 
         //load imu
         imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
@@ -36,15 +40,14 @@ public class BreadBot {
         PositionableMotor rotator = new PositionableMotor(hardware.rotator, BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
 
         //load servos
-        Servo launcher = hardware.launcher;
-        PositionableServo angleAdjuster = new PositionableServo(hardware.angleAdjuster);
-        PositionableServo wristServo = new PositionableServo(hardware.wristServo);
+        launcher = hardware.launcher;
+        angleAdjuster = hardware.angleAdjuster;
 
         //load rails
-        LinearRails towers = new LinearRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
+        towers = new LinearRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
 
         //load hand
-        hand = new BreadHand(wristServo, hardware.clawServo);
+        //hand = new BreadHand(wristServo, hardware.clawServo);
     }
 
 

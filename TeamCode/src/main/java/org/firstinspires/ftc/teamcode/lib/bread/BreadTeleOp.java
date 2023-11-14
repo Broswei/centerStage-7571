@@ -31,6 +31,8 @@ public abstract class BreadTeleOp extends BreadOpMode{
     private ControlMode currentControlMode = ControlMode.GRABBING;
     private GrabMode currentGrabMode = GrabMode.GROUND;
     private int alignStackHeight = 5;
+    private int scoreLevel = 1;
+    boolean climbed = false;
 
     public void setup(){
 
@@ -72,16 +74,77 @@ public abstract class BreadTeleOp extends BreadOpMode{
         this.bread.drive.noRoadRunnerDriveFieldOriented(forward, strafe, rotate);
         //this.bread.drive.driveFieldOriented(forward, strafe, rotate);
 
+        //controller states
+        boolean stackUp = gamepadEx2.dpad_left_pressed;
+        boolean stackDown = gamepadEx2.dpad_right_pressed;
+        boolean upLevel = gamepadEx2.dpad_up_pressed;
+        boolean downLevel = gamepadEx2.dpad_down_pressed;
+
+        if (stackDown){
+            alignStackHeight--;
+            if (alignStackHeight % 5 == 0){
+                alignStackHeight = 5;
+            }
+            else{
+                alignStackHeight = (alignStackHeight % 5);
+            }
+        }
+        if (stackUp){
+            alignStackHeight++;
+            if (alignStackHeight % 5 == 0){
+                alignStackHeight = 5;
+            }
+            else{
+                alignStackHeight = (alignStackHeight % 5);
+            }
+        }
+        if (upLevel){
+            scoreLevel++;
+            if (scoreLevel % 3 == 0){
+                alignStackHeight = 3;
+            }
+            else{
+                alignStackHeight = (alignStackHeight % 3);
+            }
+        }
+        if (downLevel){
+            scoreLevel--;
+            if (scoreLevel % 3 == 0){
+                alignStackHeight = 3;
+            }
+            else{
+                alignStackHeight = (alignStackHeight % 3);
+            }
+        }
+
         switch (this.currentControlMode){
             case GRABBING:
                 //controller states
-                boolean stackUp = gamepadEx2.dpad_up_pressed;
-                boolean stackDown = gamepadEx1.dpad_down_pressed;
                 boolean switchMode = gamepadEx2.a_pressed;
-                boolean slurping = gamepad2.right_trigger > 0.01;
-                boolean vomiting = gamepad2.left_trigger > 0.01;
+                boolean climb = gamepadEx2.y_pressed;
+                boolean pullUp = gamepadEx2.y_pressed & climbed;
+                boolean launching = gamepad2.left_trigger > 0.05;
+                boolean aimPlane = gamepadEx2.x_pressed;
 
+                if (climb){
+                    this.bread.towers.rotate(this.bread.towers.ticksToRotations(10280), 2000/BreadConstants.TOWERS_TPR);
+                    if (!this.bread.towers.isBusy()){
+                        climbed = true;
+                    }
+                }
+                if (pullUp){
+                    this.bread.towers.rotate(-this.bread.towers.ticksToRotations(10280), 2000/BreadConstants.TOWERS_TPR);
+                }
 
+                if (launching){
+                    this.bread.launcher.setPosition(0.35);
+                }
+                else{
+                    this.bread.launcher.setPosition(0);
+                }
+                if (aimPlane){
+                    this.bread.angleAdjuster.setPosition(0.17);
+                }
 
 
                 if (switchMode){
@@ -90,12 +153,8 @@ public abstract class BreadTeleOp extends BreadOpMode{
 
             case DEPOSITING:
                 //controller states
-
                 boolean spit = gamepadEx2.y_pressed;
 
-                if (spit){
-
-                }
         }
 
 
