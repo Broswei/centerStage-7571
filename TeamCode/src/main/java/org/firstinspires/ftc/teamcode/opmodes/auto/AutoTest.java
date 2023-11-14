@@ -19,8 +19,8 @@ public abstract class  AutoTest extends BreadAutonomous {
             //insert camera recongition
 
             telemetry.addData("Status: ", "Initialized");
-
         }
+
 
     }
 }
