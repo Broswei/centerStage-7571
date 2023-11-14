@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 
-public abstract class  AutoTest extends BreadAutonomous {
+public abstract class ParkBlueRight extends BreadAutonomous {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -26,7 +24,7 @@ public abstract class  AutoTest extends BreadAutonomous {
 
         driveDistance(47, 750, opModeIsActive());
 
-        strafeDistance( 94, 750, opModeIsActive());
+        strafeDistance( -94, 750, opModeIsActive());
 
 
 
