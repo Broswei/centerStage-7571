@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import android.icu.text.Transliterator;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -23,6 +25,7 @@ public class BreadBot {
     public LinearRails towers;
     public BreadArm arm;
     public Servo launcher;
+    public PositionableMotor rotator;
     public Servo angleAdjuster;
 
     public BreadBot(HardwareMap hardwareMap){
@@ -37,17 +40,21 @@ public class BreadBot {
         imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
 
         //load motor
-        PositionableMotor rotator = new PositionableMotor(hardware.rotator, BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
+        rotator = new PositionableMotor(hardware.rotator, BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
 
         //load servos
         launcher = hardware.launcher;
         angleAdjuster = hardware.angleAdjuster;
+        PositionableServo wristServo = new PositionableServo(hardware.wristServo);
 
         //load rails
         towers = new LinearRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
 
         //load hand
-        //hand = new BreadHand(wristServo, hardware.clawServo);
+        hand = new BreadHand(wristServo, hardware.clawServo);
+
+        //load arm
+        this.arm = new BreadArm(rotator, towers, hand);
     }
 
 

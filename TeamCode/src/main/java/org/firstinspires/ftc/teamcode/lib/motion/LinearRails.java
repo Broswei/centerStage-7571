@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.lib.motion;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class LinearRails {
     // motor
@@ -47,6 +48,9 @@ public class LinearRails {
         // brake at zero
         this.leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        this.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.rightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // hard reset encoders
         this.hardResetEncoders();

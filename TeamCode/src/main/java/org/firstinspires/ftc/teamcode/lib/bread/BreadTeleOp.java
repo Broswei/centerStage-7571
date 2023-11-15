@@ -127,6 +127,7 @@ public abstract class BreadTeleOp extends BreadOpMode{
                 boolean aimPlane = gamepadEx2.x_pressed;
 
                 if (climb){
+                    this.bread.rotator.rotateAngleDegrees(180,500);
                     this.bread.towers.rotate(this.bread.towers.ticksToRotations(10280), 2000/BreadConstants.TOWERS_TPR);
                     if (!this.bread.towers.isBusy()){
                         climbed = true;
@@ -137,13 +138,13 @@ public abstract class BreadTeleOp extends BreadOpMode{
                 }
 
                 if (launching){
-                    this.bread.launcher.setPosition(0.35);
+                    this.bread.launcher.setPosition(0.5);
                 }
                 else{
                     this.bread.launcher.setPosition(0);
                 }
                 if (aimPlane){
-                    this.bread.angleAdjuster.setPosition(0.17);
+                    this.bread.angleAdjuster.setPosition(0.2);
                 }
 
 

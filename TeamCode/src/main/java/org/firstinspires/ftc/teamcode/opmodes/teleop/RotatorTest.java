@@ -7,13 +7,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
-import org.firstinspires.ftc.teamcode.lib.util.GamepadEx;
 
+import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
+import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
+import org.firstinspires.ftc.teamcode.lib.util.GamepadEx;
 import org.firstinspires.ftc.teamcode.lib.util.Imu;
 
 
 @TeleOp(group = "Tests")
-public class GoRailTest extends LinearOpMode {
+public class RotatorTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -27,15 +29,7 @@ public class GoRailTest extends LinearOpMode {
         DcMotorEx backLeft = hardwareMap.get(DcMotorEx.class, "bl");
         DcMotorEx backRight = hardwareMap.get(DcMotorEx.class, "br");
 
-        DcMotorEx leftRail = hardwareMap.get(DcMotorEx.class, "leftRail");
-        DcMotorEx rightRail = hardwareMap.get(DcMotorEx.class, "rightRail");
-
-        leftRail.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRail.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        DcMotorEx rotator = hardwareMap.get(DcMotorEx.class, "rotator");
 
         Imu imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
 
@@ -89,31 +83,19 @@ public class GoRailTest extends LinearOpMode {
             backLeft.setPower(bl);
             backRight.setPower(br);
 
-            if (ascending){
-                leftRail.setTargetPosition(10280);
-                rightRail.setTargetPosition(10280);
-                leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                leftRail.setVelocity(2000);
-                rightRail.setVelocity(2000);
-                while (leftRail.isBusy() && rightRail.isBusy()){}
+            if (gamepad1.right_trigger>0.01){
+                rotator.setPower(0.5);
             }
-
-            if (descending){
-                leftRail.setTargetPosition(0);
-                rightRail.setTargetPosition(0);
-                leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                leftRail.setVelocity(2000);
-                rightRail.setVelocity(2000);
-                while (leftRail.isBusy() && rightRail.isBusy()){}
+            else if(gamepad1.left_trigger >0.01){
+                rotator.setPower(-0.5);
+            }
+            else{
+                rotator.setPower(0);
             }
 
 
             telemetry.addData("Gyro Rotation: ", imu.getAngleRadians());
             telemetry.addData("Gyro offset: ", gyroOffset);
-            telemetry.addData("leftRail Position: ", leftRail.getCurrentPosition());
-            telemetry.addData("rightRail Position: ", rightRail.getCurrentPosition());
             telemetry.update();
         }
     }
