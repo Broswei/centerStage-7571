@@ -55,10 +55,12 @@ public class OpenCVPipelineTest extends OpMode {
 
     class examplePipeline extends OpenCvPipeline{
         Mat YCbCr = new Mat();
-        Mat leftCrop;
-        Mat rightCrop;
-        double leftavgfin;
-        double rightavgfin;
+        Mat crop1;
+        Mat crop2;
+        Mat crop3;
+        double rect1AvgFin;
+        double rect2AvgFin;
+        double rect3AvgFin;
 
         // NOTE: so yeah I think it s an issue with this constructor, it is somehwo getting like a 0x0 ma
         Mat output = new Mat();
@@ -70,30 +72,42 @@ public class OpenCVPipelineTest extends OpMode {
 
             telemetry.addLine("let the detection games begin");
 
-            Rect leftRect = new Rect (1, 1, 639, 719);
-            Rect rightRect = new Rect (640, 1, 639, 719);
+            Rect rect1 = new Rect (1, 1, 426, 719);
+            Rect rect2 = new Rect (427, 1, 426, 719);
+            Rect rect3 = new Rect (855, 1, 426, 719);
+
 
             input.copyTo(output);
 
-            Imgproc.rectangle(output,leftRect,rectColor,2);
-            Imgproc.rectangle(output,rightRect,rectColor,2);
+            Imgproc.rectangle(output,rect1,rectColor,2);
+            Imgproc.rectangle(output,rect2,rectColor,2);
+            Imgproc.rectangle(output,rect3,rectColor,2);
 
-            leftCrop = YCbCr.submat(leftRect);
-            rightCrop = YCbCr.submat(rightRect);
+            crop1 = YCbCr.submat(rect1);
+            crop2 = YCbCr.submat(rect2);
+            crop3 = YCbCr.submat(rect3);
 
-            Core.extractChannel(leftCrop, leftCrop, 2);
-            Core.extractChannel(rightCrop, rightCrop, 2);
+            Core.extractChannel(crop1, crop1, 2);
+            Core.extractChannel(crop2, crop2, 2);
+            Core.extractChannel(crop3, crop3, 2);
 
-            Scalar leftAvgScalar = Core.mean(leftCrop);
-            Scalar rightAvgScalar = Core.mean(rightCrop);
 
-            leftavgfin = leftAvgScalar.val[0];
-            rightavgfin = rightAvgScalar.val[0];
+            Scalar crop1AvgScalar = Core.mean(crop1);
+            Scalar crop2AvgScalar = Core.mean(crop2);
+            Scalar crop3AvgScalar = Core.mean(crop3);
 
-            if(leftavgfin > rightavgfin) {
-                telemetry.addLine("Obj on left");
-            } else {
+
+            rect1AvgFin = crop1AvgScalar.val[0];
+            rect2AvgFin = crop2AvgScalar.val[0];
+            rect3AvgFin = crop2AvgScalar.val[0];
+
+
+            if(rect1AvgFin > rect2AvgFin && rect1AvgFin > rect3AvgFin) {
                 telemetry.addLine("Obj on right");
+            } else if(rect2AvgFin > rect1AvgFin && rect2AvgFin > rect3AvgFin) {
+                telemetry.addLine("Obj on middle");
+            } else {
+                telemetry.addLine("Obj on left");
             }
 
 
