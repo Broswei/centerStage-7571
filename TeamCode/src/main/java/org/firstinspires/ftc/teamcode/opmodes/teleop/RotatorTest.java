@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
@@ -29,7 +30,7 @@ public class RotatorTest extends LinearOpMode {
         DcMotorEx backLeft = hardwareMap.get(DcMotorEx.class, "bl");
         DcMotorEx backRight = hardwareMap.get(DcMotorEx.class, "br");
 
-        DcMotorEx rotator = hardwareMap.get(DcMotorEx.class, "rotator");
+        PositionableMotor rotator = new PositionableMotor(hardwareMap.get(DcMotorEx.class, "rotator"), BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
 
         Imu imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
 
@@ -83,14 +84,11 @@ public class RotatorTest extends LinearOpMode {
             backLeft.setPower(bl);
             backRight.setPower(br);
 
-            if (gamepad1.right_trigger>0.01){
-                rotator.setPower(0.5);
+            if (gamepadEx1.b_pressed){
+                rotator.rotateToDegrees(180,1000);
             }
-            else if(gamepad1.left_trigger >0.01){
-                rotator.setPower(-0.5);
-            }
-            else{
-                rotator.setPower(0);
+            if(gamepadEx1.a_pressed){
+                rotator.rotateToDegrees(0,1000);
             }
 
 

@@ -127,7 +127,8 @@ public abstract class BreadTeleOp extends BreadOpMode{
                 boolean aimPlane = gamepadEx2.x_pressed;
 
                 if (climb){
-                    this.bread.rotator.rotateAngleDegrees(180,500);
+                    this.bread.rotator.rotateToDegrees(180,1000);
+                    if (!this.bread.rotator.isBusy()){this.bread.rotator.setPower(0);}
                     this.bread.towers.rotate(this.bread.towers.ticksToRotations(10280), 2000/BreadConstants.TOWERS_TPR);
                     if (!this.bread.towers.isBusy()){
                         climbed = true;
