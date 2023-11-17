@@ -84,12 +84,11 @@ public class RotatorTest extends LinearOpMode {
             backLeft.setPower(bl);
             backRight.setPower(br);
 
-            if (gamepadEx1.b_pressed){
-                rotator.rotateToDegrees(180,1000);
-            }
-            if(gamepadEx1.a_pressed){
-                rotator.rotateToDegrees(0,1000);
-            }
+            rotator.rotateToDegrees(180,1000);
+            sleep(5000);
+            rotator.rotateToDegrees(0,1000);
+
+
 
 
             telemetry.addData("Gyro Rotation: ", imu.getAngleRadians());

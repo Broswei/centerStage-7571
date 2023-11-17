@@ -23,8 +23,8 @@ public class BreadConstants {
     // towers related //
     public static double TOWERS_TPR = 384.5;
     public static double TOWERS_GEAR_RATIO = 1;
-    public static double TOWERS_BASE_LENGTH_INS;
-    public static double TOWERS_MAX_EXTENSION_INS;
+    public static double TOWERS_BASE_LENGTH_INS = 13.75;
+    public static double TOWERS_MAX_EXTENSION_TICKS = 10280;
 
     // claw related... //
 
