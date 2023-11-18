@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 
+@Autonomous(group="park autos")
 public abstract class ParkBlueLeft extends BreadAutonomous {
 
     @Override
@@ -25,9 +28,6 @@ public abstract class ParkBlueLeft extends BreadAutonomous {
 
 
         strafeDistance( 47, 750, opModeIsActive());
-
-
-
 
     }
 }

@@ -17,7 +17,7 @@ public class BreadConstants {
     // drive related... //
 
     //rotator related //
-    public static double ROT_TPR = 384.5;
+    public static double ROT_TPR = 537.7;
     public static double ROT_GEAR_RATIO = 1;
 
     // towers related //

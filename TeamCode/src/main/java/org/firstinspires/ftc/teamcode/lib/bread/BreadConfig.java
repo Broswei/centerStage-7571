@@ -62,6 +62,7 @@ public class BreadConfig {
 
         hardware.wristServo = hardwareMap.get(Servo.class, "wristServo");
         hardware.clawServo = hardwareMap.get(Servo.class, "clawServo");
+        hardware.clawServo.setDirection(Servo.Direction.REVERSE);
 
         return hardware;
     }

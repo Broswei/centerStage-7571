@@ -66,6 +66,7 @@ public class GoRailTest extends LinearOpMode {
 
             boolean ascending = gamepadEx1.b_pressed;
             boolean descending = gamepadEx1.a_pressed;
+            boolean resetDown = gamepadEx1.y_pressed;
 
             if(gamepad1.y){
                 gyroOffset = imu.getAngleRadians();

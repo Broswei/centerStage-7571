@@ -57,9 +57,9 @@ public class PositionableMotor {
 
         this.limitsEnabled = false;
 
-        //this.motor.setTargetPosition(0);
-        //this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //this.motor.setVelocity(250);
+        this.motor.setTargetPosition(0);
+        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.motor.setVelocity(250);
     }
 
     public PositionableMotor(DcMotorEx motor, double gearRatio, double tickRatio, double lowerLimit, double upperLimit){

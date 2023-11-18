@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
-import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
+@Autonomous(group="park autos")
 public abstract class ParkRedRight extends BreadAutonomous {
 
     @Override

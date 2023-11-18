@@ -24,33 +24,19 @@ public class RotatorTest extends LinearOpMode {
         GamepadEx gamepadEx1 = new GamepadEx (gamepad1);
         GamepadEx gampadEx2 = new GamepadEx (gamepad2);
 
-        // load motors
-        DcMotorEx frontLeft = hardwareMap.get(DcMotorEx.class, "fl");
-        DcMotorEx frontRight = hardwareMap.get(DcMotorEx.class, "fr");
-        DcMotorEx backLeft = hardwareMap.get(DcMotorEx.class, "bl");
-        DcMotorEx backRight = hardwareMap.get(DcMotorEx.class, "br");
+        // load
 
-        PositionableMotor rotator = new PositionableMotor(hardwareMap.get(DcMotorEx.class, "rotator"), BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
+        DcMotorEx rotator = hardwareMap.get(DcMotorEx.class, "rotator");
 
-        Imu imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
-
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE); //might be wrong ones, i gotta tinker with this one
-
-
-        double gyroOffset = 0.0;
+        rotator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rotator.setTargetPosition(0);
+        rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rotator.setVelocity(250);
 
         telemetry.addData("Status", "Initialized");
+        telemetry.addData("Rotator Position: ", rotator.getCurrentPosition());
+
         telemetry.update();
 
         waitForStart();
@@ -62,37 +48,29 @@ public class RotatorTest extends LinearOpMode {
             boolean ascending = gamepadEx1.b_pressed;
             boolean descending = gamepadEx1.a_pressed;
 
-            if(gamepad1.y){
-                gyroOffset = imu.getAngleRadians();
+            if (ascending){
+                rotator.setTargetPosition((int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180)));
+                rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rotator.setVelocity(500);
+                while (rotator.isBusy()){
+                    if (rotator.getCurrentPosition() == (int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180))){
+                        rotator.setPower(0);
+                    }
+                }
+            }
+            if (descending){
+                rotator.setTargetPosition(0);
+                rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rotator.setVelocity(500);
+                while (rotator.isBusy()){
+                    if (rotator.getCurrentPosition() == (int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180))){
+                        rotator.setPower(0);
+                    }
+                }
             }
 
-            double forward = Range.clip(-gamepad1.left_stick_y, -0.6, 0.6);
-            double strafe = Range.clip(gamepad1.left_stick_x, -0.6, 0.6);
-            double rotate = Range.clip(gamepad1.right_stick_x, -0.4, 0.4);
 
-            double temp = strafe*Math.cos(imu.getAngleRadians()-gyroOffset)+forward*Math.sin(imu.getAngleRadians()-gyroOffset);
-            forward = -strafe*Math.sin(imu.getAngleRadians()-gyroOffset)+forward*Math.cos(imu.getAngleRadians()-gyroOffset);
-            strafe = temp;
-
-            double fl = forward + strafe + rotate;
-            double fr = forward - strafe - rotate;
-            double bl = forward - strafe + rotate;
-            double br = forward + strafe - rotate; //could be wrong here as well, gotta tinker
-
-            frontLeft.setPower(fl);
-            frontRight.setPower(fr);
-            backLeft.setPower(bl);
-            backRight.setPower(br);
-
-            rotator.rotateToDegrees(180,1000);
-            sleep(5000);
-            rotator.rotateToDegrees(0,1000);
-
-
-
-
-            telemetry.addData("Gyro Rotation: ", imu.getAngleRadians());
-            telemetry.addData("Gyro offset: ", gyroOffset);
+            telemetry.addData("Rotator Position: ", rotator.getCurrentPosition());
             telemetry.update();
         }
     }

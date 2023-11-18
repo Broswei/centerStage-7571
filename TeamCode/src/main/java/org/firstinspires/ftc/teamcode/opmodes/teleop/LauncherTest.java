@@ -118,15 +118,15 @@ public class LauncherTest extends LinearOpMode {
 
 
             if (rising){
-                angleAdjuster.setPosition(0.17);
+                angleAdjuster.setPosition(0.2);
 
             }
             if (descending) {
-                angleAdjuster.setPosition(0);
+                angleAdjuster.setPosition(0.08);
             }
 
             if (gamepad1.right_trigger > 0.01){
-                launcher.setPosition(0.35);
+                launcher.setPosition(0.5);
             }
             else{
                 launcher.setPosition(0);

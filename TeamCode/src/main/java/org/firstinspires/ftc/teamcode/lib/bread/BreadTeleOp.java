@@ -88,11 +88,11 @@ public abstract class BreadTeleOp extends BreadOpMode{
                 boolean stackDown = gamepadEx2.dpad_right_pressed;
                 boolean openWideMF = gamepad2.right_trigger > 0.05;
 
-                if (!openWideMF){
-                    this.bread.hand.clamp();
+                if (gamepad2.right_trigger > 0.01){
+                    this.bread.hand.unclamp();
                 }
                 else{
-                    this.bread.hand.unclamp();
+                    this.bread.hand.clamp();
                 }
 
                 switch (this.currentGrabMode){

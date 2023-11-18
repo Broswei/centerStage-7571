@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.lib.util.Imu;
@@ -38,8 +39,8 @@ public class ClawTest extends LinearOpMode {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE); //might be wrong ones, i gotta tinker with this one
 
-        CRServo intakeLeft = hardwareMap.get(CRServo.class, "leftIntake");
-        CRServo intakeRight = hardwareMap.get(CRServo.class, "rightIntake");
+        Servo clawServo = hardwareMap.get(Servo.class, "clawServo");
+        clawServo.setDirection(Servo.Direction.REVERSE);
 
         double gyroOffset = 0.0;
 
@@ -105,16 +106,15 @@ public class ClawTest extends LinearOpMode {
             backRight.setPower(br);
 
             if (gamepad1.right_trigger > 0.01){
-                intakeLeft.setPower(-1);
-                intakeRight.setPower(1);
+                clawServo.setPosition(0);
             }
             else{
-                intakeLeft.setPower(0);
-                intakeRight.setPower(0);
+                clawServo.setPosition(1);
             }
 
             telemetry.addData("Gyro Rotation: ", imu.getAngleRadians());
             telemetry.addData("Gyro offset: ", gyroOffset);
+            telemetry.addData("servo position: ", clawServo.getPosition());
             telemetry.update();
         }
     }
