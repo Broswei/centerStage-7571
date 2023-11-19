@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.lib.util.AngleHelper;
 import org.firstinspires.ftc.teamcode.lib.util.MathUtils;
 
-public abstract class BreadTeleOp extends BreadOpMode{
+public abstract class BreadTeleOp extends BreadOpMode {
 
     public static double MIN_POWER = 0.2;
     public static double MAX_POWER = 0.6;
@@ -29,18 +29,21 @@ public abstract class BreadTeleOp extends BreadOpMode{
     }
 
     private ControlMode currentControlMode = ControlMode.GRABBING;
-    private DepoMode currentDepoMode = DepoMode.BACKDROP;
+    private DepoMode currentDepoMode = DepoMode.GROUND;
     private int alignStackHeight = 1;
     private int scoreLevel = 1;
+    private boolean aiming = false;
+    private int pixelRow = 1;
     boolean climbed = false;
+    boolean needToGoDown = false;
 
-    public void setup(){
+    public void setup() {
 
         initialize(hardwareMap);
 
     }
 
-    public void update(){
+    public void update() {
         double delta = getDelta();
 
         resetDelta();
@@ -50,7 +53,7 @@ public abstract class BreadTeleOp extends BreadOpMode{
         //potential stuff could use in future after RR
 
         //double speedTrigger = Math.max(gamepad1.left_trigger, gamepad1.right_trigger);
-       // double rate = MathUtils.map(speedTrigger, 0.0, 1.0, MAX_POWER, MIN_POWER);
+        // double rate = MathUtils.map(speedTrigger, 0.0, 1.0, MAX_POWER, MIN_POWER);
         //double forward = -gamepad1.left_stick_y;
         //double strafe = -gamepad1.left_stick_x;
 
@@ -58,7 +61,7 @@ public abstract class BreadTeleOp extends BreadOpMode{
         //double rotate = this.getDesiredDriveRotation(rotationVector, rate);
 
         //drive states
-        if(gamepad1.y){
+        if (gamepad1.y) {
             gyroOffset = super.bread.imu.getAngleRadians();
         }
 
@@ -66,66 +69,84 @@ public abstract class BreadTeleOp extends BreadOpMode{
         double strafe = Range.clip(gamepad1.left_stick_x, -0.8, 0.8);
         double rotate = Range.clip(gamepad1.right_stick_x, -0.5, 0.5);
 
-        double temp = strafe*Math.cos(super.bread.imu.getAngleRadians()-gyroOffset)+forward*Math.sin(super.bread.imu.getAngleRadians()-gyroOffset);
-        forward = -strafe*Math.sin(super.bread.imu.getAngleRadians()-gyroOffset)+forward*Math.cos(super.bread.imu.getAngleRadians()-gyroOffset);
+        double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
+        forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
         strafe = temp;
 
         //drive
-        if(gamepad1.a){
-            this.bread.drive.noRoadRunnerDriveFieldOriented(1.25*forward, 1.25*strafe, 1.25*rotate);
-        }
-        else if (gamepad1.right_trigger>0.01){
-            this.bread.drive.noRoadRunnerDriveFieldOriented(0.8*forward, 0.8*strafe, 0.8*rotate);
-        }
-        else{
+        if (gamepad1.a) {
+            this.bread.drive.noRoadRunnerDriveFieldOriented(1.25 * forward, 1.25 * strafe, 1.25 * rotate);
+        } else if (gamepad1.right_trigger > 0.01) {
+            this.bread.drive.noRoadRunnerDriveFieldOriented(0.8 * forward, 0.8 * strafe, 0.8 * rotate);
+        } else {
             this.bread.drive.noRoadRunnerDriveFieldOriented(forward, strafe, rotate);
         }
         //this.bread.drive.driveFieldOriented(forward, strafe, rotate);
 
 
-        switch (this.currentControlMode){
+        switch (this.currentControlMode) {
             case GRABBING:
                 //controller states
 
                 boolean climb = gamepadEx2.y_pressed;
                 boolean pullUp = gamepadEx2.y_pressed & climbed;
+                boolean switchTowers = gamepadEx2.b_pressed;
                 boolean launching = gamepad2.left_trigger > 0.05;
                 boolean aimPlane = gamepadEx2.x_pressed;
                 boolean openWideMF = gamepad2.right_trigger > 0.05;
                 boolean switchMode = gamepadEx2.a_pressed;
 
 
-                if (openWideMF){
+                if (openWideMF) {
                     this.bread.hand.unclamp();
-                    this.bread.wristServo.setPosition(0);
-                }
-                else{
+                    //this.bread.wristServo.setPosition(0);
+                } else {
                     this.bread.hand.clamp();
-                    this.bread.wristServo.setPosition(0.05);
+                   // this.bread.wristServo.setPosition(0.05);
                 }
 
-                if (climb){
-                    this.bread.rotator.rotateToDegrees(180,750);
-                    this.bread.towers.rotate(this.bread.towers.ticksToRotations(BreadConstants.TOWERS_MAX_EXTENSION_TICKS), 2000/BreadConstants.TOWERS_TPR);
-                    if (!this.bread.towers.isBusy()){
+                if (climb) {
+                    this.bread.rotator.rotateToDegrees(180, 750);
+                    this.bread.towers.rotate(this.bread.towers.ticksToRotations(BreadConstants.TOWERS_MAX_EXTENSION_TICKS), 2000 / BreadConstants.TOWERS_TPR);
+                    if (!this.bread.towers.isBusy()) {
                         climbed = true;
+                        needToGoDown  = true;
                     }
                 }
-                if (pullUp){
-                    this.bread.towers.rotate(-this.bread.towers.ticksToRotations(BreadConstants.TOWERS_MAX_EXTENSION_TICKS), 2000/BreadConstants.TOWERS_TPR);
+                if (pullUp) {
+                    this.bread.towers.rotate(-this.bread.towers.ticksToRotations(BreadConstants.TOWERS_MAX_EXTENSION_TICKS), 2000 / BreadConstants.TOWERS_TPR);
+                    while(!this.bread.towers.isBusy()){
+                        needToGoDown = false;
+                        climbed = false;
+                    }
                 }
 
-                if (launching){
-                    this.bread.launcher.setPosition(0.5);
+                if (switchTowers) {
+                    if (needToGoDown) {
+                        bread.towers.setTargetPos(10280,2000);
+                        needToGoDown = false;
+                    } else {
+                        bread.towers.setTargetPos(0,2000);
+                        needToGoDown = true;
+                    }
                 }
-                else{
+
+                if (launching) {
+                    this.bread.launcher.setPosition(0.5);
+                } else {
                     this.bread.launcher.setPosition(0);
                 }
-                if (aimPlane){
-                    this.bread.angleAdjuster.setPosition(0.2);
+                if (aimPlane) {
+                    if (!aiming){
+                        this.bread.angleAdjuster.setPosition(0.15);
+                        aiming = true;
+                    }
+                    else{
+                        this.bread.angleAdjuster.setPosition(0.08);
+                    }
                 }
 
-                if (switchMode){
+                if (switchMode) {
                     this.currentControlMode = ControlMode.DEPOSITING;
                 }
 
@@ -135,54 +156,60 @@ public abstract class BreadTeleOp extends BreadOpMode{
                 //controller states
                 boolean spit = gamepad2.y;
                 boolean switchModeDepo = gamepadEx2.a_pressed;
-                boolean switchDropLocation = gamepadEx2.b_pressed;
+                //boolean switchDropLocation = gamepadEx2.b_pressed;
+                //boolean upPixelRow = gamepadEx2.dpad_up_pressed;
 
-                if (spit){
-                    this.bread.hand.unclamp();
-                }
-                else{
-                    this.bread.hand.clamp();
-                }
 
-                switch (this.currentDepoMode){
+                switch (this.currentDepoMode) {
 
                     case GROUND:
                         this.bread.rotator.rotateToDegrees(0, 750);
-                        this.bread.wristServo.setPosition(0);
+                        //this.bread.wristServo.setPosition(0);
 
-                        if (switchDropLocation){
-                            this.currentDepoMode = DepoMode.BACKDROP;
-                        }
+                        //if (switchDropLocation){
+                            //this.currentDepoMode = DepoMode.BACKDROP;
+                        //}
 
                         break;
 
 
                     case BACKDROP:
-                        this.bread.rotator.rotateToDegrees(240,750);
-                        this.bread.wristServo.setPosition(0.6);
-
-
-                        if (switchDropLocation){
-                            this.currentDepoMode = DepoMode.GROUND;
+                        //this.bread.wristServo.setPosition(0.6);
+                        if (pixelRow == 1) {
+                            this.bread.rotator.rotateToDegrees(240, 750);
+                        }
+                        else {
+                            this.bread.rotator.rotateToDegrees(225, 750);
                         }
 
-                        break;
-                }
+                        /* if (upPixelRow) {
+                            pixelRow++;
 
-                if (switchModeDepo){
-                    this.currentControlMode = ControlMode.GRABBING;
-                }
+                            pixelRow = Math.min(2, pixelRow);
+                        }
+                        if (downPixelRow) {
+                            pixelRow--;
 
-                break;
+                            pixelRow = Math.max(1, pixelRow);
+                        }
+
+                        if (switchDropLocation) {
+                            this.currentDepoMode = DepoMode.GROUND;
+                        }*/
+
+                    break;
+                    }
+
+                    if(switchModeDepo) {
+                        this.currentControlMode = ControlMode.GRABBING;
+                    }
+
+                    break;
+
+            }
 
         }
 
-        telemetry.addData("Control Mode: ", this.currentControlMode);
-        telemetry.addData("Deposit Mode: ", this.currentDepoMode);
-        telemetry.addData("Climb Ready?: ", this.climbed);
-        telemetry.update();
-
-    }
 
 
     public void goStackBrr(int alignStackHeight){

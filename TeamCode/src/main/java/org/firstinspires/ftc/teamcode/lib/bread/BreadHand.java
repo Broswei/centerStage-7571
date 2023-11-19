@@ -20,8 +20,8 @@ public class BreadHand {
     private Servo clawServo;
 
 
-    public BreadHand(PositionableServo wristServo, Servo clawServo){
-        this.wristServo = wristServo;
+    public BreadHand(/*PositionableServo wristServo,*/ Servo clawServo){
+        //this.wristServo = wristServo;
         this.clawServo = clawServo;
     }
 

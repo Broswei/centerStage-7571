@@ -47,14 +47,14 @@ public class BreadBot {
         //load servos
         launcher = hardware.launcher;
         angleAdjuster = hardware.angleAdjuster;
-        wristServo = hardware.wristServo;
-        PositionableServo wrist = new PositionableServo(hardware.wristServo);
+        //wristServo = hardware.wristServo;
+        //PositionableServo wrist = new PositionableServo(hardware.wristServo);
 
         //load rails
         towers = new LinearRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
 
         //load hand
-        hand = new BreadHand(wrist, hardware.clawServo);
+        hand = new BreadHand(/*wrist, */hardware.clawServo);
 
         //load arm
         this.arm = new BreadArm(rotator, towers, hand);

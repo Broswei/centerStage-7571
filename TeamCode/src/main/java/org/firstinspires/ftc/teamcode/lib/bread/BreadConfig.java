@@ -28,7 +28,7 @@ public class BreadConfig {
         public Servo clawServo;
 
         public boolean complete(){   //make sure all hardware is configured (!null)
-            return this.rightRail != null && this.leftRail !=null && angleAdjuster != null && launcher !=null && rotator != null && wristServo !=null && clawServo != null;
+            return this.rightRail != null && this.leftRail !=null && angleAdjuster != null && launcher !=null && rotator != null  && clawServo != null; //&& wristServo !=null;
 
         }
     }
@@ -57,10 +57,10 @@ public class BreadConfig {
         hardware.angleAdjuster.setDirection(Servo.Direction.REVERSE);
         hardware.launcher.setDirection(Servo.Direction.REVERSE);
 
-        hardware.wristServo = hardwareMap.get(Servo.class, "wristServo");
+        //hardware.wristServo = hardwareMap.get(Servo.class, "wristServo");
         hardware.clawServo = hardwareMap.get(Servo.class, "clawServo");
         hardware.clawServo.setDirection(Servo.Direction.REVERSE);
-        hardware.wristServo.setDirection(Servo.Direction.REVERSE);
+        //hardware.wristServo.setDirection(Servo.Direction.REVERSE);
 
         return hardware;
     }

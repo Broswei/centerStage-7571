@@ -21,10 +21,6 @@ public abstract class BreadAutonomous extends BreadOpMode{
         //this.camera = createCamera("webcam");
         //this.openCameraAndStream();
 
-        this.bread.wristServo.setPosition(0.6);
-        this.bread.angleAdjuster.setPosition(0.1);
-        this.bread.hand.unclamp();
-
     }
 
     public void cycle(){

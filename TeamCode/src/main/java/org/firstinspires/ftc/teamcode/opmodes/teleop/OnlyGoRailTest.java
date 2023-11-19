@@ -35,32 +35,13 @@ public class OnlyGoRailTest extends LinearOpMode {
 
         while(!isStopRequested()){
 
-            leftRail.setTargetPosition(10280);
-            rightRail.setTargetPosition(10280);
-            leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftRail.setVelocity(2000);
-            rightRail.setVelocity(2000);
-
-            while (leftRail.isBusy() && rightRail.isBusy()){
-                telemetry.addData("leftRail Position: ", leftRail.getCurrentPosition());
-                telemetry.addData("rightRail Position: ", rightRail.getCurrentPosition());
-                telemetry.update();}
-
-            leftRail.setTargetPosition(0);
-            rightRail.setTargetPosition(0);
-            leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftRail.setVelocity(2000);
-            rightRail.setVelocity(2000);
-
-            while (leftRail.isBusy() && rightRail.isBusy()){
-                telemetry.addData("leftRail Position: ", leftRail.getCurrentPosition());
-                telemetry.addData("rightRail Position: ", rightRail.getCurrentPosition());
-                telemetry.update();
+            if (gamepad1.b){
+                leftRail.setPower(1);
+                rightRail.setPower(-1);
+            }else{
+                leftRail.setPower(0);
+                rightRail.setPower(0);
             }
-
-
         }
 
 

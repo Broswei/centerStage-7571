@@ -45,7 +45,7 @@ public class RotatorTest extends LinearOpMode {
 
             rotator.setTargetPosition((int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180)));
             rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rotator.setVelocity(500);
+            rotator.setVelocity(100);
 
 
             telemetry.addData("Rotator Position: ", rotator.getCurrentPosition());

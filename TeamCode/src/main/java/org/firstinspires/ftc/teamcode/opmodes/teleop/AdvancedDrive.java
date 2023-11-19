@@ -21,7 +21,7 @@ public class AdvancedDrive extends BreadTeleOp {
         setup();
         this.bread.angleAdjuster.setPosition(0.08);
         this.bread.launcher.setPosition(0);
-        this.bread.wristServo.setPosition(0);
+        //this.bread.wristServo.setPosition(0);
         this.bread.hand.clamp();
 
         this.bread.rotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -37,7 +37,7 @@ public class AdvancedDrive extends BreadTeleOp {
 
             telemetry.addData("Towers Position: ", this.bread.towers.getRawPosition());
             telemetry.addData("Rotator Angle: ", this.bread.rotator.getAngleDegrees());
-            telemetry.addData("Wrist Position: ", this.bread.wristServo.getPosition());
+            //telemetry.addData("Wrist Position: ", this.bread.wristServo.getPosition());
             telemetry.update();
         }
     }

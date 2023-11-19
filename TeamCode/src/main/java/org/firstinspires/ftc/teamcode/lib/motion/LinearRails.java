@@ -71,6 +71,15 @@ public class LinearRails {
         this.limitsEnabled = true;
     }
 
+    public void setTargetPos (int ticks, double velocity){
+        this.leftMotor.setTargetPosition(ticks);
+        this.rightMotor.setTargetPosition(ticks);
+        this.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.leftMotor.setVelocity(velocity);
+        this.rightMotor.setVelocity(velocity);
+    }
+
     public double rotationsToTicks(double rotations){
         return rotations * this.tickRatio * this.gearRatio;
     }
