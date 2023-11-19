@@ -43,34 +43,13 @@ public class RotatorTest extends LinearOpMode {
 
         while(!isStopRequested()){
 
-            gamepadEx1.updateControllerStates();
-
-            boolean ascending = gamepadEx1.b_pressed;
-            boolean descending = gamepadEx1.a_pressed;
-
-            if (ascending){
-                rotator.setTargetPosition((int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180)));
-                rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rotator.setVelocity(500);
-                while (rotator.isBusy()){
-                    if (rotator.getCurrentPosition() == (int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180))){
-                        rotator.setPower(0);
-                    }
-                }
-            }
-            if (descending){
-                rotator.setTargetPosition(0);
-                rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rotator.setVelocity(500);
-                while (rotator.isBusy()){
-                    if (rotator.getCurrentPosition() == (int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180))){
-                        rotator.setPower(0);
-                    }
-                }
-            }
+            rotator.setTargetPosition((int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180)));
+            rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rotator.setVelocity(500);
 
 
             telemetry.addData("Rotator Position: ", rotator.getCurrentPosition());
+            telemetry.addData("Target Position: ", rotator.getTargetPosition());
             telemetry.update();
         }
     }

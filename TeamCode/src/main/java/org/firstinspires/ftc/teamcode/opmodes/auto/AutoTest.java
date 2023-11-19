@@ -4,12 +4,12 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 
-public abstract class  AutoTest extends BreadAutonomous {
+public class  AutoTest extends BreadAutonomous {
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup(true);
+        setup();
 
         this.bread.hand.unclamp();
         boolean found = false;
@@ -24,9 +24,9 @@ public abstract class  AutoTest extends BreadAutonomous {
 
         }
 
-        driveDistance(47, 750, opModeIsActive());
+        this.bread.drive.getRoadrunnerDrive().driveDistance(47, 750, opModeIsActive());
 
-        strafeDistance( 94, 750, opModeIsActive());
+        this.bread.drive.getRoadrunnerDrive().strafeDistance( 94, 750, opModeIsActive());
 
 
 

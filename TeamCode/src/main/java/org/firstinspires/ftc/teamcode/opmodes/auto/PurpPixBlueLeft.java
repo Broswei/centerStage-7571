@@ -3,8 +3,9 @@ package org.firstinspires.ftc.teamcode.opmodes.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
+
 @Autonomous(group="park autos")
-public class ParkBlueRight extends BreadAutonomous {
+public class PurpPixBlueLeft extends BreadAutonomous {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -24,12 +25,8 @@ public class ParkBlueRight extends BreadAutonomous {
         }
 
         while (opModeIsActive()) {
-            this.bread.drive.getRoadrunnerDrive().driveDistance(47, 750, opModeIsActive());
-
-            this.bread.drive.getRoadrunnerDrive().strafeDistance(-94, 750, opModeIsActive());
+            this.bread.drive.getRoadrunnerDrive().driveDistance(-47, 750, opModeIsActive());
+            this.bread.drive.getRoadrunnerDrive().strafeDistance(47, 750, opModeIsActive());
         }
-
-
-
     }
 }

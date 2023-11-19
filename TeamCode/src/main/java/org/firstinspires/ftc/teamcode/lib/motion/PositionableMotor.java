@@ -45,7 +45,7 @@ public class PositionableMotor {
         this.tickRatio = tickRatio;
 
         // brake at zero
-        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // hard reset encoders
         this.hardResetEncoders();

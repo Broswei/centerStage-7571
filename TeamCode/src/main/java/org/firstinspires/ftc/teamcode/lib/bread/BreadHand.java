@@ -44,10 +44,10 @@ public class BreadHand {
     }
 
     public void clamp(){
-        this.clawServo.setPosition(1);
+        this.clawServo.setPosition(0.5);
     }
 
     public void unclamp(){
-        this.clawServo.setPosition(0);
+        this.clawServo.setPosition(0.25);
     }
 }

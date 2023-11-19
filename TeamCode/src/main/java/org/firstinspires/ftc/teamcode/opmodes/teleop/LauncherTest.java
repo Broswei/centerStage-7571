@@ -62,61 +62,6 @@ public class LauncherTest extends LinearOpMode {
             boolean rising = gamepadEx1.b_pressed;
             boolean descending = gamepadEx1.a_pressed;
 
-            if(gamepad1.y){
-                gyroOffset = imu.getAngleRadians();
-            }
-
-            double forward = Range.clip(-gamepad1.left_stick_y, -0.8, 0.8);
-            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1);
-            double rotate = Range.clip(gamepad1.right_stick_x, -0.5, 0.5);
-
-            double temp = strafe*Math.cos(imu.getAngleRadians()-gyroOffset)+forward*Math.sin(imu.getAngleRadians()-gyroOffset);
-            forward = -strafe*Math.sin(imu.getAngleRadians()-gyroOffset)+forward*Math.cos(imu.getAngleRadians()-gyroOffset);
-            strafe = temp;
-
-            // * tried and tested method
-
-            // double fl = forward + strafe + rotate;
-            // double fr = forward - strafe - rotate;
-            // double bl = forward - strafe + rotate;
-            // double br = forward + strafe - rotate; 
-
-            // * that wack method that Ahmed found
-            // * cred at Gavin Ford: https://www.youtube.com/watch?v=gnSW2QpkGXQ
-
-            double theta = Math.atan2(forward, strafe);
-            double power = Math.hypot(forward, strafe);
-
-            double sin = Math.sin(theta - Math.PI * 0.25d);
-            double cos = Math.cos(theta - Math.PI * 0.25d);
-
-            // to save divisions at expense of readability
-
-            double inverseScaledPower = 1 / Math.max(Math.abs(sin), Math.abs(cos));
-
-            double fl = power * cos * inverseScaledPower + rotate;
-            double fr = power * sin * inverseScaledPower - rotate;
-            double bl = power * sin * inverseScaledPower + rotate;
-            double br = power * cos * inverseScaledPower - rotate;
-            
-            // ? maybe change this to actual max output? max ( all motors )
-            // TODO: try this on actual bot
-
-            double maxOutput = Math.abs(power + rotate);
-
-            if (maxOutput > 1) {
-                fl /= maxOutput;
-                fr /= maxOutput;
-                bl /= maxOutput;
-                br /= maxOutput;
-            }
-
-            frontLeft.setPower(fl);
-            frontRight.setPower(fr);
-            backLeft.setPower(bl);
-            backRight.setPower(br);
-
-
             if (rising){
                 angleAdjuster.setPosition(0.2);
 
@@ -132,8 +77,6 @@ public class LauncherTest extends LinearOpMode {
                 launcher.setPosition(0);
             }
 
-            telemetry.addData("Gyro Rotation: ", imu.getAngleRadians());
-            telemetry.addData("Gyro offset: ", gyroOffset);
             telemetry.addData("Angle Position: ", angleAdjuster.getPosition());
             telemetry.update();
         }

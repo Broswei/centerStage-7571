@@ -18,8 +18,6 @@ public class OnlyGoRailTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        ElapsedTime runtime = new ElapsedTime();
-
         DcMotorEx leftRail = hardwareMap.get(DcMotorEx.class, "leftRail");
         DcMotorEx rightRail = hardwareMap.get(DcMotorEx.class, "rightRail");
 
@@ -29,9 +27,6 @@ public class OnlyGoRailTest extends LinearOpMode {
         rightRail.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        Imu imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
-
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

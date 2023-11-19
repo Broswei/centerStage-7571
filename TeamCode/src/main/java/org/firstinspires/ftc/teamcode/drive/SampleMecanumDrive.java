@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.drive.Drive;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
@@ -27,6 +28,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -216,6 +218,52 @@ public class SampleMecanumDrive extends MecanumDrive {
         return trajectorySequenceRunner.isBusy();
     }
 
+    int ticks;
+
+    public void setMotorPositions(int v, int v1, int v2, int v3){
+        rightFront.setTargetPosition(v);
+        leftFront.setTargetPosition(v1);
+        rightRear.setTargetPosition(v2);
+        leftRear.setTargetPosition(v3);
+    }
+
+    public void strafeDistance(double distanceIn, int velocity, boolean isRunning){
+        ticks = (int)(-distanceIn/(Math.PI*4)* DriveConstants.TICKS_PER_REV *1.1);
+        this.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.setMotorPositions(ticks,-ticks,-ticks,ticks);
+        this.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.setMotorVelocities(velocity);
+
+        ElapsedTime runtime = new ElapsedTime();
+        boolean run = true;
+        runtime.reset();
+        while(this.isBusy() && isRunning){
+
+        }
+    }
+
+    public void driveDistance(double distanceIn, int velocity, boolean isRunning){
+        ticks = (int)(-distanceIn/(Math.PI*4)*DriveConstants.TICKS_PER_REV);
+        this.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.setMotorPositions(ticks);
+        this.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.setMotorVelocities(velocity);
+
+        ElapsedTime runtime = new ElapsedTime();
+        boolean run = true;
+        runtime.reset();
+        while(this.isBusy() && isRunning){
+
+        }
+    }
+    public void setMotorPositions(int v){
+        rightFront.setTargetPosition(v);
+        leftFront.setTargetPosition(v);
+        rightRear.setTargetPosition(v);
+        leftRear.setTargetPosition(v);
+    }
+
+
     public void setMode(DcMotor.RunMode runMode) {
         for (DcMotorEx motor : motors) {
             motor.setMode(runMode);
@@ -298,20 +346,6 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightRear.setVelocity(v);
         leftRear.setVelocity(v);
         rightFront.setVelocity(v);
-    }
-
-    public void setMotorPositions(int v, int v1, int v2, int v3){
-        rightFront.setTargetPosition(v);
-        leftFront.setTargetPosition(v1);
-        rightRear.setTargetPosition(v2);
-        leftRear.setTargetPosition(v3);
-    }
-
-    public void setMotorPositions(int v){
-        rightFront.setTargetPosition(v);
-        leftFront.setTargetPosition(v);
-        rightRear.setTargetPosition(v);
-        leftRear.setTargetPosition(v);
     }
 
     @Override

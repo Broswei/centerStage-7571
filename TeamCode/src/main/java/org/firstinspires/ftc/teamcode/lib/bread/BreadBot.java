@@ -28,6 +28,8 @@ public class BreadBot {
     public PositionableMotor rotator;
     public Servo angleAdjuster;
 
+    public Servo wristServo;
+
     public BreadBot(HardwareMap hardwareMap){
 
         //load hardware
@@ -45,13 +47,14 @@ public class BreadBot {
         //load servos
         launcher = hardware.launcher;
         angleAdjuster = hardware.angleAdjuster;
-        PositionableServo wristServo = new PositionableServo(hardware.wristServo);
+        wristServo = hardware.wristServo;
+        PositionableServo wrist = new PositionableServo(hardware.wristServo);
 
         //load rails
         towers = new LinearRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
 
         //load hand
-        hand = new BreadHand(wristServo, hardware.clawServo);
+        hand = new BreadHand(wrist, hardware.clawServo);
 
         //load arm
         this.arm = new BreadArm(rotator, towers, hand);
