@@ -17,7 +17,7 @@ public abstract class ParkBlueRight extends BreadAutonomous {
 
         while (!isStarted()){
             if (gamepad1.a || gamepad2.a){
-                this.bread.hand.clamp();
+               // this.bread.hand.clamp();
             }
             //insert camera recongition
 

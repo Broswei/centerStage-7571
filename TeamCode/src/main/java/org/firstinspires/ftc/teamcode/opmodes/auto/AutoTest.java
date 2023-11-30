@@ -4,19 +4,19 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 
-public abstract class  AutoTest extends BreadAutonomous {
+public class  AutoTest extends BreadAutonomous {
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup(true);
+        setup();
 
-        this.bread.hand.unclamp();
+        this.bread.arm.setHandUnclamped();
         boolean found = false;
 
         while (!isStarted()){
             if (gamepad1.a || gamepad2.a){
-                this.bread.hand.clamp();
+                this.bread.arm.setHandClamped();
             }
             //insert camera recongition
 
@@ -24,12 +24,7 @@ public abstract class  AutoTest extends BreadAutonomous {
 
         }
 
-        driveDistance(47, 750, opModeIsActive());
-
-        strafeDistance( 94, 750, opModeIsActive());
-
-
-
+        //Leave this body empty after testing
 
     }
 }

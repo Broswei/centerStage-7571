@@ -9,45 +9,46 @@ import com.qualcomm.robotcore.hardware.Servo;
  * @brief Dedicated class for managing the flipper + wrist + claw servo combo
  */
 public class BreadHand {
-    /**
-     * @brief pitches the claw up and down, allowing the angle to stay consistent at all angles of the elbow (and for the cone to be manipulated to make better deposits)
-     */
-    private PositionableServo wristServo;
+    private Servo wristServo;
 
     /**
      * @brief Clamps cones
      */
-    private Servo clawServo;
+    private Servo leftClaw;
+    private Servo rightClaw;
 
 
-    public BreadHand(PositionableServo wristServo, Servo clawServo){
+    public BreadHand(Servo wristServo, Servo leftClaw, Servo rightClaw){
         this.wristServo = wristServo;
-        this.clawServo = clawServo;
+        this.leftClaw = leftClaw;
+        this.rightClaw = rightClaw;
     }
 
     /**
-     * @brief Set the pitch of the wrist (actuates wrist servo) in radians
-     *
-     * @param pitch
+     * @brief Set the wrist to pickup mode (ideally this position is 0)
      */
-    public void setPitchRadians(double pitch){
-        this.wristServo.rotateToRadians(pitch);
+    public void setPickUp(){
+        this.wristServo.setPosition(0);
     }
 
     /**
-     * @brief Set the pitch of the wrist (actuates wrist servo) in degrees
-     *
-     * @param pitch
+     * @brief Set the wrist to deposit mode (backdrop is fixed position!)
      */
-    public void setPitchDegrees(double pitch){
-        this.wristServo.rotateToDegrees(pitch);
+    public void setDeposit(){
+        this.wristServo.setPosition(BreadConstants.WRIST_DEPO_POS);
+    }
+
+    public void setRest(){
+        this.wristServo.setPosition(BreadConstants.WRIST_REST_POS);
     }
 
     public void clamp(){
-        this.clawServo.setPosition(1);
+        this.leftClaw.setPosition(0.5);
+        this.rightClaw.setPosition(0.5);
     }
 
     public void unclamp(){
-        this.clawServo.setPosition(0);
+        this.leftClaw.setPosition(0.25);
+        this.rightClaw.setPosition(0.25);
     }
 }

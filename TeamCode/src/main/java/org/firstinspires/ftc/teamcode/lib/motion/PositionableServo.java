@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
-public class PositionableServo {
+public class PositionableServo { //MAY NOT BE USED THIS SEASON, WE WILL SEE)
     private Servo servo;
     private double zeroAngleRadians = 0.0;
     private double maxRange = Math.toRadians(300); // max range (defaults to 300 degrees, which is gobilda default)

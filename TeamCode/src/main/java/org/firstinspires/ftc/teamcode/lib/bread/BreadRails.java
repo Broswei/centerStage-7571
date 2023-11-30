@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.lib.motion;
+package org.firstinspires.ftc.teamcode.lib.bread;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-public class LinearRails {
+public class BreadRails {
     // motor
     private DcMotorEx leftMotor;
     private DcMotorEx rightMotor;
@@ -38,15 +39,18 @@ public class LinearRails {
         return degrees / 360.0;
     }
 
-    public LinearRails(DcMotorEx leftMotor, DcMotorEx rightMotor, double gearRatio, double tickRatio){
+    public BreadRails(DcMotorEx leftMotor, DcMotorEx rightMotor, double gearRatio, double tickRatio){
         this.leftMotor = leftMotor;
         this.rightMotor = rightMotor;
         this.gearRatio = gearRatio;
         this.tickRatio = tickRatio;
 
         // brake at zero
-        this.leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        this.rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        this.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.rightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // hard reset encoders
         this.hardResetEncoders();
@@ -59,12 +63,40 @@ public class LinearRails {
         this.limitsEnabled = false;
     }
 
-    public LinearRails(DcMotorEx leftMotor, DcMotorEx rightMotor, double gearRatio, double tickRatio, double lowerLimit, double upperLimit){
+    public BreadRails(DcMotorEx leftMotor, DcMotorEx rightMotor, double gearRatio, double tickRatio, double lowerLimit, double upperLimit){
         this(leftMotor, rightMotor, gearRatio, tickRatio);
 
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;
         this.limitsEnabled = true;
+    }
+
+    /**
+     * @return true if the slides are currently running to position (doesn't use steady state settings)
+     */
+    public boolean areTowersBusy(){
+        return this.leftMotor.isBusy() || this.rightMotor.isBusy();
+    }
+
+    public void setTargetPos (int ticks, double velocity){
+        this.leftMotor.setTargetPosition(ticks);
+        this.rightMotor.setTargetPosition(ticks);
+        this.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.leftMotor.setVelocity(velocity);
+        this.rightMotor.setVelocity(velocity);
+    }
+
+    public void presetRaiseTowersUp(int level){
+        if (level == 1){
+            rotateTo(0,BreadConstants.TOWERS_NORM_VELOCITY);
+        }
+        if (level == 2){
+            rotateTo(inchesToRotations(5.74),BreadConstants.TOWERS_NORM_VELOCITY);
+        }
+        else{
+            rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS, BreadConstants.TOWERS_NORM_VELOCITY);
+        }
     }
 
     public double rotationsToTicks(double rotations){
@@ -76,7 +108,7 @@ public class LinearRails {
     }
 
     public double degreesToTicks(double degrees){
-        return this.rotationsToTicks(LinearRails.degreesToRotations(degrees));
+        return this.rotationsToTicks(BreadRails.degreesToRotations(degrees));
     }
 
     public double ticksToDegrees(double ticks){
@@ -84,11 +116,15 @@ public class LinearRails {
     }
 
     public double radiansToTicks(double radians){
-        return this.rotationsToTicks(LinearRails.radiansToRotations(radians));
+        return this.rotationsToTicks(BreadRails.radiansToRotations(radians));
     }
 
-    public double ticksToRadians(double ticks){
-        return this.ticksToRotations(ticks) * 2*Math.PI;
+    public double inchesToRotations(double inches){
+        return inches *25.4/8;
+    }
+
+    public static double rotationsToInches(double rotations){
+        return rotations*8/25.4;
     }
 
     /**

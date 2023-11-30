@@ -17,16 +17,27 @@ public class BreadConstants {
     // drive related... //
 
     //rotator related //
-    public static double ROT_TPR = 384.5;
+    public static double ROT_TPR = 1425.1;
     public static double ROT_GEAR_RATIO = 1;
+    public static double ROT_DEFAULT_DEGREES = 5;
+
+    public static double ROT_NORM_DEPO_ANG = 190;
 
     // towers related //
-    public static double TOWERS_TPR = 384.5;
+    public static double TOWERS_TPR = 384.5; //this for 435 RPM (3.7 cycle time) --> 1620 RPM = 103.8
     public static double TOWERS_GEAR_RATIO = 1;
-    public static double TOWERS_BASE_LENGTH_INS;
-    public static double TOWERS_MAX_EXTENSION_INS;
+    public static double TOWERS_MAX_ROTATIONS = 26.736;
 
-    // claw related... //
+    public static double TOWERS_NORM_VELOCITY = 2000/TOWERS_TPR;
+
+    // wrist related... //
+    public static double WRIST_DEPO_POS = 0.6;
+
+    public static double WRIST_REST_POS = 0.45;
+
+    //launcher related...//
+    public static double LAUNCH_ANGLE_POS = 0.2;
+    public static double LAUNCH_DEFAULT_REST = 0.08;
 
 
 }

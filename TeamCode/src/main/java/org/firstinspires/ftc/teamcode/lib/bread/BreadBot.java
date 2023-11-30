@@ -1,29 +1,19 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.lib.motion.LinearRails;
-import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
-import org.firstinspires.ftc.teamcode.lib.motion.PositionableServo;
-import org.firstinspires.ftc.teamcode.lib.util.Imu;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
+import org.firstinspires.ftc.teamcode.lib.util.Imu;
 
 public class BreadBot {
 
     public final BreadDrive drive;
     public Imu imu;
-    public BreadHand hand;
-    public LinearRails towers;
     public BreadArm arm;
-    public Servo launcher;
-    public Servo angleAdjuster;
+
+    public BreadRails rails;
+    public BreadLauncher launcher;
 
     public BreadBot(HardwareMap hardwareMap){
 
@@ -37,17 +27,24 @@ public class BreadBot {
         imu = new Imu(hardwareMap.get(BNO055IMU.class, "imu"));
 
         //load motor
-        PositionableMotor rotator = new PositionableMotor(hardware.rotator, BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
+        PositionableMotor leftRotator = new PositionableMotor(hardware.leftRotator, BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
+        PositionableMotor rightRotator = new PositionableMotor(hardware.rightRotator, BreadConstants.ROT_GEAR_RATIO, BreadConstants.ROT_TPR);
 
-        //load servos
-        launcher = hardware.launcher;
-        angleAdjuster = hardware.angleAdjuster;
+        //load servos (deciding in mid-December, stick with regular servos for simplicity)
+        //PositionableServo angleAdjuster = new PositionableServo(hardware.angleAdjuster, BreadConstants.ANG_MAX_RANGE, BreadConstants.ANG_ZERO_ANGLE);
+        //PositionableServo wristServo = new PositionableServo(hardware.wristServo, BreadConstants.WRIST_MAX_RANGE, BreadConstants.WRIST_ZERO_ANGLE);
 
         //load rails
-        towers = new LinearRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
+        rails = new BreadRails(hardware.leftRail, hardware.rightRail, BreadConstants.TOWERS_GEAR_RATIO, BreadConstants.TOWERS_TPR);
 
         //load hand
-        //hand = new BreadHand(wristServo, hardware.clawServo);
+        BreadHand hand = new BreadHand(hardware.wristServo, hardware.leftClaw, hardware.rightClaw);
+
+        //load arm
+        this.arm = new BreadArm(leftRotator, rightRotator, hand);
+
+        //load launcher
+        this.launcher = new BreadLauncher(hardware.angleAdjuster, hardware.launcher);
     }
 
 
