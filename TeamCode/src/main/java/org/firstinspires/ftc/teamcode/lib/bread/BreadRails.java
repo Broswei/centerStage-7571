@@ -49,9 +49,6 @@ public class BreadRails {
         this.leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        this.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.rightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-
         // hard reset encoders
         this.hardResetEncoders();
 
@@ -94,7 +91,7 @@ public class BreadRails {
         if (level == 2){
             rotateTo(inchesToRotations(5.74),BreadConstants.TOWERS_NORM_VELOCITY);
         }
-        else{
+        if (level == 3){
             rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS, BreadConstants.TOWERS_NORM_VELOCITY);
         }
     }

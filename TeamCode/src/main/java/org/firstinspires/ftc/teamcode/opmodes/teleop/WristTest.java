@@ -19,7 +19,7 @@ public class WristTest extends LinearOpMode {
         while(!isStopRequested()){
 
             if (gamepad1.b){
-                wristServo.setPosition(0.6);
+                wristServo.setPosition(0.35);
             }
             else{
                 wristServo.setPosition(0);

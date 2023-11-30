@@ -10,7 +10,7 @@ public class PurpPixBlueLeft extends BreadAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup();
+        setup(true);
 
         boolean found = false;
 
@@ -25,8 +25,8 @@ public class PurpPixBlueLeft extends BreadAutonomous {
         }
 
         while (opModeIsActive()) {
-            this.bread.drive.getRoadrunnerDrive().driveDistance(-47, 750, opModeIsActive());
-            this.bread.drive.getRoadrunnerDrive().strafeDistance(47, 750, opModeIsActive());
+            driveDistance(-47, 750, opModeIsActive());
+            strafeDistance(47, 750, opModeIsActive());
         }
     }
 }

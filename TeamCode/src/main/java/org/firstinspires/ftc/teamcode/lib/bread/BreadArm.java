@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
@@ -25,6 +26,9 @@ public class BreadArm {
         this.hand = hand;
 
         this.deltaTimer = new ElapsedTime();
+
+        leftRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public boolean areRotatorsBusy(){
@@ -92,8 +96,8 @@ public class BreadArm {
     }
 
     public void updateArm(){
-        leftRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 750);
-        rightRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 750);
+        leftRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 180);
+        rightRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 180);
     }
 
     public void setNormalDepoPos(){

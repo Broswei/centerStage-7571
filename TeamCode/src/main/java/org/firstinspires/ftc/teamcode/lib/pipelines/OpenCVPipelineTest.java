@@ -32,7 +32,7 @@ public class OpenCVPipelineTest extends OpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
 
-        webcam.setPipeline(new TSEDetectionPipeline(2));
+        webcam.setPipeline(new TSEDetectionPipeline());
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             public void onOpened() {

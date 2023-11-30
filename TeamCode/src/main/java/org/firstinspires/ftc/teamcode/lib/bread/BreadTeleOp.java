@@ -96,6 +96,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 boolean switchMode = gamepadEx2.a_pressed;
 
                 this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
+                this.bread.rails.setTargetPos(0, BreadConstants.TOWERS_NORM_VELOCITY);
 
                 if (openWideMF) {
                     this.bread.arm.setHandUnclamped();
@@ -151,6 +152,9 @@ public abstract class BreadTeleOp extends BreadOpMode {
                     this.currentControlMode = ControlMode.DEPOSITING;
                 }
 
+
+                this.bread.arm.updateArm();
+
                 break;
 
             case DEPOSITING:
@@ -167,15 +171,15 @@ public abstract class BreadTeleOp extends BreadOpMode {
                     case GROUND:
                         this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
 
-                        if (spit){
+                        if (spit) {
                             this.bread.arm.setHandUnclamped();
                             this.bread.arm.setPickUpPos();
-                        }else{
+                        } else {
                             this.bread.arm.setHandClamped();
                             this.bread.arm.setRestPos();
                         }
 
-                        if (switchDropLocation){
+                        if (switchDropLocation) {
                             this.currentDepoMode = DepoMode.BACKDROP;
                         }
 
@@ -188,35 +192,39 @@ public abstract class BreadTeleOp extends BreadOpMode {
                         this.bread.arm.setNormalDepoPos();
                         this.bread.rails.presetRaiseTowersUp(pixelRow);
 
-                       if (upPixelSet) {
+                        if (spit) {
+                            this.bread.arm.setHandUnclamped();
+                        } else {
+                            this.bread.arm.setHandClamped();
+                        }
+
+                        if (upPixelSet) {
                             pixelRow++;
 
                             pixelRow = Math.min(3, pixelRow);
-                       }
-                       if (downPixelSet) {
+                        }
+                        if (downPixelSet) {
                             pixelRow--;
 
                             pixelRow = Math.max(1, pixelRow);
-                       }
+                        }
 
-                       if (switchDropLocation) {
-                           this.currentDepoMode = DepoMode.GROUND;
-                       }
+                        if (switchDropLocation) {
+                            this.currentDepoMode = DepoMode.GROUND;
+                        }
 
-                    break;
-                    }
+                        if (switchModeDepo) {
+                            this.currentControlMode = ControlMode.GRABBING;
+                        }
 
-                    if(switchModeDepo) {
-                        this.currentControlMode = ControlMode.GRABBING;
-                    }
 
-                    break;
+                        break;
+                }
 
+                this.bread.arm.updateArm();
             }
 
         //update....//
-
-        this.bread.arm.updateArm();
 
         //telemetry...//
         telemetry.addData("Rotator Angle: ", this.bread.arm.getRotatorDegrees());

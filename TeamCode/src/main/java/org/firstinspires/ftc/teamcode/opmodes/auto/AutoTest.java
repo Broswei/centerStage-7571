@@ -9,7 +9,7 @@ public class  AutoTest extends BreadAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup();
+        setup(true);
 
         this.bread.arm.setHandUnclamped();
         boolean found = false;
