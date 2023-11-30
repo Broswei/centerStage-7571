@@ -34,11 +34,6 @@ public class PlainFODTest extends LinearOpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE); //might be wrong ones, i gotta tinker with this one
 
@@ -57,23 +52,24 @@ public class PlainFODTest extends LinearOpMode {
 
             // get more input space out of controller; objectively better
 
-            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1);
+            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * 0.8;
             double strafe  = Range.clip( gamepad1.left_stick_x, -1, 1);
-            double rotate  = Range.clip(gamepad1.right_stick_x, -1, 1);
+            double rotate  = Range.clip(gamepad1.right_stick_x, -1, 1) * 0.5;
 
             double temp = strafe*Math.cos(imu.getAngleRadians()-gyroOffset)+forward*Math.sin(imu.getAngleRadians()-gyroOffset);
             forward = -strafe*Math.sin(imu.getAngleRadians()-gyroOffset)+forward*Math.cos(imu.getAngleRadians()-gyroOffset);
             strafe = temp;
 
+            // * tried and tested method
 
-            double fl = forward + strafe + rotate;
-            double fr = forward - strafe - rotate;
-            double bl = forward - strafe + rotate;
-            double br = forward + strafe - rotate;
+            // double fl = forward + strafe + rotate;
+            // double fr = forward - strafe - rotate;
+            // double bl = forward - strafe + rotate;
+            // double br = forward + strafe - rotate; 
 
             // * that wack method that Ahmed found
             // * cred at Gavin Ford: https://www.youtube.com/watch?v=gnSW2QpkGXQ
-/*
+
             double theta = Math.atan2(forward, strafe);
             double power = Math.hypot(forward, strafe);
 
@@ -100,7 +96,7 @@ public class PlainFODTest extends LinearOpMode {
                 bl /= maxOutput;
                 br /= maxOutput;
             }
-*/
+
             frontLeft.setPower(fl);
             frontRight.setPower(fr);
             backLeft.setPower(bl);

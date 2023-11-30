@@ -132,6 +132,8 @@ public class AprilTagDemo extends LinearOpMode
                         aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
                     }
 
+
+
                     for(AprilTagDetection detection : detections)
                     {
                         Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
@@ -140,6 +142,12 @@ public class AprilTagDemo extends LinearOpMode
                         telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
                         telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
                         telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
+
+//                        telemetry.addLine(String.format("Translation X: %.2f feet", detection.metadata.fieldPosition.x*FEET_PER_METER));
+//                        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.metadata.fieldPosition.y*FEET_PER_METER));
+//                        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.metadata.fieldPosition.z*FEET_PER_METER));
+
+
                         telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
                         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
                         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));

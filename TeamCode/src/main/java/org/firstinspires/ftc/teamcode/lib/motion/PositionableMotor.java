@@ -45,7 +45,7 @@ public class PositionableMotor {
         this.tickRatio = tickRatio;
 
         // brake at zero
-        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // hard reset encoders
         this.hardResetEncoders();
@@ -56,10 +56,6 @@ public class PositionableMotor {
         this.enable();
 
         this.limitsEnabled = false;
-
-        this.motor.setTargetPosition(0);
-        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motor.setVelocity(250);
     }
 
     public PositionableMotor(DcMotorEx motor, double gearRatio, double tickRatio, double lowerLimit, double upperLimit){

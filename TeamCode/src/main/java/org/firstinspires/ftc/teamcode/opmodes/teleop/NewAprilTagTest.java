@@ -40,6 +40,8 @@ public class NewAprilTagTest extends LinearOpMode {
 
                 AprilTagDetection tag = tagProcessor.getDetections().get(0);
 
+
+
                 telemetry.addData("x", tag.ftcPose.x);
                 telemetry.addData("y", ((AprilTagDetection) tag).ftcPose.y);
                 telemetry.addData("z", tag.ftcPose.z);

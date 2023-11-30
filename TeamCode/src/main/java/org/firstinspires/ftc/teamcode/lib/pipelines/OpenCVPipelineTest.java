@@ -32,7 +32,7 @@ public class OpenCVPipelineTest extends OpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
 
-        webcam.setPipeline(new examplePipeline()); // write later
+        webcam.setPipeline(new TSEDetectionPipeline(2));
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             public void onOpened() {
@@ -53,7 +53,7 @@ public class OpenCVPipelineTest extends OpMode {
 
     }
 
-    class examplePipeline extends OpenCvPipeline{
+    class TSEDetectionPipeline extends OpenCvPipeline{
         Mat YCbCr = new Mat();
         Mat crop1;
         Mat crop2;
@@ -61,6 +61,11 @@ public class OpenCVPipelineTest extends OpMode {
         double rect1AvgFin;
         double rect2AvgFin;
         double rect3AvgFin;
+
+        int alliance;
+        TSEDetectionPipeline() {
+            // alliance = alliance;
+        }
 
         // NOTE: so yeah I think it s an issue with this constructor, it is somehwo getting like a 0x0 ma
         Mat output = new Mat();
@@ -99,7 +104,7 @@ public class OpenCVPipelineTest extends OpMode {
 
             rect1AvgFin = crop1AvgScalar.val[0];
             rect2AvgFin = crop2AvgScalar.val[0];
-            rect3AvgFin = crop2AvgScalar.val[0];
+            rect3AvgFin = crop3AvgScalar.val[0];
 
 
             if(rect1AvgFin > rect2AvgFin && rect1AvgFin > rect3AvgFin) {

@@ -74,7 +74,58 @@ public class ArmTest extends LinearOpMode {
             boolean outtaking = gamepadEx1.x_pressed;
             boolean intakeing = gamepadEx1.y_pressed;
 
+            if(gamepadEx1.left_bumper_pressed){
+                gyroOffset = imu.getAngleRadians();
+            }
 
+            double forward = Range.clip(-gamepad1.left_stick_y, -0.6, 0.6);
+            double strafe = Range.clip(gamepad1.left_stick_x, -0.6, 0.6);
+            double rotate = Range.clip(gamepad1.right_stick_x, -0.4, 0.4);
+
+            double temp = strafe*Math.cos(imu.getAngleRadians()-gyroOffset)+forward*Math.sin(imu.getAngleRadians()-gyroOffset);
+            forward = -strafe*Math.sin(imu.getAngleRadians()-gyroOffset)+forward*Math.cos(imu.getAngleRadians()-gyroOffset);
+            strafe = temp;
+
+            double fl = forward + strafe + rotate;
+            double fr = forward - strafe - rotate;
+            double bl = forward - strafe + rotate;
+            double br = forward + strafe - rotate; //could be wrong here as well, gotta tinker
+
+            frontLeft.setPower(fl);
+            frontRight.setPower(fr);
+            backLeft.setPower(bl);
+            backRight.setPower(br);
+
+            if (ascending){
+                leftRail.setTargetPosition(10280);
+                rightRail.setTargetPosition(10280);
+                leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftRail.setVelocity(2000);
+                rightRail.setVelocity(2000);
+                while (leftRail.isBusy() && rightRail.isBusy()){}
+            }
+
+            if (descending){
+                leftRail.setTargetPosition(0);
+                rightRail.setTargetPosition(0);
+                leftRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftRail.setVelocity(2000);
+                rightRail.setVelocity(2000);
+                while (leftRail.isBusy() && rightRail.isBusy()){}
+            }
+
+            if (toggleUp){
+                scoringLevel += 1;
+            }
+            if (toggleDown){
+                scoringLevel -= 1;
+            }
+
+
+            telemetry.addData("Gyro Rotation: ", imu.getAngleRadians());
+            telemetry.addData("Gyro offset: ", gyroOffset);
             telemetry.addData("leftRail Position: ", leftRail.getCurrentPosition());
             telemetry.addData("rightRail Position: ", rightRail.getCurrentPosition());
             telemetry.update();
