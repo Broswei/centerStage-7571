@@ -10,7 +10,7 @@ public class ParkBlueLeft extends BreadAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup();
+        setup(true);
         this.bread.arm.setHandUnclamped();
 
         boolean found = false;
@@ -26,7 +26,7 @@ public class ParkBlueLeft extends BreadAutonomous {
         }
 
         while (opModeIsActive()){
-            this.bread.drive.getRoadrunnerDrive().strafeDistance(47, 750, opModeIsActive());
+            strafeDistance(47, 750, opModeIsActive());
         }
 
 

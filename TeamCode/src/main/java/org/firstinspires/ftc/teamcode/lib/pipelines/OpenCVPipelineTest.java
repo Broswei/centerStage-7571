@@ -31,7 +31,6 @@ public class OpenCVPipelineTest extends OpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-
         webcam.setPipeline(new TSEDetectionPipeline());
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -62,7 +61,7 @@ public class OpenCVPipelineTest extends OpMode {
         double rect2AvgFin;
         double rect3AvgFin;
 
-        int alliance;
+        // int alliance;
         TSEDetectionPipeline() {
             // alliance = alliance;
         }
@@ -79,7 +78,7 @@ public class OpenCVPipelineTest extends OpMode {
 
             Rect rect1 = new Rect (1, 1, 426, 719);
             Rect rect2 = new Rect (427, 1, 426, 719);
-            Rect rect3 = new Rect (855, 1, 426, 719);
+            Rect rect3 = new Rect (853, 1, 426, 719);
 
 
             input.copyTo(output);

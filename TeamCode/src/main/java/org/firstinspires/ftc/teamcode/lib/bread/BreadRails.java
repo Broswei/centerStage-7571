@@ -52,6 +52,9 @@ public class BreadRails {
         this.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.rightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        this.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         // hard reset encoders
         this.hardResetEncoders();
 
