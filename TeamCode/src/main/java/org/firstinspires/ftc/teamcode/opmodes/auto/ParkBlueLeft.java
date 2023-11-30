@@ -11,14 +11,13 @@ public class ParkBlueLeft extends BreadAutonomous {
     public void runOpMode() throws InterruptedException {
 
         setup();
+        this.bread.arm.setHandUnclamped();
 
         boolean found = false;
 
         while (!isStarted()){
             if (gamepad1.a || gamepad2.a){
-                this.bread.hand.clamp();
-                sleep(1000);
-                this.bread.angleAdjuster.setPosition(0.08);
+                this.bread.arm.setHandClamped();
             }
             //insert camera recongition
 

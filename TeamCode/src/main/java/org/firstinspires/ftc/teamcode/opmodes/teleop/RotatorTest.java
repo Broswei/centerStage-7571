@@ -26,16 +26,9 @@ public class RotatorTest extends LinearOpMode {
 
         // load
 
-        DcMotorEx rotator = hardwareMap.get(DcMotorEx.class, "rotator");
-
-        rotator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        rotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rotator.setTargetPosition(0);
-        rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rotator.setVelocity(250);
+        DcMotor rotator = hardwareMap.get(DcMotor.class, "rightRotator");
 
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Rotator Position: ", rotator.getCurrentPosition());
 
         telemetry.update();
 
@@ -43,9 +36,7 @@ public class RotatorTest extends LinearOpMode {
 
         while(!isStopRequested()){
 
-            rotator.setTargetPosition((int)(BreadConstants.ROT_TPR * PositionableMotor.degreesToRotations(180)));
-            rotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rotator.setVelocity(100);
+            rotator.setPower(1);
 
 
             telemetry.addData("Rotator Position: ", rotator.getCurrentPosition());

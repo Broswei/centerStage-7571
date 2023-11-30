@@ -16,10 +16,6 @@ import java.util.List;
 
 public abstract class BreadOpMode extends LinearOpMode {
 
-    //constants
-    public static double STACK_HEIGHT_INCREASE = 0.5;
-    public static double BASE_STACK_HEIGHT = 2.5;
-
 
     // global timer
     private ElapsedTime globalTimer;

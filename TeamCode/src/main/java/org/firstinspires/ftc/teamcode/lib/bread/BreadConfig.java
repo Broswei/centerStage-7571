@@ -14,21 +14,21 @@ public class BreadConfig {
         public DcMotorEx rightRail;
         public DcMotorEx leftRail;
 
-        // arm motor
-        public DcMotorEx rotator;
+        // arm motors
+        public DcMotorEx leftRotator;
+        public DcMotorEx rightRotator;
 
         // scoring mech servos
         public Servo angleAdjuster;
         public Servo launcher;
-        public CRServo leftIntake;
-        public CRServo rightIntake;
 
         //arm servos
         public Servo wristServo;
-        public Servo clawServo;
+        public Servo leftClaw;
+        public Servo rightClaw;
 
         public boolean complete(){   //make sure all hardware is configured (!null)
-            return this.rightRail != null && this.leftRail !=null && angleAdjuster != null && launcher !=null && rotator != null  && clawServo != null; //&& wristServo !=null;
+            return this.rightRail != null && this.leftRail !=null && angleAdjuster != null && launcher !=null && leftRotator != null && rightRotator != null  && leftClaw != null && rightClaw != null && wristServo !=null;
 
         }
     }
@@ -47,20 +47,24 @@ public class BreadConfig {
         hardware.leftRail = hardwareMap.get(DcMotorEx.class, "leftRail");
         hardware.rightRail = hardwareMap.get(DcMotorEx.class, "rightRail");
 
-        hardware.leftRail.setDirection(DcMotorSimple.Direction.FORWARD);
+        hardware.leftRail.setDirection(DcMotorSimple.Direction.REVERSE);
         hardware.rightRail.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        hardware.rotator = hardwareMap.get(DcMotorEx.class, "rotator");
+        hardware.leftRotator = hardwareMap.get(DcMotorEx.class, "leftRotator");
+        hardware.rightRotator = hardwareMap.get(DcMotorEx.class, "rightRotator");
+        hardware.leftRotator.setDirection(DcMotorSimple.Direction.REVERSE);
 
         hardware.angleAdjuster = hardwareMap.get(Servo.class, "angleAdjuster");
         hardware.launcher = hardwareMap.get(Servo.class, "launcher");
         hardware.angleAdjuster.setDirection(Servo.Direction.REVERSE);
         hardware.launcher.setDirection(Servo.Direction.REVERSE);
 
-        //hardware.wristServo = hardwareMap.get(Servo.class, "wristServo");
-        hardware.clawServo = hardwareMap.get(Servo.class, "clawServo");
-        hardware.clawServo.setDirection(Servo.Direction.REVERSE);
-        //hardware.wristServo.setDirection(Servo.Direction.REVERSE);
+        hardware.wristServo = hardwareMap.get(Servo.class, "wristServo");
+        hardware.wristServo.setDirection(Servo.Direction.REVERSE);
+
+        hardware.leftClaw = hardwareMap.get(Servo.class, "leftClaw");
+        hardware.leftClaw.setDirection(Servo.Direction.REVERSE);
+        hardware.rightClaw = hardwareMap.get(Servo.class, "rightClaw");
 
         return hardware;
     }

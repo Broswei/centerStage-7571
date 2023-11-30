@@ -11,12 +11,12 @@ public class  AutoTest extends BreadAutonomous {
 
         setup();
 
-        this.bread.hand.unclamp();
+        this.bread.arm.setHandUnclamped();
         boolean found = false;
 
         while (!isStarted()){
             if (gamepad1.a || gamepad2.a){
-                this.bread.hand.clamp();
+                this.bread.arm.setHandClamped();
             }
             //insert camera recongition
 
@@ -24,12 +24,7 @@ public class  AutoTest extends BreadAutonomous {
 
         }
 
-        this.bread.drive.getRoadrunnerDrive().driveDistance(47, 750, opModeIsActive());
-
-        this.bread.drive.getRoadrunnerDrive().strafeDistance( 94, 750, opModeIsActive());
-
-
-
+        //Leave this body empty after testing
 
     }
 }

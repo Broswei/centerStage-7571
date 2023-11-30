@@ -12,9 +12,9 @@ import org.firstinspires.ftc.teamcode.lib.util.MathUtils;
 
 public abstract class BreadTeleOp extends BreadOpMode {
 
-    public static double MIN_POWER = 0.2;
-    public static double MAX_POWER = 0.6;
-    public static double ROTATION_POWER = 0.5;
+    //public static double MIN_POWER = 0.2;
+   // public static double MAX_POWER = 0.6;
+    //public static double ROTATION_POWER = 0.5;
 
     public double gyroOffset = 0.0;
 
@@ -29,9 +29,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
     }
 
     private ControlMode currentControlMode = ControlMode.GRABBING;
-    private DepoMode currentDepoMode = DepoMode.GROUND;
-    private int alignStackHeight = 1;
-    private int scoreLevel = 1;
+    private DepoMode currentDepoMode = DepoMode.BACKDROP;
     private boolean aiming = false;
     private int pixelRow = 1;
     boolean climbed = false;
@@ -66,7 +64,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
         }
 
         double forward = Range.clip(-gamepad1.left_stick_y, -0.8, 0.8);
-        double strafe = Range.clip(gamepad1.left_stick_x, -0.8, 0.8);
+        double strafe = Range.clip(gamepad1.left_stick_x, -0.9, 0.9);
         double rotate = Range.clip(gamepad1.right_stick_x, -0.5, 0.5);
 
         double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
@@ -83,6 +81,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
         }
         //this.bread.drive.driveFieldOriented(forward, strafe, rotate);
 
+        //arm details
 
         switch (this.currentControlMode) {
             case GRABBING:
@@ -96,26 +95,27 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 boolean openWideMF = gamepad2.right_trigger > 0.05;
                 boolean switchMode = gamepadEx2.a_pressed;
 
+                this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
 
                 if (openWideMF) {
-                    this.bread.hand.unclamp();
-                    //this.bread.wristServo.setPosition(0);
+                    this.bread.arm.setHandUnclamped();
+                    this.bread.arm.setPickUpPos();
+
                 } else {
-                    this.bread.hand.clamp();
-                   // this.bread.wristServo.setPosition(0.05);
+                    this.bread.arm.setHandClamped();
+                    this.bread.arm.setRestPos();
                 }
 
                 if (climb) {
-                    this.bread.rotator.rotateToDegrees(180, 750);
-                    this.bread.towers.rotate(this.bread.towers.ticksToRotations(BreadConstants.TOWERS_MAX_EXTENSION_TICKS), 2000 / BreadConstants.TOWERS_TPR);
-                    if (!this.bread.towers.isBusy()) {
+                    this.bread.rails.rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS,BreadConstants.TOWERS_NORM_VELOCITY);
+                    if (!this.bread.rails.areTowersBusy()) {
                         climbed = true;
                         needToGoDown  = true;
                     }
                 }
                 if (pullUp) {
-                    this.bread.towers.rotate(-this.bread.towers.ticksToRotations(BreadConstants.TOWERS_MAX_EXTENSION_TICKS), 2000 / BreadConstants.TOWERS_TPR);
-                    while(!this.bread.towers.isBusy()){
+                    this.bread.rails.rotateTo(0, BreadConstants.TOWERS_NORM_VELOCITY);
+                    while(!this.bread.rails.isBusy()){
                         needToGoDown = false;
                         climbed = false;
                     }
@@ -123,26 +123,27 @@ public abstract class BreadTeleOp extends BreadOpMode {
 
                 if (switchTowers) {
                     if (needToGoDown) {
-                        bread.towers.setTargetPos(10280,2000);
+                        this.bread.rails.rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS,BreadConstants.TOWERS_NORM_VELOCITY);
                         needToGoDown = false;
                     } else {
-                        bread.towers.setTargetPos(0,2000);
+                        this.bread.rails.rotateTo(0,BreadConstants.TOWERS_NORM_VELOCITY);
                         needToGoDown = true;
                     }
                 }
 
                 if (launching) {
-                    this.bread.launcher.setPosition(0.5);
+                    this.bread.launcher.launch();
                 } else {
-                    this.bread.launcher.setPosition(0);
+                    this.bread.launcher.release();
                 }
                 if (aimPlane) {
                     if (!aiming){
-                        this.bread.angleAdjuster.setPosition(0.15);
+                        this.bread.launcher.readyAim();
                         aiming = true;
                     }
                     else{
-                        this.bread.angleAdjuster.setPosition(0.08);
+                        this.bread.launcher.putDown();
+                        aiming = false;
                     }
                 }
 
@@ -156,46 +157,51 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 //controller states
                 boolean spit = gamepad2.y;
                 boolean switchModeDepo = gamepadEx2.a_pressed;
-                //boolean switchDropLocation = gamepadEx2.b_pressed;
-                //boolean upPixelRow = gamepadEx2.dpad_up_pressed;
+                boolean switchDropLocation = gamepadEx2.b_pressed;
+                boolean upPixelSet = gamepadEx2.dpad_up_pressed;
+                boolean downPixelSet = gamepadEx2.dpad_down_pressed;
 
 
                 switch (this.currentDepoMode) {
 
                     case GROUND:
-                        this.bread.rotator.rotateToDegrees(0, 750);
-                        //this.bread.wristServo.setPosition(0);
+                        this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
 
-                        //if (switchDropLocation){
-                            //this.currentDepoMode = DepoMode.BACKDROP;
-                        //}
+                        if (spit){
+                            this.bread.arm.setHandUnclamped();
+                            this.bread.arm.setPickUpPos();
+                        }else{
+                            this.bread.arm.setHandClamped();
+                            this.bread.arm.setRestPos();
+                        }
+
+                        if (switchDropLocation){
+                            this.currentDepoMode = DepoMode.BACKDROP;
+                        }
 
                         break;
 
 
                     case BACKDROP:
-                        //this.bread.wristServo.setPosition(0.6);
-                        if (pixelRow == 1) {
-                            this.bread.rotator.rotateToDegrees(240, 750);
-                        }
-                        else {
-                            this.bread.rotator.rotateToDegrees(225, 750);
-                        }
 
-                        /* if (upPixelRow) {
+                        this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_NORM_DEPO_ANG);
+                        this.bread.arm.setNormalDepoPos();
+                        this.bread.rails.presetRaiseTowersUp(pixelRow);
+
+                       if (upPixelSet) {
                             pixelRow++;
 
-                            pixelRow = Math.min(2, pixelRow);
-                        }
-                        if (downPixelRow) {
+                            pixelRow = Math.min(3, pixelRow);
+                       }
+                       if (downPixelSet) {
                             pixelRow--;
 
                             pixelRow = Math.max(1, pixelRow);
-                        }
+                       }
 
-                        if (switchDropLocation) {
-                            this.currentDepoMode = DepoMode.GROUND;
-                        }*/
+                       if (switchDropLocation) {
+                           this.currentDepoMode = DepoMode.GROUND;
+                       }
 
                     break;
                     }
@@ -208,33 +214,34 @@ public abstract class BreadTeleOp extends BreadOpMode {
 
             }
 
+        //update....//
+
+        this.bread.arm.updateArm();
+
+        //telemetry...//
+        telemetry.addData("Rotator Angle: ", this.bread.arm.getRotatorDegrees());
+        telemetry.addData("Launcher Ready?: ", aiming);
+        telemetry.addData("Rails Height: ", BreadRails.rotationsToInches(this.bread.rails.getRotations()));
+        telemetry.addData("Gyro Offset: ", gyroOffset);
+        telemetry.addData("Control Mode: ", currentControlMode);
+        telemetry.addData("Depositing Mode: ", currentDepoMode);
+        telemetry.addData("Pixel Row: ", pixelRow);
+        telemetry.addData("Climbed?: ", climbed);
+        telemetry.addData("Need to Come Down?: ", needToGoDown);
+
+        telemetry.update();
+
         }
 
 
 
-    public void goStackBrr(int alignStackHeight){
-        if (alignStackHeight == 2){
-            this.bread.rotator.rotateToDegrees(8,750);
-        }
-        else if (alignStackHeight == 3){
-            this.bread.rotator.rotateToDegrees(16,750);
-        }
-        else if (alignStackHeight == 4){
-            this.bread.rotator.rotateToDegrees(24,750);
-        }
-        else if (alignStackHeight == 5){
-            this.bread.rotator.rotateToDegrees(32,750);
-        }
-        else{
-            this.bread.rotator.rotateToDegrees(0,750);
-        }
-    }
 
-    public double getDesiredDriveRotation(Vector2d aimVector, double speed){
+
+    /*public double getDesiredDriveRotation(Vector2d aimVector, double speed){
         if(aimVector.norm() < 0.25) return 0.0;
 
         // get rotational power
-        double rotationSpeed = ROTATION_POWER * speed;
+        //double rotationSpeed = ROTATION_POWER * speed;
 
         double aimVectorRotation = aimVector.angle();
         double forwardVectorRotation = this.bread.drive.getPoseEstimate().getHeading();
@@ -242,7 +249,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
         // get direction
         double distance = AngleHelper.angularDistanceRadians(forwardVectorRotation, aimVectorRotation);
 
-        return distance * rotationSpeed;
+       // return distance * rotationSpeed;
     }
-
+*/
 }
