@@ -9,7 +9,6 @@ public abstract class ParkRedLeft extends BreadAutonomous {
 
         setup(true);
 
-        //this.bread.hand.unclamp();
         boolean found = false;
 
         while (!isStarted()){

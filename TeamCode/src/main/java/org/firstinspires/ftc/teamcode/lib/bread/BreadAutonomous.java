@@ -18,8 +18,8 @@ public abstract class BreadAutonomous extends BreadOpMode{
 
     //FOR AIDS ENCODER AUTONOMOUS ONLY
     double ticks;
+
     double ticksPerRotation = 384.5;
-    boolean encodersUsed;
     SampleMecanumDrive dt = super.bread.drive.getRoadrunnerDrive();
 
 
