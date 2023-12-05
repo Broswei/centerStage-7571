@@ -53,6 +53,13 @@ public class BreadArm {
         this.hand.unclamp();
     }
 
+    public void setRightUnclamped(){this.hand.rightUnclamp();}
+
+    public void setLeftUnclamped(){this.hand.leftUnclamp();}
+
+    public void setRightClamped(){this.hand.rightClamp();}
+
+    public void setLeftClamped(){this.hand.leftClamp();}
     /**
      * @return the current (not intended) angle of the elbow in radians
      */

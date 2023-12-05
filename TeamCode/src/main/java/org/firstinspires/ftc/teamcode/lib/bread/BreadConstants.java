@@ -19,9 +19,9 @@ public class BreadConstants {
     //rotator related //
     public static double ROT_TPR = 1425.1;
     public static double ROT_GEAR_RATIO = 1;
-    public static double ROT_DEFAULT_DEGREES = 0;
+    public static double ROT_DEFAULT_DEGREES = 5;
 
-    public static double ROT_NORM_DEPO_ANG = 180;
+    public static double ROT_NORM_DEPO_ANG = 185;
 
     // towers related //
     public static double TOWERS_TPR = 384.5; //this for 435 RPM (3.7 cycle time) --> 1620 RPM = 103.8

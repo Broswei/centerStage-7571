@@ -51,4 +51,21 @@ public class BreadHand {
         this.leftClaw.setPosition(0.25);
         this.rightClaw.setPosition(0.25);
     }
+
+    public void rightUnclamp(){
+        this.rightClaw.setPosition(0.5);
+    }
+
+    public void leftUnclamp(){
+        this.leftClaw.setPosition(0.5);
+    }
+
+    public void rightClamp(){
+        this.rightClaw.setPosition(0.25);
+    }
+
+    public void leftClamp(){
+        this.leftClaw.setPosition(0.25);
+    }
+
 }

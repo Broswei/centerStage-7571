@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.lib.util.AngleHelper;
@@ -94,6 +95,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 boolean aimPlane = gamepadEx2.x_pressed;
                 boolean openWideMF = gamepad2.right_trigger > 0.05;
                 boolean switchMode = gamepadEx2.a_pressed;
+                boolean swingSwang = gamepadEx2.right_bumper_pressed;
 
                 this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
                 this.bread.rails.setTargetPos(0, BreadConstants.TOWERS_NORM_VELOCITY);
@@ -101,9 +103,11 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 if (openWideMF) {
                     this.bread.arm.setHandUnclamped();
                     this.bread.arm.setPickUpPos();
-
                 } else {
                     this.bread.arm.setHandClamped();
+                }
+
+                if (swingSwang){
                     this.bread.arm.setRestPos();
                 }
 
@@ -159,25 +163,31 @@ public abstract class BreadTeleOp extends BreadOpMode {
 
             case DEPOSITING:
                 //controller states
-                boolean spit = gamepad2.y;
                 boolean switchModeDepo = gamepadEx2.a_pressed;
                 boolean switchDropLocation = gamepadEx2.b_pressed;
                 boolean upPixelSet = gamepadEx2.dpad_up_pressed;
                 boolean downPixelSet = gamepadEx2.dpad_down_pressed;
 
+                boolean spitLeft = gamepad2.left_trigger > 0.05;
+                boolean spitRight = gamepad2.right_trigger > 0.05;
+
+                if (spitRight) {
+                    this.bread.arm.setRightUnclamped();
+                } else {
+                    this.bread.arm.setRightClamped();
+                }
+
+                if(spitLeft){
+                    this.bread.arm.setLeftUnclamped();
+                }else{
+                    this.bread.arm.setLeftClamped();
+                }
 
                 switch (this.currentDepoMode) {
 
                     case GROUND:
-                        this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
 
-                        if (spit) {
-                            this.bread.arm.setHandUnclamped();
-                            this.bread.arm.setPickUpPos();
-                        } else {
-                            this.bread.arm.setHandClamped();
-                            this.bread.arm.setRestPos();
-                        }
+                        this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
 
                         if (switchDropLocation) {
                             this.currentDepoMode = DepoMode.BACKDROP;
@@ -191,12 +201,6 @@ public abstract class BreadTeleOp extends BreadOpMode {
                         this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_NORM_DEPO_ANG);
                         this.bread.arm.setNormalDepoPos();
                         this.bread.rails.presetRaiseTowersUp(pixelRow);
-
-                        if (spit) {
-                            this.bread.arm.setHandUnclamped();
-                        } else {
-                            this.bread.arm.setHandClamped();
-                        }
 
                         if (upPixelSet) {
                             pixelRow++;
