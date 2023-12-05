@@ -54,12 +54,20 @@ public class OpenCVPipelineTest extends OpMode {
 
     class TSEDetectionPipeline extends OpenCvPipeline{
         Mat YCbCr = new Mat();
-        Mat crop1;
-        Mat crop2;
-        Mat crop3;
+        Mat crop1Red;
+        Mat crop2Red;
+        Mat crop3Red;
+
+        Mat crop1Blue;
+        Mat crop2Blue;
+        Mat crop3Blue;
         double rect1AvgFin;
         double rect2AvgFin;
         double rect3AvgFin;
+
+        Rect rect1 = new Rect (1, 1, 426, 719);
+        Rect rect2 = new Rect (427, 1, 426, 719);
+        Rect rect3 = new Rect (853, 1, 426, 719);
 
         // int alliance;
         TSEDetectionPipeline() {
@@ -76,9 +84,7 @@ public class OpenCVPipelineTest extends OpMode {
 
             telemetry.addLine("let the detection games begin");
 
-            Rect rect1 = new Rect (1, 1, 426, 719);
-            Rect rect2 = new Rect (427, 1, 426, 719);
-            Rect rect3 = new Rect (853, 1, 426, 719);
+
 
 
             input.copyTo(output);
@@ -87,24 +93,35 @@ public class OpenCVPipelineTest extends OpMode {
             Imgproc.rectangle(output,rect2,rectColor,2);
             Imgproc.rectangle(output,rect3,rectColor,2);
 
-            crop1 = YCbCr.submat(rect1);
-            crop2 = YCbCr.submat(rect2);
-            crop3 = YCbCr.submat(rect3);
+            crop1Red = YCbCr.submat(rect1);
+            crop2Red = YCbCr.submat(rect2);
+            crop3Red = YCbCr.submat(rect3);
 
-            Core.extractChannel(crop1, crop1, 2);
-            Core.extractChannel(crop2, crop2, 2);
-            Core.extractChannel(crop3, crop3, 2);
+            crop1Blue = YCbCr.submat(rect1);
+            crop2Blue = YCbCr.submat(rect2);
+            crop3Blue = YCbCr.submat(rect3);
+
+            Core.extractChannel(crop1Red, crop1Red, 2);
+            Core.extractChannel(crop2Red, crop2Red, 2);
+            Core.extractChannel(crop3Red, crop3Red, 2);
+
+            Core.extractChannel(crop1Blue, crop1Blue, 1);
+            Core.extractChannel(crop2Blue, crop2Blue, 1);
+            Core.extractChannel(crop3Blue, crop3Blue, 1);
 
 
-            Scalar crop1AvgScalar = Core.mean(crop1);
-            Scalar crop2AvgScalar = Core.mean(crop2);
-            Scalar crop3AvgScalar = Core.mean(crop3);
+            Scalar crop1AvgScalarRed = Core.mean(crop1Red);
+            Scalar crop2AvgScalarRed = Core.mean(crop2Red);
+            Scalar crop3AvgScalarRed = Core.mean(crop3Red);
+
+            Scalar crop1AvgScalarBlue = Core.mean(crop1Blue);
+            Scalar crop2AvgScalarBlue = Core.mean(crop2Blue);
+            Scalar crop3AvgScalarBlue = Core.mean(crop3Blue);
 
 
-            rect1AvgFin = crop1AvgScalar.val[0];
-            rect2AvgFin = crop2AvgScalar.val[0];
-            rect3AvgFin = crop3AvgScalar.val[0];
-
+            rect1AvgFin = crop1AvgScalarRed.val[0] - crop1AvgScalarBlue.val[0];
+            rect2AvgFin = crop2AvgScalarRed.val[0] - crop2AvgScalarBlue.val[0];
+            rect3AvgFin = crop3AvgScalarRed.val[0] - crop3AvgScalarBlue.val[0];
 
             if(rect1AvgFin > rect2AvgFin && rect1AvgFin > rect3AvgFin) {
                 telemetry.addLine("Obj on right");
@@ -113,6 +130,10 @@ public class OpenCVPipelineTest extends OpMode {
             } else {
                 telemetry.addLine("Obj on left");
             }
+
+            telemetry.addData("right avg:", rect1AvgFin);
+            telemetry.addData("mid avg:", rect2AvgFin);
+            telemetry.addData("left avg:", rect3AvgFin);
 
 
             return(output);
