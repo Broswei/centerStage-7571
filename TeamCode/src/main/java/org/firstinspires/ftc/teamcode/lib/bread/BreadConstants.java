@@ -19,9 +19,9 @@ public class BreadConstants {
     //rotator related //
     public static double ROT_TPR = 1425.1;
     public static double ROT_GEAR_RATIO = 1;
-    public static double ROT_DEFAULT_DEGREES = 5;
+    public static double ROT_DEFAULT_DEGREES = 2;
 
-    public static double ROT_NORM_DEPO_ANG = 185;
+    public static double ROT_NORM_DEPO_ANG = 180;
 
     // towers related //
     public static double TOWERS_TPR = 384.5; //this for 435 RPM (3.7 cycle time) --> 1620 RPM = 103.8
@@ -31,13 +31,15 @@ public class BreadConstants {
     public static double TOWERS_NORM_VELOCITY = 2000/TOWERS_TPR;
 
     // wrist related... //
-    public static double WRIST_DEPO_POS = 0.35;
+    public static double WRIST_DEPO_POS = 0.4;
 
-    public static double WRIST_REST_POS = 0.32;
+    public static double WRIST_REST_POS = 0.34;
 
     //launcher related...//
-    public static double LAUNCH_ANGLE_POS = 0.2;
-    public static double LAUNCH_DEFAULT_REST = 0.08;
+    public static double LAUNCH_ANGLE_POS = 0.15;
+    public static double LAUNCH_DEFAULT_REST = 0.25;
+
+    public static double LAUNCH_DOWN = 0.35;
 
 
 }

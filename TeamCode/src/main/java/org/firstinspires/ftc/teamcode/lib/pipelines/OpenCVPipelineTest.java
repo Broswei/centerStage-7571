@@ -31,7 +31,7 @@ public class OpenCVPipelineTest extends OpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-        webcam.setPipeline(new TSEDetectionPipeline());
+        webcam.setPipeline(new TSEDetectionPipeline(false));
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             public void onOpened() {
@@ -65,13 +65,15 @@ public class OpenCVPipelineTest extends OpMode {
         double rect2AvgFin;
         double rect3AvgFin;
 
-        Rect rect1 = new Rect (1, 1, 426, 719);
-        Rect rect2 = new Rect (427, 1, 426, 719);
-        Rect rect3 = new Rect (853, 1, 426, 719);
+        Rect rect1 = new Rect (1, 1, 426, 719); // right
+        Rect rect2 = new Rect (427, 1, 426, 719); // middle
+        Rect rect3 = new Rect (853, 1, 426, 719); // left
 
-        // int alliance;
-        TSEDetectionPipeline() {
-            // alliance = alliance;
+        int spikeMark = 0;
+
+        Boolean detectingBlue = false;
+        TSEDetectionPipeline(Boolean detectingBlue) {
+            this.detectingBlue = detectingBlue;
         }
 
         // NOTE: so yeah I think it s an issue with this constructor, it is somehwo getting like a 0x0 ma
@@ -119,17 +121,25 @@ public class OpenCVPipelineTest extends OpMode {
             Scalar crop3AvgScalarBlue = Core.mean(crop3Blue);
 
 
-            rect1AvgFin = crop1AvgScalarRed.val[0] - crop1AvgScalarBlue.val[0];
-            rect2AvgFin = crop2AvgScalarRed.val[0] - crop2AvgScalarBlue.val[0];
-            rect3AvgFin = crop3AvgScalarRed.val[0] - crop3AvgScalarBlue.val[0];
+            rect1AvgFin = crop1AvgScalarBlue.val[0] - crop1AvgScalarRed.val[0];
+            rect2AvgFin = crop2AvgScalarBlue.val[0] - crop2AvgScalarRed.val[0];
+            rect3AvgFin = crop3AvgScalarBlue.val[0] - crop3AvgScalarRed.val[0];
 
-            if(rect1AvgFin > rect2AvgFin && rect1AvgFin > rect3AvgFin) {
-                telemetry.addLine("Obj on right");
-            } else if(rect2AvgFin > rect1AvgFin && rect2AvgFin > rect3AvgFin) {
-                telemetry.addLine("Obj on middle");
-            } else {
-                telemetry.addLine("Obj on left");
+            if(detectingBlue) {
+                rect1AvgFin *= -1;
+                rect2AvgFin *= -1;
+                rect3AvgFin *= -1;
             }
+
+            if(Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect1AvgFin) {
+                spikeMark = 1;
+            } else if(Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect2AvgFin) {
+                spikeMark = 2;
+            } else {
+                spikeMark = 3;
+            }
+
+            telemetry.addData("spikeMark:", spikeMark);
 
             telemetry.addData("right avg:", rect1AvgFin);
             telemetry.addData("mid avg:", rect2AvgFin);

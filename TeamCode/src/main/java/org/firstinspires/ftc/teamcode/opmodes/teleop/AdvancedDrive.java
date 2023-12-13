@@ -19,6 +19,10 @@ public class AdvancedDrive extends BreadTeleOp {
     public void runOpMode() throws InterruptedException {
 
         setup();
+        this.bread.arm.setRestPos();
+        this.bread.arm.setRotatorAngleDegrees(0);
+        this.bread.launcher.putDown();
+        this.bread.arm.setHandClamped();
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

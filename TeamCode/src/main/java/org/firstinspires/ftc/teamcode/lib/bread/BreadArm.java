@@ -103,8 +103,8 @@ public class BreadArm {
     }
 
     public void updateArm(){
-        leftRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 180);
-        rightRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 180);
+        leftRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
+        rightRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
     }
 
     public void setNormalDepoPos(){

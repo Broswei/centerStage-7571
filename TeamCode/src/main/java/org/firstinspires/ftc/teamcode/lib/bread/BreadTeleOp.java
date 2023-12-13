@@ -64,21 +64,39 @@ public abstract class BreadTeleOp extends BreadOpMode {
             gyroOffset = super.bread.imu.getAngleRadians();
         }
 
-        double forward = Range.clip(-gamepad1.left_stick_y, -0.8, 0.8);
-        double strafe = Range.clip(gamepad1.left_stick_x, -0.9, 0.9);
-        double rotate = Range.clip(gamepad1.right_stick_x, -0.5, 0.5);
-
-        double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
-        forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
-        strafe = temp;
-
         //drive
         if (gamepad1.a) {
-            this.bread.drive.noRoadRunnerDriveFieldOriented(1.25 * forward, 1.25 * strafe, 1.25 * rotate);
+            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1);
+            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1);
+            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1);
+
+            double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
+            forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
+            strafe = temp;
+
+            this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
+
         } else if (gamepad1.right_trigger > 0.01) {
-            this.bread.drive.noRoadRunnerDriveFieldOriented(0.8 * forward, 0.8 * strafe, 0.8 * rotate);
+            double forward = Range.clip(-gamepad1.left_stick_y, -0.6, 0.6);
+            double strafe = Range.clip(gamepad1.left_stick_x, -0.75, 0.75);
+            double rotate = Range.clip(gamepad1.right_stick_x, -0.4, 0.4);
+
+            double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
+            forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
+            strafe = temp;
+
+            this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
+
         } else {
-            this.bread.drive.noRoadRunnerDriveFieldOriented(forward, strafe, rotate);
+            double forward = Range.clip(-gamepad1.left_stick_y, -0.8, 0.8);
+            double strafe = Range.clip(gamepad1.left_stick_x, -0.9, 0.9);
+            double rotate = Range.clip(gamepad1.right_stick_x, -0.5, 0.5);
+
+            double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
+            forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
+            strafe = temp;
+
+            this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
         }
         //this.bread.drive.driveFieldOriented(forward, strafe, rotate);
 
@@ -97,8 +115,10 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 boolean switchMode = gamepadEx2.a_pressed;
                 boolean swingSwang = gamepadEx2.right_bumper_pressed;
 
-                this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
-                this.bread.rails.setTargetPos(0, BreadConstants.TOWERS_NORM_VELOCITY);
+                if (!climbed){
+                    this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
+                    this.bread.rails.setTargetPos(0, BreadConstants.TOWERS_NORM_VELOCITY);
+                }
 
                 if (openWideMF) {
                     this.bread.arm.setHandUnclamped();
@@ -112,17 +132,18 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 }
 
                 if (climb) {
+                    this.bread.arm.setRotatorAngleDegrees(148);
+                    this.bread.launcher.climb();
                     this.bread.rails.rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS,BreadConstants.TOWERS_NORM_VELOCITY);
                     if (!this.bread.rails.areTowersBusy()) {
                         climbed = true;
-                        needToGoDown  = true;
                     }
                 }
                 if (pullUp) {
                     this.bread.rails.rotateTo(0, BreadConstants.TOWERS_NORM_VELOCITY);
-                    while(!this.bread.rails.isBusy()){
-                        needToGoDown = false;
-                        climbed = false;
+                    while(!this.bread.rails.isBusy() && !switchTowers){
+                        needToGoDown = true;
+                        this.bread.rails.setPower(0);
                     }
                 }
 
