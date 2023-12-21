@@ -21,9 +21,9 @@ public abstract class ParkRedLeft extends BreadAutonomous {
 
         }
 
-        driveDistance(47, 750, opModeIsActive());
+        driveDistance(-47, 750, opModeIsActive());
 
-        strafeDistance( 94, 750, opModeIsActive());
+        strafeDistance( -94, 750, opModeIsActive());
 
 
 

@@ -35,6 +35,11 @@ public class BreadConstants {
 
     public static double WRIST_REST_POS = 0.34;
 
+    // not used ATM, but will be;
+    public static double WRIST_MIN_POS = 0;
+
+
+
     //launcher related...//
     public static double LAUNCH_ANGLE_POS = 0.15;
     public static double LAUNCH_DEFAULT_REST = 0.25;
