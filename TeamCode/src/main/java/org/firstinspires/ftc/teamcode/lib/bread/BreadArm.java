@@ -16,7 +16,13 @@ public class BreadArm {
 
     //arm details
     private double rotatorAngleRadians;
+
     private double desiredWristAngleRadians;
+
+    private double rotatorError;
+    private double rotatorLastError;
+    private double rotatorTotalError;
+    private double rotatorDervError;
 
 
     public BreadArm (PositionableMotor leftRotator, PositionableMotor rightRotator, BreadHand hand){
@@ -103,13 +109,27 @@ public class BreadArm {
     }
 
     public void updateArm(){
+        // TODO: haha calc dt later I cant do this I want to cryyyyyy
+        double dt = 1;
+
+        this.rotatorError = this.getRotatorRadians();
+        this.rotatorDervError = (this.rotatorError-this.rotatorLastError) / dt;
+        this.rotatorTotalError += this.rotatorError * dt;
+
+        // TODO: do PID shit here
+
         leftRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
         rightRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
+
+        this.rotatorLastError = this.rotatorError;
+
     }
 
     public void setNormalDepoPos(){
         this.hand.setDeposit();
     }
+
+    public void setLowDepoPos(){this.hand.setLow();}
 
     public void setPickUpPos(){this.hand.setPickUp();}
 

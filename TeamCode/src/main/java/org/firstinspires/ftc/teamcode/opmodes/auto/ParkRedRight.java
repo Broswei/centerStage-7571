@@ -7,7 +7,7 @@ public abstract class ParkRedRight extends BreadAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup(true);
+        setup(false);
 
         //this.bread.hand.unclamp();
         boolean found = false;

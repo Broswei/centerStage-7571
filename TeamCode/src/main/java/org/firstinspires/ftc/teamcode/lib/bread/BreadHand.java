@@ -38,6 +38,8 @@ public class BreadHand {
         this.wristServo.setPosition(BreadConstants.WRIST_DEPO_POS);
     }
 
+    public void setLow(){this.wristServo.setPosition(BreadConstants.WRIST_LOW_POS);}
+
     public void setRest(){
         this.wristServo.setPosition(BreadConstants.WRIST_REST_POS);
     }

@@ -1,57 +1,17 @@
 package org.firstinspires.ftc.teamcode.lib.pipelines;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.openftc.easyopencv.OpenCvWebcam;
 
-
-import org.openftc.easyopencv.OpenCvWebcam;
-
-@Autonomous
-public class OpenCVPipelineTest extends OpMode {
-
-    OpenCvWebcam webcam = null;
-
-    @Override
-    public void init() {
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "webcam"); //setup in like config
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-        webcam.setPipeline(new TSEDetectionPipeline(false));
-
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            public void onOpened() {
-                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT); // do resolution
-            }
-
-            public void onError(int errorCode) {
-
-            }
-
-
-        });
-    }
-
-
-    @Override
-    public void loop () {
-
-    }
-    class TSEDetectionPipeline extends OpenCvPipeline{
+public class TSEDetectionPipeline extends OpenCvPipeline{
         Mat YCbCr = new Mat();
         Mat crop1Red;
         Mat crop2Red;
@@ -71,7 +31,7 @@ public class OpenCVPipelineTest extends OpMode {
         int spikeMark = 0;
 
         Boolean detectingBlue = false;
-        TSEDetectionPipeline(Boolean detectingBlue) {
+        public TSEDetectionPipeline (Boolean detectingBlue) {
             this.detectingBlue = detectingBlue;
         }
 
@@ -79,13 +39,15 @@ public class OpenCVPipelineTest extends OpMode {
         Mat output = new Mat();
         Scalar rectColor = new Scalar(255.0, 0.0, 0.0);
 
+        public int getSpikeMark(){
+            return spikeMark;
+        }
+
+        public void setSpikeMark() {spikeMark = 2;}
+
         public Mat processFrame(Mat input){
 
             Imgproc.cvtColor(input, YCbCr, Imgproc.COLOR_RGB2YCrCb);
-
-            telemetry.addLine("let the detection games begin");
-
-
 
 
             input.copyTo(output);
@@ -138,14 +100,6 @@ public class OpenCVPipelineTest extends OpMode {
                 spikeMark = 3;
             }
 
-            telemetry.addData("spikeMark:", spikeMark);
-
-            telemetry.addData("right avg:", rect1AvgFin);
-            telemetry.addData("mid avg:", rect2AvgFin);
-            telemetry.addData("left avg:", rect3AvgFin);
-
-
             return(output);
         }
     }
-}

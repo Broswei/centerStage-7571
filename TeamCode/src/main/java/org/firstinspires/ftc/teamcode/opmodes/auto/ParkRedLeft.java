@@ -7,7 +7,7 @@ public abstract class ParkRedLeft extends BreadAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup(true);
+        setup(false);
 
         boolean found = false;
 

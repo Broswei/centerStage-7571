@@ -36,6 +36,8 @@ public abstract class BreadTeleOp extends BreadOpMode {
     boolean climbed = false;
     boolean needToGoDown = false;
 
+    boolean goLow = false;
+
     public void setup() {
 
         initialize(hardwareMap);
@@ -188,6 +190,8 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 boolean switchDropLocation = gamepadEx2.b_pressed;
                 boolean upPixelSet = gamepadEx2.dpad_up_pressed;
                 boolean downPixelSet = gamepadEx2.dpad_down_pressed;
+                boolean lowRotAngle = gamepadEx2.dpad_left_pressed;
+                boolean normRotAngle = gamepadEx2.dpad_right_pressed;
 
                 boolean spitLeft = gamepad2.left_trigger > 0.05;
                 boolean spitRight = gamepad2.right_trigger > 0.05;
@@ -232,6 +236,25 @@ public abstract class BreadTeleOp extends BreadOpMode {
                             pixelRow--;
 
                             pixelRow = Math.max(1, pixelRow);
+                        }
+
+                        if (lowRotAngle){
+                            goLow = true;
+                        }
+                        if (normRotAngle){
+                            goLow = false;
+                        }
+
+
+                        if (!goLow){ //kind of scuffed but whatever
+                            this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_NORM_DEPO_ANG);
+                            this.bread.arm.setNormalDepoPos();
+                            this.bread.rails.presetRaiseTowersUp(pixelRow);
+                        }
+                        else {
+                            this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_LOW_DEPO_ANG);
+                            this.bread.arm.setLowDepoPos();
+                            this.bread.rails.rotateTo(0,BreadConstants.TOWERS_NORM_VELOCITY);
                         }
 
                         if (switchDropLocation) {

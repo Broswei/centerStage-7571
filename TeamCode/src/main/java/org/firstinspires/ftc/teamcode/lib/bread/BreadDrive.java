@@ -103,7 +103,7 @@ public class BreadDrive {
         double bl = forward - strafe + rotate;
         double br = forward + strafe - rotate;
 
-        roadrunnerDrive.setMotorPowers(fl, bl, br, fr);
+        roadrunnerDrive.setMotorPowers(0.9*fl, bl, br, 0.9*fr);
     }
 
 
