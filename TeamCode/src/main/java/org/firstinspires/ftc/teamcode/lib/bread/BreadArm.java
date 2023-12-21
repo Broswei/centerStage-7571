@@ -117,6 +117,10 @@ public class BreadArm {
         this.rotatorTotalError += this.rotatorError * dt;
 
         // TODO: do PID shit here
+        double correction =
+                BreadConstants.ROT_P_GAIN * this.rotatorError +
+                BreadConstants.ROT_I_GAIN * this.rotatorTotalError +
+                BreadConstants.ROT_D_GAIN * this.rotatorDervError;
 
         leftRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
         rightRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
