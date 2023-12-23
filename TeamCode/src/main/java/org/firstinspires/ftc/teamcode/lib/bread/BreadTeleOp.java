@@ -34,7 +34,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
     private boolean aiming = false;
     private int pixelRow = 1;
     boolean climbed = false;
-    boolean needToGoDown = false;
+    boolean needToGoDown = true;
 
     boolean goLow = false;
 
@@ -79,9 +79,9 @@ public abstract class BreadTeleOp extends BreadOpMode {
             this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
 
         } else if (gamepad1.right_trigger > 0.01) {
-            double forward = Range.clip(-gamepad1.left_stick_y, -0.6, 0.6);
-            double strafe = Range.clip(gamepad1.left_stick_x, -0.75, 0.75);
-            double rotate = Range.clip(gamepad1.right_stick_x, -0.4, 0.4);
+            double forward = Range.clip(-gamepad1.left_stick_y, -0.45, 0.45);
+            double strafe = Range.clip(gamepad1.left_stick_x, -0.7, 0.77);
+            double rotate = Range.clip(gamepad1.right_stick_x, -0.3, 0.3);
 
             double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
             forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
@@ -102,6 +102,29 @@ public abstract class BreadTeleOp extends BreadOpMode {
         }
         //this.bread.drive.driveFieldOriented(forward, strafe, rotate);
 
+        //overall controller states
+        boolean upPixelSet = gamepadEx2.dpad_up_pressed;
+        boolean downPixelSet = gamepadEx2.dpad_down_pressed;
+        boolean lowRotAngle = gamepadEx2.dpad_left_pressed;
+        boolean normRotAngle = gamepadEx2.dpad_right_pressed;
+
+        if (upPixelSet) {
+            pixelRow++;
+
+            pixelRow = Math.min(3, pixelRow);
+        }
+        if (downPixelSet) {
+            pixelRow--;
+
+            pixelRow = Math.max(1, pixelRow);
+        }
+        if (lowRotAngle){
+            goLow = true;
+        }
+        if (normRotAngle){
+            goLow = false;
+        }
+
         //arm details
 
         switch (this.currentControlMode) {
@@ -109,7 +132,6 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 //controller states
 
                 boolean climb = gamepadEx2.y_pressed;
-                boolean pullUp = gamepadEx2.y_pressed & climbed;
                 boolean switchTowers = gamepadEx2.b_pressed;
                 boolean launching = gamepad2.left_trigger > 0.05;
                 boolean aimPlane = gamepadEx2.x_pressed;
@@ -119,7 +141,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
 
                 if (!climbed){
                     this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
-                    this.bread.rails.setTargetPos(0, BreadConstants.TOWERS_NORM_VELOCITY);
+                    this.bread.rails.rotateTo(0, BreadConstants.TOWERS_NORM_VELOCITY);
                 }
 
                 if (openWideMF) {
@@ -137,16 +159,8 @@ public abstract class BreadTeleOp extends BreadOpMode {
                     this.bread.arm.setRotatorAngleDegrees(148);
                     this.bread.launcher.climb();
                     this.bread.rails.rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS,BreadConstants.TOWERS_NORM_VELOCITY);
-                    if (!this.bread.rails.areTowersBusy()) {
-                        climbed = true;
-                    }
-                }
-                if (pullUp) {
-                    this.bread.rails.rotateTo(0, BreadConstants.TOWERS_NORM_VELOCITY);
-                    while(!this.bread.rails.isBusy() && !switchTowers){
-                        needToGoDown = true;
-                        this.bread.rails.setPower(0);
-                    }
+                    climbed = true;
+                    needToGoDown=false;
                 }
 
                 if (switchTowers) {
@@ -188,10 +202,6 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 //controller states
                 boolean switchModeDepo = gamepadEx2.a_pressed;
                 boolean switchDropLocation = gamepadEx2.b_pressed;
-                boolean upPixelSet = gamepadEx2.dpad_up_pressed;
-                boolean downPixelSet = gamepadEx2.dpad_down_pressed;
-                boolean lowRotAngle = gamepadEx2.dpad_left_pressed;
-                boolean normRotAngle = gamepadEx2.dpad_right_pressed;
 
                 boolean spitLeft = gamepad2.left_trigger > 0.05;
                 boolean spitRight = gamepad2.right_trigger > 0.05;
@@ -226,24 +236,6 @@ public abstract class BreadTeleOp extends BreadOpMode {
                         this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_NORM_DEPO_ANG);
                         this.bread.arm.setNormalDepoPos();
                         this.bread.rails.presetRaiseTowersUp(pixelRow);
-
-                        if (upPixelSet) {
-                            pixelRow++;
-
-                            pixelRow = Math.min(3, pixelRow);
-                        }
-                        if (downPixelSet) {
-                            pixelRow--;
-
-                            pixelRow = Math.max(1, pixelRow);
-                        }
-
-                        if (lowRotAngle){
-                            goLow = true;
-                        }
-                        if (normRotAngle){
-                            goLow = false;
-                        }
 
 
                         if (!goLow){ //kind of scuffed but whatever

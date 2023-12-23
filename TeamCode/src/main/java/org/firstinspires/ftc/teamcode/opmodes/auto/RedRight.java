@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
+import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
 
 @Autonomous(group="park autos")
 public class RedRight extends BreadAutonomous {
@@ -15,27 +16,30 @@ public class RedRight extends BreadAutonomous {
         boolean found = false;
 
         while (!isStarted()){
+
             if (gamepad1.a || gamepad2.a){
                 this.bread.arm.setHandClamped();
             }
 
-            if (!found){
-                telemetry.addData("Spike Mark: ", showSpikeMark());
-            }
-            else{
-                telemetry.addLine("Nothing is found :(");
-            }
+            telemetry.addData("Spike Mark: ", getSpikeMark());
             telemetry.addData("Status: ", "Initialized");
             telemetry.update();
 
         }
+
+
         closeCameraAsync();
-
-        //hi - saeid
-
-        driveDistance(-47, 750, opModeIsActive());
-        this.bread.arm.setLeftUnclamped();
+        //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
+        this.bread.arm.setRotatorAngleDegrees(200);
+        this.bread.arm.updateArm();
+        driveDistance(12.5, 750,opModeIsActive());
+        this.bread.arm.setRightUnclamped();
         sleep(500);
-        strafeDistance(47, 750, opModeIsActive());
+        this.bread.arm.setRightClamped();
+
+        while (opModeIsActive()){
+
+        }
+
     }
 }

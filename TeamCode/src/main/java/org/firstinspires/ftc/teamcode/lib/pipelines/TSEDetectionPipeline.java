@@ -35,7 +35,6 @@ public class TSEDetectionPipeline extends OpenCvPipeline{
             this.detectingBlue = detectingBlue;
         }
 
-        // NOTE: so yeah I think it s an issue with this constructor, it is somehwo getting like a 0x0 ma
         Mat output = new Mat();
         Scalar rectColor = new Scalar(255.0, 0.0, 0.0);
 
@@ -43,18 +42,16 @@ public class TSEDetectionPipeline extends OpenCvPipeline{
             return spikeMark;
         }
 
-        public void setSpikeMark() {spikeMark = 2;}
-
-        public Mat processFrame(Mat input){
+        public Mat processFrame(Mat input) {
 
             Imgproc.cvtColor(input, YCbCr, Imgproc.COLOR_RGB2YCrCb);
 
 
             input.copyTo(output);
 
-            Imgproc.rectangle(output,rect1,rectColor,2);
-            Imgproc.rectangle(output,rect2,rectColor,2);
-            Imgproc.rectangle(output,rect3,rectColor,2);
+            Imgproc.rectangle(output, rect1, rectColor, 2);
+            Imgproc.rectangle(output, rect2, rectColor, 2);
+            Imgproc.rectangle(output, rect3, rectColor, 2);
 
             crop1Red = YCbCr.submat(rect1);
             crop2Red = YCbCr.submat(rect2);
@@ -86,20 +83,20 @@ public class TSEDetectionPipeline extends OpenCvPipeline{
             rect2AvgFin = crop2AvgScalarBlue.val[0] - crop2AvgScalarRed.val[0];
             rect3AvgFin = crop3AvgScalarBlue.val[0] - crop3AvgScalarRed.val[0];
 
-            if(detectingBlue) {
+            if (detectingBlue) {
                 rect1AvgFin *= -1;
                 rect2AvgFin *= -1;
                 rect3AvgFin *= -1;
             }
 
-            if(Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect1AvgFin) {
+            if (Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect1AvgFin) {
                 spikeMark = 1;
-            } else if(Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect2AvgFin) {
+            } else if (Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect2AvgFin) {
                 spikeMark = 2;
             } else {
                 spikeMark = 3;
             }
 
-            return(output);
+            return (output);
         }
     }

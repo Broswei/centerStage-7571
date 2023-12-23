@@ -37,6 +37,11 @@ public class BreadArm {
         rightRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
+    public void shutDown(){
+        this.leftRotator.setPower(0);
+        this.rightRotator.setPower(0);
+    }
+
     public boolean areRotatorsBusy(){
         return this.leftRotator.isBusy();
     }

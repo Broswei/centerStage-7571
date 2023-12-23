@@ -5,6 +5,8 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -106,5 +108,27 @@ public class BreadDrive {
         roadrunnerDrive.setMotorPowers(0.9*fl, bl, br, 0.9*fr);
     }
 
+    public void setMotorVelocities(int v){
+        this.roadrunnerDrive.setMotorVelocities(v);
+    }
 
+    public void setMotorPositions(int v, int v1, int v2, int v3){
+        this.roadrunnerDrive.setMotorPositions(v, v1, v2, v3);
+    }
+
+    public void setMotorPositions(int v){
+        this.roadrunnerDrive.setMotorPositions(v);
+    }
+
+    public void setMode(DcMotor.RunMode runMode) {
+        this.roadrunnerDrive.setMode(runMode);
+    }
+
+    public void setPowers(double v, double v1, double v2, double v3){
+        this.roadrunnerDrive.setMotorPowers(v, v1, v2, v3);
+    }
+
+    public boolean isRegBusy(){
+        return this.roadrunnerDrive.isRegBusy();
+    }
 }

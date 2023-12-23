@@ -11,20 +11,22 @@ public class  AutoTest extends BreadAutonomous {
 
         setup(false);
 
-        this.bread.arm.setHandUnclamped();
         boolean found = false;
 
         while (!isStarted()){
             if (gamepad1.a || gamepad2.a){
                 this.bread.arm.setHandClamped();
             }
-            //insert camera recongition
 
+            if (!found){
+                telemetry.addData("Spike Mark: ", getSpikeMark());
+            }
+            else{
+                telemetry.addLine("Nothing is found :(");
+            }
             telemetry.addData("Status: ", "Initialized");
+            telemetry.update();
 
         }
-
-        //Leave this body empty after testing
-
     }
 }

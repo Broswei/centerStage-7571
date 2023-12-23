@@ -216,6 +216,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         return trajectorySequenceRunner.isBusy();
     }
 
+    public boolean isRegBusy(){return leftFront.isBusy();}
+
     public void setMode(DcMotor.RunMode runMode) {
         for (DcMotorEx motor : motors) {
             motor.setMode(runMode);
@@ -294,10 +296,10 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     public void setMotorVelocities(int v){
-        leftFront.setVelocity(v);
+        leftFront.setVelocity(0.9*v);
         rightRear.setVelocity(v);
         leftRear.setVelocity(v);
-        rightFront.setVelocity(v);
+        rightFront.setVelocity(0.9*v);
     }
 
     public void setMotorPositions(int v, int v1, int v2, int v3){

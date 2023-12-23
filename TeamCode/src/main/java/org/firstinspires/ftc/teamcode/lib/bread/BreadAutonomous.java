@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.lib.pipelines.OpenCVPipelineTest;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
@@ -15,38 +17,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public abstract class BreadAutonomous extends BreadOpMode {
 
-    OpenCvCamera camera;
+    private OpenCvCamera camera;
 
-    TSEDetectionPipeline pipeline;
+    public TSEDetectionPipeline pipeline;
 
     //FOR AIDS ENCODER AUTONOMOUS ONLY
     double ticks;
 
     double ticksPerRotation = 384.5;
-    SampleMecanumDrive dt = super.bread.drive.getRoadrunnerDrive();
-
-    int spikeMark = 2;
 
 
     public void setup(/*boolean encodersUsed, */boolean detectingBlue) {
 
         initialize(hardwareMap);
-        createCamera("webcam");
+        camera = createCamera("webcam");
         pipeline = new TSEDetectionPipeline(detectingBlue);
+        camera.setPipeline(pipeline);
         openCameraAndStreamAsync();
 
         this.bread.launcher.putDown();
         this.bread.arm.setRotatorAngleDegrees(0);
 
-        /*if (encodersUsed){
-            dt.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-        else{
-            dt.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }*/
-
         this.bread.arm.updateArm();
-
     }
 
     public void cycle() {
@@ -66,7 +58,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -87,41 +79,32 @@ public abstract class BreadAutonomous extends BreadOpMode {
     public void openCameraAndStream() {
         camera.openCameraDevice();
 
-        camera.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+        camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
     }
 
     public void strafeDistance(double distanceIn, int velocity, boolean isRunning) {
         ticks = (-distanceIn / (Math.PI * 4) * ticksPerRotation * 1.1);
-        dt.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dt.setMotorPositions((int) ticks, (int) -ticks, (int) -ticks, (int) ticks);
-        dt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dt.setMotorVelocities(velocity);
+        bread.drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bread.drive.setMotorPositions((int) ticks, (int) -ticks, (int) -ticks, (int) ticks);
+        bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bread.drive.setMotorVelocities(velocity);
 
         ElapsedTime runtime = new ElapsedTime();
         boolean run = true;
         runtime.reset();
-        while (dt.isBusy() && isRunning) {
-
-        }
     }
 
     public void driveDistance(double distanceIn, int velocity, boolean isRunning) {
-        ticks = (-distanceIn / (Math.PI * 4) * ticksPerRotation);
-        dt.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dt.setMotorPositions((int) ticks);
-        dt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dt.setMotorVelocities(velocity);
+        ticks = (-distanceIn / (Math.PI * 3.78) * ticksPerRotation);
+        bread.drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bread.drive.setMotorPositions((int) ticks);
+        bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bread.drive.setMotorVelocities(velocity);
 
         ElapsedTime runtime = new ElapsedTime();
         boolean run = true;
         runtime.reset();
-        while (dt.isBusy() && isRunning) {
 
-        }
-    }
-
-    public int showSpikeMark() {
-        return pipeline.getSpikeMark();
     }
 
 }
