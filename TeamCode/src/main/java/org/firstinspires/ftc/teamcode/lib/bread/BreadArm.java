@@ -127,8 +127,9 @@ public class BreadArm {
                 BreadConstants.ROT_I_GAIN * this.rotatorTotalError +
                 BreadConstants.ROT_D_GAIN * this.rotatorDervError;
 
-        leftRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
-        rightRotator.rotateToDegrees(Math.toDegrees(this.rotatorAngleRadians), 120);
+        // TODO: actually rotate and killswitch test
+        leftRotator.rotateToRadians(this.rotatorAngleRadians, 120);
+        rightRotator.rotateToRadians(this.rotatorAngleRadians, 120);
 
         this.rotatorLastError = this.rotatorError;
 
