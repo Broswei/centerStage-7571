@@ -26,6 +26,8 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
     double ticksPerRotation = 384.5;
 
+    int spikeMark = 0;
+
 
     public void setup(/*boolean encodersUsed, */boolean detectingBlue) {
 
@@ -34,6 +36,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
         pipeline = new TSEDetectionPipeline(detectingBlue);
         camera.setPipeline(pipeline);
         openCameraAndStreamAsync();
+
 
         this.bread.launcher.putDown();
         this.bread.arm.setRotatorAngleDegrees(0);

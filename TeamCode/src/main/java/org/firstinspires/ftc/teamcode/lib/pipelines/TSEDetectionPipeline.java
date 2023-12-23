@@ -38,6 +38,8 @@ public class TSEDetectionPipeline extends OpenCvPipeline{
         Mat output = new Mat();
         Scalar rectColor = new Scalar(255.0, 0.0, 0.0);
 
+        public void setSpikeMark(int x){spikeMark = x;}
+
         public int getSpikeMark(){
             return spikeMark;
         }
@@ -90,13 +92,15 @@ public class TSEDetectionPipeline extends OpenCvPipeline{
             }
 
             if (Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect1AvgFin) {
-                spikeMark = 1;
+                setSpikeMark(1);
             } else if (Math.max(rect1AvgFin, Math.max(rect2AvgFin, rect3AvgFin)) == rect2AvgFin) {
-                spikeMark = 2;
+                setSpikeMark(2);
             } else {
-                spikeMark = 3;
+                setSpikeMark(3);
             }
 
             return (output);
         }
+
+
     }

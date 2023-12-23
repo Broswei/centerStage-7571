@@ -19,7 +19,7 @@ public class  AutoTest extends BreadAutonomous {
             }
 
             if (!found){
-                telemetry.addData("Spike Mark: ", getSpikeMark());
+                telemetry.addData("Spike Mark: ", pipeline.getSpikeMark());
             }
             else{
                 telemetry.addLine("Nothing is found :(");
