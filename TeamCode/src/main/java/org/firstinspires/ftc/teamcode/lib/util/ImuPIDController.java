@@ -6,6 +6,8 @@ public class ImuPIDController {
 
     private double targetAngle;
     private double kP, kI, kD;
+
+    private double uP, uI, uD;
     private double accumulatedError;
     private ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
@@ -44,6 +46,10 @@ public class ImuPIDController {
         }
         lastTime = timer.milliseconds();
         lastError = error;
+
+        uP = kP*error;
+        uI = kI*accumulatedError;
+        uD = kD*slope;
 
         //motor power calculation
         double motorPower = 0.1 * Math.signum(error) + 0.9 * Math.tanh(kP*error + kI*accumulatedError + kD*slope); //ensures between -1,1
