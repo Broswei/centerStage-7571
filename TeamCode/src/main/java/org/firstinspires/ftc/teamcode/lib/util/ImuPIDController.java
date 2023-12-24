@@ -15,7 +15,6 @@ public class ImuPIDController {
         kP = p;
         kI = i;
         kD = d;
-
     }
 
     public void setTarget (double target) {
