@@ -25,8 +25,6 @@ public class StaticHeading extends BreadAutonomous {
     ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
 
-    private BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
-
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -36,8 +34,8 @@ public class StaticHeading extends BreadAutonomous {
 
         while(opModeIsActive()){
             telemetry.addData("Target IMU Angle", refrenceAngle);
-            telemetry.addData("Current IMU Angle", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
-            double power = PIDControl(refrenceAngle, imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
+            telemetry.addData("Current IMU Angle", bread.imu.getAbsoluteAngleDegrees());
+            double power = PIDControl(refrenceAngle, bread.imu.getAbsoluteAngleDegrees());
             bread.drive.setPowers(-0.83*power, -power, power, 0.83*power);
             telemetry.update();
         }
