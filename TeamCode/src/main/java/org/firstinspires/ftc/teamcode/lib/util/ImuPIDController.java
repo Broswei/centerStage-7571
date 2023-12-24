@@ -15,7 +15,10 @@ public class ImuPIDController {
         kP = p;
         kI = i;
         kD = d;
+    }
 
+    public void setTarget (double target) {
+        targetAngle = target;
     }
 
     public double update(double currentAngle){
