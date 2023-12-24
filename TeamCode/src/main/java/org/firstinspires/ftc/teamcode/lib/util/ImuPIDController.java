@@ -48,6 +48,8 @@ public class ImuPIDController {
         //motor power calculation
         double motorPower = 0.1 * Math.signum(error) + 0.9 * Math.tanh(kP*error + kI*accumulatedError + kD*slope); //ensures between -1,1
 
+
+
         return motorPower;
     }
 
