@@ -30,6 +30,8 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
     int spikeMark = 0;
 
+    public ImuPIDController pid = new ImuPIDController(90, BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
+
 
     public void setup(/*boolean encodersUsed, */boolean detectingBlue) {
 
@@ -153,7 +155,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
     }
 
     public void turnToPID (double targetAngle){
-        ImuPIDController pid = new ImuPIDController(targetAngle, BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
+        pid.setTarget(targetAngle);
         while (opModeIsActive() && Math.abs(targetAngle - bread.imu.getAbsoluteAngleDegrees()) > 2){
             double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
             bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
@@ -166,13 +168,11 @@ public abstract class BreadAutonomous extends BreadOpMode {
     }
 
     public void updateToPID (double targetAngle){
-        ImuPIDController pid = new ImuPIDController(targetAngle, BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
+        pid.setTarget(targetAngle);
 
         double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
 
         bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
-
-        bread.drive.setPowers(0,0,0,0);
 
         telemetry.addData("target: ", targetAngle);
         telemetry.addData("current: ", bread.imu.getAbsoluteAngleDegrees());
