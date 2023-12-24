@@ -153,8 +153,8 @@ public abstract class BreadAutonomous extends BreadOpMode {
     }
 
     public void turnToPID (double targetAngle){
-        ImuPIDController pid = new ImuPIDController(targetAngle, 0, 0, 0);
-        while (opModeIsActive() && Math.abs(targetAngle - bread.imu.getAbsoluteAngleDegrees()) > 1){
+        ImuPIDController pid = new ImuPIDController(targetAngle, BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
+        while (opModeIsActive() && Math.abs(targetAngle - bread.imu.getAbsoluteAngleDegrees()) > 2){
             double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
             bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
         }

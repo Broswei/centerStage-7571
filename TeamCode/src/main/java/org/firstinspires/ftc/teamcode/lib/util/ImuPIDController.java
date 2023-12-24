@@ -5,9 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ImuPIDController {
 
     private double targetAngle;
-    public static double kP = 1;
-    public static double kI = 0;
-    public static double kD= 0;
+    private double kP, kI, kD;
     private double accumulatedError;
     private ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
