@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.lib.bread;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.lib.pipelines.OpenCVPipelineTest;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
+import org.firstinspires.ftc.teamcode.lib.util.ImuPIDController;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -40,6 +42,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
         this.bread.launcher.putDown();
         this.bread.arm.setRotatorAngleDegrees(0);
+        this.bread.arm.setRestPos();
 
         this.bread.arm.updateArm();
     }
@@ -95,10 +98,13 @@ public abstract class BreadAutonomous extends BreadOpMode {
         ElapsedTime runtime = new ElapsedTime();
         boolean run = true;
         runtime.reset();
+        while (opModeIsActive() && bread.drive.isRegBusy()){
+        }
+
     }
 
     public void driveDistance(double distanceIn, int velocity, boolean isRunning) {
-        ticks = (-distanceIn / (Math.PI * 3.78) * ticksPerRotation);
+        ticks = (-distanceIn / (Math.PI * 4) * ticksPerRotation);
         bread.drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bread.drive.setMotorPositions((int) ticks);
         bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -107,7 +113,56 @@ public abstract class BreadAutonomous extends BreadOpMode {
         ElapsedTime runtime = new ElapsedTime();
         boolean run = true;
         runtime.reset();
+        while (opModeIsActive() && bread.drive.isRegBusy()){
+        }
 
+    }
+
+    public void turn(double degrees){
+
+        bread.imu.resetAngle();
+
+        double error = degrees;
+
+        while(opModeIsActive() && Math.abs(error) > 2){
+            double motorPower = (error < 0 ? -0.6 : 0.6);
+            bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
+            error = degrees - bread.imu.getAngleDegrees();
+            telemetry.addData("error: ", error);
+            telemetry.update();
+        }
+
+        bread.drive.setPowers(0,0,0,0);
+
+    }
+
+    public void turnTo(double degrees){
+
+        Orientation orientation = bread.imu.getOrientation();
+
+        double error = degrees - orientation.firstAngle;
+
+        if (error > 180){
+            error -= 360;
+        }
+        else if (error < -180){
+            error += 360;
+        }
+
+        turn(error);
+    }
+
+    public void turnToPID (double targetAngle){
+        ImuPIDController pid = new ImuPIDController(targetAngle, 0, 0, 0);
+        while (opModeIsActive() && Math.abs(targetAngle - bread.imu.getAbsoluteAngleDegrees()) > 1){
+            double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
+            bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
+        }
+        bread.drive.setPowers(0,0,0,0);
+    }
+
+    public void turnPID(double degrees){
+        turnToPID(degrees + bread.imu.getAbsoluteAngleDegrees());
     }
 
 }

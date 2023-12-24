@@ -296,10 +296,10 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     public void setMotorVelocities(int v){
-        leftFront.setVelocity(0.9*v);
+        leftFront.setVelocity(0.83*v);
         rightRear.setVelocity(v);
         leftRear.setVelocity(v);
-        rightFront.setVelocity(0.9*v);
+        rightFront.setVelocity(0.83*v);
     }
 
     public void setMotorPositions(int v, int v1, int v2, int v3){

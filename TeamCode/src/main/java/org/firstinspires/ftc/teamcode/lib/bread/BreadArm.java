@@ -114,7 +114,7 @@ public class BreadArm {
     }
 
     public void updateArm(){
-        // TODO: haha calc dt later I cant do this I want to cryyyyyy
+        /*// TODO: haha calc dt later I cant do this I want to cryyyyyy
         double dt = 1;
 
         this.rotatorError = this.getRotatorRadians();
@@ -126,12 +126,12 @@ public class BreadArm {
                 BreadConstants.ROT_P_GAIN * this.rotatorError +
                 BreadConstants.ROT_I_GAIN * this.rotatorTotalError +
                 BreadConstants.ROT_D_GAIN * this.rotatorDervError;
-
+*/
         // TODO: actually rotate and killswitch test
-        leftRotator.rotateToRadians(this.rotatorAngleRadians, 120);
-        rightRotator.rotateToRadians(this.rotatorAngleRadians, 120);
+        leftRotator.rotateToRadians(this.rotatorAngleRadians, 2*Math.PI/3);
+        rightRotator.rotateToRadians(this.rotatorAngleRadians, 2*Math.PI/3);
 
-        this.rotatorLastError = this.rotatorError;
+        //this.rotatorLastError = this.rotatorError;
 
     }
 

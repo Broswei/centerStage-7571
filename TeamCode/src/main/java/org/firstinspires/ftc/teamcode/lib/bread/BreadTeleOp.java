@@ -241,12 +241,10 @@ public abstract class BreadTeleOp extends BreadOpMode {
                         if (!goLow){ //kind of scuffed but whatever
                             this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_NORM_DEPO_ANG);
                             this.bread.arm.setNormalDepoPos();
-                            this.bread.rails.presetRaiseTowersUp(pixelRow);
                         }
                         else {
                             this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_LOW_DEPO_ANG);
                             this.bread.arm.setLowDepoPos();
-                            this.bread.rails.rotateTo(0,BreadConstants.TOWERS_NORM_VELOCITY);
                         }
 
                         if (switchDropLocation) {
