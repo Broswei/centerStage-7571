@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.opmodes.auto;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -8,12 +9,8 @@ import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.teamcode.lib.util.ImuPIDController;
 
-@Autonomous
-public class AutoTest extends BreadAutonomous {
-
-    double kP = BreadConstants.IMU_P;
-    double kI = BreadConstants.IMU_I;
-    double kD = BreadConstants.IMU_D;
+@TeleOp
+public class IMUTuning extends BreadAutonomous {
 
     @Override
     public void runOpMode() throws InterruptedException {
