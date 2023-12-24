@@ -10,14 +10,15 @@ import org.firstinspires.ftc.teamcode.lib.util.ImuPIDController;
 @Autonomous
 public class AutoTest extends BreadAutonomous {
 
+    double kP = ImuPIDController.kP;
+    double kI = ImuPIDController.kI;
+    double kD = ImuPIDController.kD;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         setup(false);
 
-        double kP = ImuPIDController.kP;
-        double kI = ImuPIDController.kI;
-        double kD = ImuPIDController.kD;
 
         double targetAngle = 90;
 
@@ -28,21 +29,26 @@ public class AutoTest extends BreadAutonomous {
 
         }
 
+        closeCameraAsync();
+
         while (opModeIsActive()){
 
-            ImuPIDController pid = new ImuPIDController(targetAngle, kP, kI, kD);
-            while (opModeIsActive() && Math.abs(targetAngle - bread.imu.getAbsoluteAngleDegrees()) > 1){
-                double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
-                bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
-            }
+            turnPID(targetAngle);
 
-            bread.drive.setPowers(0,0,0,0);
             telemetry.addData("Target angle: ", targetAngle);
             telemetry.addData("Current Position: ", bread.imu.getAbsoluteAngleDegrees());
             telemetry.update();
 
         }
 
+    }
 
+    public void turnPID(double target){
+        ImuPIDController pid = new ImuPIDController(target, this.kP, this.kI, this.kD);
+        while (opModeIsActive() && Math.abs(target - bread.imu.getAbsoluteAngleDegrees()) > 1){
+            double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
+            bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
+        }
+        bread.drive.setPowers(0,0,0,0);
     }
 }

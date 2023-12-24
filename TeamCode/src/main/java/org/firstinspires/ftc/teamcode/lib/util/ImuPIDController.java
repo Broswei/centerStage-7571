@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ImuPIDController {
 
     private double targetAngle;
-    public static double kP, kI, kD;
+    public static double kP = 1;
+    public static double kI = 0;
+    public static double kD= 0;
     private double accumulatedError;
     private ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
@@ -29,7 +31,7 @@ public class ImuPIDController {
             error -= 180;
         }
         //I
-        accumulatedError += error;
+        accumulatedError += error*lastTime;
         if (Math.abs(error) < 1){
             accumulatedError = 0;
         }
@@ -44,6 +46,7 @@ public class ImuPIDController {
 
         //motor power calculation
         double motorPower = 0.1 * Math.signum(error) + 0.9 * Math.tanh(kP*error + kI*accumulatedError + kD*slope); //ensures between -1,1
+
         return motorPower;
     }
 
