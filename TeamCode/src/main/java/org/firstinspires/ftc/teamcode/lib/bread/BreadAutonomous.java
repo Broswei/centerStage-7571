@@ -159,6 +159,10 @@ public abstract class BreadAutonomous extends BreadOpMode {
             bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
         }
         bread.drive.setPowers(0,0,0,0);
+
+        telemetry.addData("target: ", targetAngle);
+        telemetry.addData("current: ", bread.imu.getAbsoluteAngleDegrees());
+        telemetry.update();
     }
 
     public void turnPID(double degrees){
