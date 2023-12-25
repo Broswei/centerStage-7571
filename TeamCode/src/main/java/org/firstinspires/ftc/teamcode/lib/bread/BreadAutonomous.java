@@ -30,10 +30,10 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
     int spikeMark = 0;
 
-    public ImuPIDController pid = new ImuPIDController(90, BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
+    public ImuPIDController pid = new ImuPIDController(BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
 
 
-    public void setup(/*boolean encodersUsed, */boolean detectingBlue) {
+    public void setup(boolean detectingBlue) {
 
         initialize(hardwareMap);
         camera = createCamera("webcam");
@@ -97,9 +97,6 @@ public abstract class BreadAutonomous extends BreadOpMode {
         bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         bread.drive.setMotorVelocities(velocity);
 
-        ElapsedTime runtime = new ElapsedTime();
-        boolean run = true;
-        runtime.reset();
         while (opModeIsActive() && bread.drive.isRegBusy()){
         }
 
@@ -112,75 +109,22 @@ public abstract class BreadAutonomous extends BreadOpMode {
         bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         bread.drive.setMotorVelocities(velocity);
 
-        ElapsedTime runtime = new ElapsedTime();
-        boolean run = true;
-        runtime.reset();
         while (opModeIsActive() && bread.drive.isRegBusy()){
         }
 
     }
 
-    public void turn(double degrees){
+    public void turnToPID(double degrees){
 
-        bread.imu.resetAngle();
-
-        double error = degrees;
-
-        while(opModeIsActive() && Math.abs(error) > 2){
-            double motorPower = (error < 0 ? -0.6 : 0.6);
-            bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
-            error = degrees - bread.imu.getAngleDegrees();
-            telemetry.addData("error: ", error);
+        while (Math.abs(degrees - bread.imu.getAngleDegrees()) > 1.5){
+            double power = pid.PIDControl(Math.toRadians(degrees), Math.toRadians(bread.imu.getAngleDegrees()));
+            bread.drive.setPowers(-0.83*power, -power, power, 0.83*power);
+            telemetry.addData("Busy?: ", bread.drive.isRegBusy());
+            telemetry.addData("degrees: ", degrees);
+            telemetry.addData("current: ", bread.imu.getAngleDegrees());
             telemetry.update();
+
         }
-
-        bread.drive.setPowers(0,0,0,0);
-
-    }
-
-    public void turnTo(double degrees){
-
-        Orientation orientation = bread.imu.getOrientation();
-
-        double error = degrees - orientation.firstAngle;
-
-        if (error > 180){
-            error -= 360;
-        }
-        else if (error < -180){
-            error += 360;
-        }
-
-        turn(error);
-    }
-
-    public void turnToPID (double targetAngle){
-        pid.setTarget(targetAngle);
-        while (opModeIsActive() && Math.abs(targetAngle - bread.imu.getAbsoluteAngleDegrees()) > 2){
-            double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
-            bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
-        }
-        bread.drive.setPowers(0,0,0,0);
-
-        telemetry.addData("target: ", targetAngle);
-        telemetry.addData("current: ", bread.imu.getAbsoluteAngleDegrees());
-        telemetry.update();
-    }
-
-    public void updateToPID (double targetAngle){
-        pid.setTarget(targetAngle);
-
-        double motorPower = pid.update(bread.imu.getAbsoluteAngleDegrees());
-
-        bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
-
-        telemetry.addData("target: ", targetAngle);
-        telemetry.addData("current: ", bread.imu.getAbsoluteAngleDegrees());
-        telemetry.update();
-    }
-
-    public void turnPID(double degrees){
-        turnToPID(degrees + bread.imu.getAbsoluteAngleDegrees());
     }
 
 }

@@ -2,61 +2,41 @@ package org.firstinspires.ftc.teamcode.lib.util;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
+
 public class ImuPIDController {
 
-    private double targetAngle;
-    private double kP, kI, kD;
-
-    private double uP, uI, uD;
-    private double accumulatedError;
     private ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
-    private double lastTime = 0;
-    public ImuPIDController(double target, double p, double i, double d){
-        targetAngle = target;
+    double integralSum = 0;
+
+    double kP;
+    double kI;
+    double kD;
+
+    public ImuPIDController(double p, double i, double d){
         kP = p;
         kI = i;
         kD = d;
     }
 
-    public void setTarget (double target) {
-        targetAngle = target;
-    }
-
-    public double update(double currentAngle){
-
-        //P
-        double error = targetAngle - currentAngle;
-        error %= 360;
-        error += 360;
-        error %= 360;
-        if (error > 180){
-            error -= 180;
-        }
-        //I
-        accumulatedError += error*lastTime;
-        if (Math.abs(error) < 1){
-            accumulatedError = 0;
-        }
-        accumulatedError = Math.abs(accumulatedError) * Math.signum(error);
-        //D
-        double slope = 0;
-        if (lastTime > 0){
-            slope = (error - lastError)/(timer.milliseconds() - lastTime);
-        }
-        lastTime = timer.milliseconds();
+    public double PIDControl(double refrence, double state) {
+        double error = angleWrap(refrence - state);
+        integralSum += error * timer.seconds();
+        double derivative = (error - lastError) / (timer.seconds());
         lastError = error;
-
-        uP = kP*error;
-        uI = kI*accumulatedError;
-        uD = kD*slope;
-
-        //motor power calculation
-        double motorPower = 0.1 * Math.signum(error) + 0.9 * Math.tanh(kP*error + kI*accumulatedError + kD*slope); //ensures between -1,1
-
-
-
-        return motorPower;
+        timer.reset();
+        double output = (error * kP) + (derivative * kD) + (integralSum * kI);
+        return output;
+    }
+    public double angleWrap(double radians){
+        while(radians > Math.PI){
+            radians -= 2 * Math.PI;
+        }
+        while(radians < -Math.PI){
+            radians += 2 * Math.PI;
+        }
+        return radians;
     }
 
 

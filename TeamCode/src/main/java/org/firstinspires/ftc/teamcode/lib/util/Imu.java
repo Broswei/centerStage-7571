@@ -43,35 +43,8 @@ public class Imu {
      *
      * @return degrees
      */
-    public double getAngleDegrees(){
-        Orientation orientation = this.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;
 
-        if (deltaAngle > 180){
-            deltaAngle -= 360;
-        }
-        else if (deltaAngle < -180){
-            deltaAngle += 360;
-        }
-
-        currAngle += deltaAngle;
-        lastAngles = orientation;
-
-        return currAngle;
-    }
-
-    public void resetAngle(){
-        lastAngles = this.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        currAngle = 0;
-    }
-
-    public Orientation getOrientation(){
-
-        return this.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-    }
-
-    public double getAbsoluteAngleDegrees() {
+    public double getAngleDegrees() {
         return this.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
 
     }

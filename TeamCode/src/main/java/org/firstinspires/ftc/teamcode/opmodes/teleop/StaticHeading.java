@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadDrive;
 
+import org.firstinspires.ftc.teamcode.lib.util.Imu;
+
 @TeleOp(name = "Static Heading")
 public class StaticHeading extends BreadAutonomous {
     double integralSum = 0;
@@ -29,13 +31,14 @@ public class StaticHeading extends BreadAutonomous {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        double refrenceAngle = Math.toRadians(90);
+        double refrenceAngle = Math.toRadians(BreadConstants.IMU_TARGET);
+        initialize(hardwareMap);
         waitForStart();
 
         while(opModeIsActive()){
             telemetry.addData("Target IMU Angle", refrenceAngle);
-            telemetry.addData("Current IMU Angle", bread.imu.getAbsoluteAngleDegrees());
-            double power = PIDControl(refrenceAngle, bread.imu.getAbsoluteAngleDegrees());
+            telemetry.addData("Current IMU Angle", Math.toRadians(bread.imu.getAngleDegrees()));
+            double power = PIDControl(refrenceAngle, Math.toRadians(bread.imu.getAngleDegrees()));
             bread.drive.setPowers(-0.83*power, -power, power, 0.83*power);
             telemetry.update();
         }

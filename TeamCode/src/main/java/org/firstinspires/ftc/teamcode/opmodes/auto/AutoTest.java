@@ -16,9 +16,6 @@ public class AutoTest extends BreadAutonomous {
 
         setup(false);
 
-
-        double targetAngle = 90;
-
         while (!isStarted()){
 
             telemetry.addData("Status: ", "Initialized");
@@ -28,12 +25,12 @@ public class AutoTest extends BreadAutonomous {
 
         closeCameraAsync();
 
-        turnToPID(targetAngle);
+        turnToPID(90);
+        sleep(1000);
+        turnToPID(180);
 
         while (opModeIsActive()){
-            telemetry.addData("target: ", targetAngle);
-            telemetry.addData("current: ", bread.imu.getAbsoluteAngleDegrees());
-            telemetry.update();
+
         }
 
 
