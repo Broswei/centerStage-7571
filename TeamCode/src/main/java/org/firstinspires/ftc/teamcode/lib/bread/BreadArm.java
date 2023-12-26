@@ -49,6 +49,10 @@ public class BreadArm {
         this.rightRotator.setPower(power);
     }
 
+    public int getPosition(){
+        return this.leftRotator.getRawPosition();
+    }
+
     public boolean areRotatorsBusy(){
         return this.leftRotator.isBusy();
     }
