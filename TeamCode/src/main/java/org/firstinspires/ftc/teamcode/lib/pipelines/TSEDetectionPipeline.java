@@ -24,9 +24,9 @@ public class TSEDetectionPipeline extends OpenCvPipeline{
         double rect2AvgFin;
         double rect3AvgFin;
 
-        Rect rect1 = new Rect (1, 1, 426, 719); // right
-        Rect rect2 = new Rect (427, 1, 426, 719); // middle
-        Rect rect3 = new Rect (853, 1, 426, 719); // left
+        Rect rect1 = new Rect (1, 200, 426, 519); // right
+        Rect rect2 = new Rect (427, 200, 426, 519); // middle
+        Rect rect3 = new Rect (853, 200, 426, 519); // left
 
         int spikeMark = 0;
 
