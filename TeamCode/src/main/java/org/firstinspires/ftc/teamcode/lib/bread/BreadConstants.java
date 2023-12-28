@@ -30,10 +30,11 @@ public class BreadConstants {
 
     public static double ROT_LOW_DEPO_ANG = 195;
 
-    public static double ROT_P_GAIN  = 1;
+    public static double ROT_P_GAIN  = 0.007;
     public static double ROT_I_GAIN = 0;
 
-    public static double ROT_D_GAIN = 0;
+    public static double ROT_D_GAIN = 0.0001;
+    public static double ROT_F = 0.013;
 
     // towers related //
     public static double TOWERS_TPR = 384.5; //this for 435 RPM (3.7 cycle time) --> 1620 RPM = 103.8

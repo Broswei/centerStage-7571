@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -10,6 +11,8 @@ public class BreadArm {
     private PositionableMotor leftRotator;
     private PositionableMotor rightRotator;
     private BreadHand hand;
+
+    private PIDController controller;
 
     //delta timer
     private ElapsedTime deltaTimer;
@@ -26,6 +29,11 @@ public class BreadArm {
 
     private double lastTime = 0;
 
+    private double p = BreadConstants.ROT_P_GAIN;
+    private double i = BreadConstants.ROT_I_GAIN;
+    private double d = BreadConstants.ROT_D_GAIN;
+    private double f = BreadConstants.ROT_F;
+
 
     public BreadArm (PositionableMotor leftRotator, PositionableMotor rightRotator, BreadHand hand){
 
@@ -37,6 +45,8 @@ public class BreadArm {
 
         leftRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        controller = new PIDController(p, i, d);
     }
 
     public void shutDown(){
@@ -126,8 +136,8 @@ public class BreadArm {
 
     public void updateArm(){
 
-        leftRotator.rotateToRadians(this.rotatorAngleRadians, 2*Math.PI/3);
-        rightRotator.rotateToRadians(this.rotatorAngleRadians, 2*Math.PI/3);
+        leftRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/3);
+        rightRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/3);
 
     }
 
@@ -159,6 +169,17 @@ public class BreadArm {
         rightRotator.rotateSpeedRadians(correction);
 
         rotatorLastError = rotatorError;
+    }
+
+    public void updateArmPID(){
+        while (Math.abs(leftRotator.getAngleDegrees() - getDesiredRotatorDegrees()) > 1){
+            double current = this.getRotatorDegrees() * BreadConstants.ROT_TPR/360;
+            double pid = controller.calculate(current, this.rotatorAngleRadians * BreadConstants.ROT_TPR/(2* Math.PI));
+            double ff = Math.cos(this.rotatorAngleRadians - Math.toRadians(40.32)) * f;
+            double power = pid + ff;
+
+            setPowers(power);
+        }
     }
 
     public void setNormalDepoPos(){

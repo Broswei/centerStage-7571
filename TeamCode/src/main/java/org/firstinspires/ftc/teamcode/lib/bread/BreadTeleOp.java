@@ -80,7 +80,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
 
         } else if (gamepad1.right_trigger > 0.01) {
             double forward = Range.clip(-gamepad1.left_stick_y, -0.45, 0.45);
-            double strafe = Range.clip(gamepad1.left_stick_x, -0.7, 0.77);
+            double strafe = Range.clip(gamepad1.left_stick_x, -0.7, 0.7);
             double rotate = Range.clip(gamepad1.right_stick_x, -0.3, 0.3);
 
             double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);

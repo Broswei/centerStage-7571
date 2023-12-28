@@ -36,7 +36,7 @@ public class PIDF_Arm extends BreadAutonomous {
             controller.setPID(p,i,d);
             double current = bread.arm.getPosition();
             double pid = controller.calculate(current, target);
-            double ff = Math.cos(Math.toRadians(target/ticks_in_degree)) * f;
+            double ff = Math.cos(Math.toRadians(target/ticks_in_degree - 40.32)) * f;
 
             double power = pid + ff;
 
