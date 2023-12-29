@@ -209,10 +209,12 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
                 turn   = -gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             }
-            telemetry.update();
+
 
             // Apply desired axes motions to the drivetrain.
             moveRobot(drive, strafe, turn);
+
+            telemetry.update();
             sleep(10);
         }
     }
@@ -244,6 +246,9 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
             leftBackPower /= max;
             rightBackPower /= max;
         }
+
+
+        telemetry.addData("Powers: ", "fr %5.2f fl %5.2f br %5.2f bl %5.2f", rightFrontPower, leftFrontPower,rightBackPower,leftBackPower);
 
         // Send powers to the wheels.
         leftFrontDrive.setPower(0.83*leftFrontPower);
