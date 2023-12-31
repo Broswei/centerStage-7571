@@ -16,10 +16,15 @@ public class BreadConstants {
 
     // drive related... //
 
-    public static double IMU_P = 0.7005;
+    public static double IMU_P = 0.8;
     public static double IMU_I = 0;
-    public static double IMU_D = 0.03;
+    public static double IMU_D = 0.05;
     public static double IMU_TARGET = 90;
+
+    public static double DESIRED_DISTANCE = 13.5;
+    public static double SPEED_GAIN = 0.04;
+    public static double STRAFE_GAIN = 0.05;
+    public static double TURN_GAIN = 0.045;
 
     //rotator related //
     public static double ROT_TPR = 1425.1;

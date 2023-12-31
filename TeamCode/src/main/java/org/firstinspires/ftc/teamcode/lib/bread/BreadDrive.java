@@ -131,4 +131,8 @@ public class BreadDrive {
     public boolean isRegBusy(){
         return this.roadrunnerDrive.isRegBusy();
     }
+
+    public String getPowers(){
+        return this.roadrunnerDrive.getPowers();
+    }
 }

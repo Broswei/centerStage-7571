@@ -39,48 +39,46 @@ public class RedRight extends BreadAutonomous {
             telemetry.update();
         }
 
-
-        closeCameraAsync();
         //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
         if (this.spikeMark == 2) {
             aprilTag = 5;
-            driveDistance(12, 2000, opModeIsActive());
+            driveDistance(18, 2000, opModeIsActive());
             aimForYellow();
-            sleep(1500);
+            sleep(3500);
             bread.arm.setRightUnclamped();
             sleep(1000);
             bread.arm.setRightClamped();
-            turnToPID(270);
-            driveDistance(36, 2000, opModeIsActive());
-            bread.arm.setLeftUnclamped();
-            sleep(1000);
+            turnToPID(-90);
+            driveDistance(24, 2000, opModeIsActive());
         }
         else{
             driveDistance(24, 2000, opModeIsActive());
-            turnToPID(270);
+            turnToPID(-90);
             bread.arm.setPickUpPos();
             if (this.spikeMark == 1){
                 aprilTag = 4;
                 driveDistance(-3, 2000,opModeIsActive());
                 bread.arm.setRightUnclamped();
                 sleep(1000);
-                driveDistance(39, 2000,opModeIsActive());
+                driveDistance(12, 2000,opModeIsActive());
                 bread.arm.setRightClamped();
                 aimForYellow();
-
             }
             else if (this.spikeMark == 3){
                 aprilTag = 6;
                 driveDistance(12, 2000, opModeIsActive());
                 bread.arm.setRightUnclamped();
                 sleep(1000);
-                driveDistance(24, 2000,opModeIsActive());
+                bread.arm.setRestPos();
                 bread.arm.setRightClamped();
+                turnToPID(280);
                 aimForYellow();
+
 
             }
         }
-
+        bread.arm.setLeftUnclamped();
+        sleep(1000);
         bringHome();
         bread.arm.setLeftClamped();
         bread.arm.setRestPos();

@@ -40,6 +40,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -96,9 +97,9 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
     //  Drive = Error * Gain    Make these values smaller for smoother control, or larger for a more aggressive response.
-    final double SPEED_GAIN  =  0.02  ;   //  Forward Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
-    final double STRAFE_GAIN =  0.03 ;   //  Strafe Speed Control "Gain".  eg: Ramp up to 25% power at a 25 degree Yaw error.   (0.25 / 25.0)
-    final double TURN_GAIN   =  0.04  ;   //  Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
+    final double SPEED_GAIN  =  0.055  ;   //  Forward Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
+    final double STRAFE_GAIN =  0.052 ;   //  Strafe Speed Control "Gain".  eg: Ramp up to 25% power at a 25 degree Yaw error.   (0.25 / 25.0)
+    final double TURN_GAIN   =  0.045  ;   //  Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
     final double MAX_AUTO_SPEED = 1;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_STRAFE= 1;   //  Clip the approach speed to this max value (adjust for your robot)
@@ -191,14 +192,14 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
             if (gamepad1.left_bumper && targetFound) {
 
                 // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
-                double  rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
+                double  rangeError      = (desiredTag.ftcPose.range - BreadConstants.DESIRED_DISTANCE);
                 double  headingError    = desiredTag.ftcPose.bearing;
                 double  yawError        = desiredTag.ftcPose.yaw;
 
                 // Use the speed and turn "gains" to calculate how we want the robot to move.
-                drive  = -Range.clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-                turn   = Range.clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
-                strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+                drive  = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+                turn   = Range.clip(headingError * BreadConstants.TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
+                strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             } else {
@@ -211,11 +212,15 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
             }
 
 
+
             // Apply desired axes motions to the drivetrain.
             moveRobot(drive, strafe, turn);
-
-            telemetry.update();
             sleep(10);
+            telemetry.addData("front left: ", leftFrontDrive.getPower());
+            telemetry.addData("front right: ", rightFrontDrive.getPower());
+            telemetry.addData("back left: ", leftBackDrive.getPower());
+            telemetry.addData("back right: ", rightBackDrive.getPower());
+            telemetry.update();
         }
     }
 
@@ -246,9 +251,6 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
             leftBackPower /= max;
             rightBackPower /= max;
         }
-
-
-        telemetry.addData("Powers: ", "fr %5.2f fl %5.2f br %5.2f bl %5.2f", rightFrontPower, leftFrontPower,rightBackPower,leftBackPower);
 
         // Send powers to the wheels.
         leftFrontDrive.setPower(0.83*leftFrontPower);

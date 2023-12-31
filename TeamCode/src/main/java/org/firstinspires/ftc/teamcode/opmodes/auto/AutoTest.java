@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.teamcode.lib.util.ImuPIDController;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
 public class AutoTest extends BreadAutonomous {
@@ -23,11 +24,8 @@ public class AutoTest extends BreadAutonomous {
 
         }
 
-        closeCameraAsync();
-
-        turnToPID(90);
-        sleep(1000);
-        turnToPID(180);
+        driveDistance(18,2000,opModeIsActive());
+        turnToPID(-90);
 
         while (opModeIsActive()){
 
