@@ -19,6 +19,10 @@ public class BreadConstants {
     public static double IMU_P = 1;
     public static double IMU_I = 0.2;
     public static double IMU_D = 0.1;
+
+    public static double IMU_P_REDUCTION = 0.15;
+
+    public static double IMU_D_REDUCTION = 0.2;
     public static double IMU_TARGET = 90;
 
     public static double DESIRED_DISTANCE = 13.5;
