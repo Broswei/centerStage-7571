@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
 
 @Autonomous(group="norm autos")
-public class RedRight extends BreadAutonomous {
+public class BlueLeft extends BreadAutonomous {
 
     private int spikeMark;
 
@@ -16,7 +16,7 @@ public class RedRight extends BreadAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup(false);
+        setup(true);
 
         boolean found = false;
 
@@ -43,18 +43,18 @@ public class RedRight extends BreadAutonomous {
         closeCameraAsync();
         //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
         if (this.spikeMark == 2) {
-            aprilTag = 5;
+            aprilTag = 2;
             driveDistance(11, 2000, opModeIsActive());
             aimForYellow();
             sleep(3500);
-            bread.arm.setRightUnclamped();
+            bread.arm.setLeftUnclamped();
             sleep(1000);
-            bread.arm.setRightClamped();
+            bread.arm.setLeftClamped();
             driveDistance(7,2000,opModeIsActive());
-            turnToPID(-90, 2);
+            turnToPID(90, 2);
             driveDistance(28, 2000, opModeIsActive());
-            turnToPID(-90,2);
-            strafeDistance(8,2000,opModeIsActive());
+            turnToPID(90,2);
+            strafeDistance(-10,2000,opModeIsActive());
             sleep(1000);
         }
         else{
@@ -62,52 +62,53 @@ public class RedRight extends BreadAutonomous {
             turnToPID(-90,2);
             bread.arm.setPickUpPos();
             if (this.spikeMark == 1){
-                aprilTag = 4;
-                driveDistance(3,2750,opModeIsActive());
-                bread.arm.setRightUnclamped();
-                sleep(1000);
-                driveDistance(24, 2000,opModeIsActive());
-                bread.arm.setRightClamped();
-                aimForYellow();
-                sleep(3500);
-                turnToPID(-90,2);
-                strafeDistance(14,2000,opModeIsActive());
-            }
-            else if (this.spikeMark == 3){
-                aprilTag = 6;
+                aprilTag = 1;
                 driveDistance(22, 2000, opModeIsActive());
-                strafeDistance(8,2000,opModeIsActive());
-                bread.arm.setRightUnclamped();
+                strafeDistance(-8,2000,opModeIsActive());
+                bread.arm.setLeftUnclamped();
                 sleep(1000);
                 bread.arm.setRestPos();
-                bread.arm.setRightClamped();
-                turnToPID(-90,3);
+                bread.arm.setLeftClamped();
+                turnToPID(90,3);
                 aimForYellow();
                 sleep(3500);
                 driveDistance(4,2000,opModeIsActive());
-                strafeDistance(-11,2000,opModeIsActive());
+                strafeDistance(13,2000,opModeIsActive());
+                turnToPID(90,2);
+                sleep(1000);
+            }
+            else if (this.spikeMark == 3){
+                aprilTag = 3;
+                driveDistance(3,2750,opModeIsActive());
+                bread.arm.setLeftUnclamped();
+                sleep(1000);
+                driveDistance(24, 2000,opModeIsActive());
+                bread.arm.setLeftClamped();
+                aimForYellow();
+                sleep(3500);
                 turnToPID(-90,2);
+                strafeDistance(-16,2000,opModeIsActive());
                 sleep(1000);
             }
         }
 
-        bread.arm.setLeftUnclamped();
+        bread.arm.setRightUnclamped();
         sleep(1000);
         driveDistance(-8,2000,opModeIsActive());
         bread.arm.bringHome();
-        bread.arm.setLeftClamped();
+        bread.arm.setRightClamped();
         bread.arm.setRestPos();
         turnToPID(-180,2);
         if (this.spikeMark == 3){
-            driveDistance(13, 2000, opModeIsActive());
+            driveDistance(34, 2000, opModeIsActive());
         }
         else if (this.spikeMark == 1){
-            driveDistance(32, 2000, opModeIsActive());
+            driveDistance(15, 2000, opModeIsActive());
         }
         else{
-            driveDistance(19, 2000, opModeIsActive());
+            driveDistance(21, 2000, opModeIsActive());
         }
-        strafeDistance(20, 2000, opModeIsActive());
+        strafeDistance(-20, 2000, opModeIsActive());
 
         while (opModeIsActive()){
 

@@ -188,6 +188,8 @@ public class PositionableMotor {
         return this.motor.getCurrentPosition();
     }
 
+    public void setRawPosition(int position){this.motor.setTargetPosition(position);}
+
     /**
      * @brief gets the cumulative number of rotations of the driven gear (even if encoders are reset) from start
      *
@@ -232,6 +234,7 @@ public class PositionableMotor {
         return this.motor.getVelocity();
     }
 
+    public void setRawVelocity(double velocity) {this.motor.setVelocity(velocity);}
     /**
      * @brief Get driven velocity in terms of rotations / second
      *

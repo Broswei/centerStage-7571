@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
 
-@TeleOp @Config
+@TeleOp
 public class PIDF_Arm extends BreadAutonomous {
 
     private PIDController controller;
@@ -27,17 +27,21 @@ public class PIDF_Arm extends BreadAutonomous {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        controller = new PIDController(p, i, d);
+        controller = new PIDController(BreadConstants.ROT_P_GAIN, BreadConstants.ROT_I_GAIN, BreadConstants.ROT_D_GAIN);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+
 
         initialize(hardwareMap);
         waitForStart();
 
         while(opModeIsActive()){
-            controller.setPID(p*scale,i*scale,d*scale);
+            controller.setPID(BreadConstants.ROT_P_GAIN*scale,BreadConstants.ROT_I_GAIN*scale,BreadConstants.ROT_D_GAIN*scale);
+            scale = BreadConstants.ROT_GAINS_SCALE;
+
             double current = bread.arm.getPosition();
             double pid = controller.calculate(current, target);
-            double ff = Math.cos(Math.toRadians(target/ticks_in_degree - 40.32)) * f;
+            double ff = Math.sin(Math.toRadians(current/ticks_in_degree + 49.68)) * BreadConstants.ROT_F_GAIN;
 
             double power = pid + ff;
 

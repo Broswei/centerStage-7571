@@ -16,9 +16,9 @@ public class BreadConstants {
 
     // drive related... //
 
-    public static double IMU_P = 0.8;
-    public static double IMU_I = 0;
-    public static double IMU_D = 0.05;
+    public static double IMU_P = 1;
+    public static double IMU_I = 0.2;
+    public static double IMU_D = 0.1;
     public static double IMU_TARGET = 90;
 
     public static double DESIRED_DISTANCE = 13.5;
@@ -33,13 +33,14 @@ public class BreadConstants {
 
     public static double ROT_NORM_DEPO_ANG = 190;
 
-    public static double ROT_LOW_DEPO_ANG = 195;
+    public static double ROT_LOW_DEPO_ANG = 202;
 
     public static double ROT_P_GAIN  = 0.007;
     public static double ROT_I_GAIN = 0;
 
     public static double ROT_D_GAIN = 0.0001;
-    public static double ROT_F = 0.013;
+    public static double ROT_F_GAIN = 0.013;
+    public static double ROT_GAINS_SCALE = 1;
 
     // towers related //
     public static double TOWERS_TPR = 384.5; //this for 435 RPM (3.7 cycle time) --> 1620 RPM = 103.8

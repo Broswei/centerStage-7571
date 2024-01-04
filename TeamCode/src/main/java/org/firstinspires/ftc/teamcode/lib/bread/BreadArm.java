@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -32,7 +34,7 @@ public class BreadArm {
     private double p = BreadConstants.ROT_P_GAIN;
     private double i = BreadConstants.ROT_I_GAIN;
     private double d = BreadConstants.ROT_D_GAIN;
-    private double f = BreadConstants.ROT_F;
+    private double f = BreadConstants.ROT_F_GAIN;
 
 
     public BreadArm (PositionableMotor leftRotator, PositionableMotor rightRotator, BreadHand hand){
@@ -135,10 +137,8 @@ public class BreadArm {
     }
 
     public void updateArm(){
-
         leftRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/3);
         rightRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/3);
-
     }
 
     public void updatePIDArm () {
@@ -191,4 +191,13 @@ public class BreadArm {
     public void setPickUpPos(){this.hand.setPickUp();}
 
     public void setRestPos(){this.hand.setRest();}
+
+    public void bringHome(){
+        this.leftRotator.setRawPosition(0);
+        this.rightRotator.setRawPosition(0);
+        this.leftRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.rightRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.leftRotator.setRawVelocity(BreadConstants.ROT_TPR/6);
+        this.rightRotator.setRawVelocity(BreadConstants.ROT_TPR/6);
+    }
 }

@@ -35,19 +35,21 @@ public class StaticHeading extends BreadAutonomous {
         initialize(hardwareMap);
         waitForStart();
 
-        while(opModeIsActive()){
-            telemetry.addData("Target IMU Angle", refrenceAngle);
-            telemetry.addData("Current IMU Angle", Math.toRadians(bread.imu.getAngleDegrees()));
-            double power = PIDControl(refrenceAngle, Math.toRadians(bread.imu.getAngleDegrees()));
-            bread.drive.setPowers(-0.83*power, -power, power, 0.83*power);
-            telemetry.update();
+        while(opModeIsActive()) {
+            turnToPID(-90,3);
+
+            sleep(500);
+
+            turnToPID(0,3);
+
+            sleep(500);
         }
 
     }
 
     public double PIDControl(double refrence, double state) {
         double error = angleWrap(refrence - state);
-        telemetry.addData("Error: ", error);
+        telemetry.addData("Error: ", Math.toDegrees(error));
         integralSum += error * timer.seconds();
         double derivative = (error - lastError) / (timer.seconds());
         lastError = error;

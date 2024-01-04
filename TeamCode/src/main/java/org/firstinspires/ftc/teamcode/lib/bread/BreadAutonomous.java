@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.lib.pipelines.OpenCVPipelineTest;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
 import org.firstinspires.ftc.teamcode.lib.util.ImuPIDController;
@@ -31,6 +32,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
     private OpenCvCamera camera;
 
+    public ElapsedTime timer = new ElapsedTime();
     public TSEDetectionPipeline pipeline;
 
     //FOR AIDS ENCODER AUTONOMOUS ONLY
@@ -104,43 +106,96 @@ public abstract class BreadAutonomous extends BreadOpMode {
     }
 
     public void strafeDistance(double distanceIn, int velocity, boolean isRunning) {
-        ticks = (-distanceIn / (Math.PI * 4) * ticksPerRotation * 1.1);
+        timer.reset();
+        ticks = (-distanceIn / (Math.PI * (2* DriveConstants.WHEEL_RADIUS)) * ticksPerRotation*1.1);
         bread.drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bread.drive.setMotorPositions((int) ticks, (int) -ticks, (int) -ticks, (int) ticks);
         bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         bread.drive.setMotorVelocities(velocity);
 
-        while (opModeIsActive() && bread.drive.isRegBusy()) {
+        if (Math.abs(distanceIn) <= 8){
+            timer.reset();
+            while (opModeIsActive() && bread.drive.isRegBusy() && timer.seconds() < 4) {
+            }
         }
-
+        else{
+            while (opModeIsActive() && bread.drive.isRegBusy()) {
+            }
+        }
+        bread.drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void driveDistance(double distanceIn, int velocity, boolean isRunning) {
-        ticks = (-distanceIn / (Math.PI * 4) * ticksPerRotation);
+        ticks = (-distanceIn / (Math.PI * (2* DriveConstants.WHEEL_RADIUS)) * ticksPerRotation);
         bread.drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bread.drive.setMotorPositions((int) ticks);
         bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         bread.drive.setMotorVelocities(velocity);
 
-        while (opModeIsActive() && bread.drive.isRegBusy()) {
+        if (Math.abs(distanceIn) <= 4){
+            timer.reset();
+            while (opModeIsActive() && bread.drive.isRegBusy() && timer.seconds() < 2) {
+            }
         }
+        else{
+            while (opModeIsActive() && bread.drive.isRegBusy()) {
+            }
+        }
+
+        bread.drive.setMotorVelocities(0);
+        bread.drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
-    public void turnToPID(double degrees) {
+    public void turnNoPID(double degrees){
+        bread.imu.resetAngle();
+        double error = degrees;
+        while (opModeIsActive() && Math.abs(error) > 2){
+            double motorPower = (error < 0 ? -0.6 : 0.6);
+            bread.drive.setPowers(-0.83*motorPower, -motorPower, motorPower, 0.83*motorPower);
+            error = degrees - bread.imu.getAngle();
+            telemetry.addData("error", error);
+            telemetry.update();
+        }
+    }
 
-        pid = new ImuPIDController(BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
 
-        while (Math.abs(degrees - bread.imu.getAngleDegrees()) > 2) {
+    public void turnToPID(double degrees, double time) {
+
+        timer.reset();
+        telemetry.addLine("Starting pleuh");
+        pid.setGains(BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
+        pid.resetIntegral();
+
+        while (Math.abs(degrees - bread.imu.getAngleDegrees()) > 2 && opModeIsActive() && timer.seconds() < time) {
+
+            if(Math.abs(degrees - bread.imu.getAngleDegrees()) < 8) {
+                pid.setGains(BreadConstants.IMU_P * 0.15, BreadConstants.IMU_I, BreadConstants.IMU_D*0.2);
+            } else {
+                pid.setGains(BreadConstants.IMU_P, 0, BreadConstants.IMU_D);
+            }
+
             double power = pid.PIDControl(Math.toRadians(degrees), Math.toRadians(bread.imu.getAngleDegrees()));
+
+            power = Range.clip(power,-1,1);
+
             bread.drive.setPowers(-0.83 * power, -power, power, 0.83 * power);
+
+
+
+
             telemetry.addData("Busy?: ", bread.drive.isRegBusy());
             telemetry.addData("degrees: ", degrees);
             telemetry.addData("current: ", bread.imu.getAngleDegrees());
-            telemetry.addData("powers: ", bread.drive.getPowers());
+            telemetry.addData("powers: ", power);
+            telemetry.addData("timer", timer.seconds());
+            telemetry.addData("I", pid.integralSum);
+
+            telemetry.addLine("currently pleuhhing");
             telemetry.update();
 
         }
+
         bread.drive.setPowers(0,0,0,0);
     }
 
@@ -210,7 +265,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
     }
 
     public void checkAndMoveAprilTags(int desiredNumber) {
-        while (!arrived){
+        while (!arrived) {
             boolean targetFound = false;
             while (!targetFound) {
                 List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -231,20 +286,22 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
             arrived = (Math.abs(desiredTag.ftcPose.range - BreadConstants.DESIRED_DISTANCE) <= 0.5 && Math.abs(desiredTag.ftcPose.bearing) > 1 && Math.abs(desiredTag.ftcPose.yaw) <= 1);
 
-            if (!arrived){
-                double  rangeError      = (desiredTag.ftcPose.range - BreadConstants.DESIRED_DISTANCE);
-                double  headingError    = desiredTag.ftcPose.bearing;
-                double  yawError        = desiredTag.ftcPose.yaw;
+            if (!arrived) {
+                double rangeError = (desiredTag.ftcPose.range - BreadConstants.DESIRED_DISTANCE);
+                double headingError = desiredTag.ftcPose.bearing;
+                double yawError = desiredTag.ftcPose.yaw;
 
                 // Use the speed and turn "gains" to calculate how we want the robot to move.
-                double drive  = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -1,1);
-                double turn   = Range.clip(headingError * BreadConstants.TURN_GAIN, -1,1) ;
-                double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1,1);
+                double drive = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -1, 1);
+                double turn = Range.clip(headingError * BreadConstants.TURN_GAIN, -1, 1);
+                double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
 
-                moveRobot(drive,turn,strafe);
+                moveRobot(drive, turn, strafe);
                 sleep(10);
             }
-            bread.drive.setPowers(0,0,0,0);
+            bread.drive.setPowers(0, 0, 0, 0);
         }
     }
+
+
 }

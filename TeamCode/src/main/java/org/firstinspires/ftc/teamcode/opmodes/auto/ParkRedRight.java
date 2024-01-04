@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
 
-public abstract class ParkRedRight extends BreadAutonomous {
+public class ParkRedRight extends BreadAutonomous {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -14,7 +14,7 @@ public abstract class ParkRedRight extends BreadAutonomous {
 
         while (!isStarted()){
             if (gamepad1.a || gamepad2.a){
-              //  this.bread.hand.clamp();
+                this.bread.arm.setHandClamped();
             }
             //insert camera recongition
 
@@ -22,9 +22,16 @@ public abstract class ParkRedRight extends BreadAutonomous {
 
         }
 
+        driveDistance(-48,2000,opModeIsActive());
+        bread.arm.setPickUpPos();
+        sleep(1000);
+        bread.arm.setHandUnclamped();
+        bread.arm.setRestPos();
 
+        while (opModeIsActive()){
 
-        strafeDistance( -47, 750, opModeIsActive());
+        }
+
 
 
 

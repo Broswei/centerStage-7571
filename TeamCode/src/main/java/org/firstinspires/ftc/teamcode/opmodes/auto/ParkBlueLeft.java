@@ -25,8 +25,14 @@ public class ParkBlueLeft extends BreadAutonomous {
 
         }
 
+        driveDistance(-48,2000,opModeIsActive());
+        bread.arm.setPickUpPos();
+        sleep(1000);
+        bread.arm.setHandUnclamped();
+        bread.arm.setRestPos();
+
         while (opModeIsActive()){
-            strafeDistance(47, 750, opModeIsActive());
+
         }
 
 

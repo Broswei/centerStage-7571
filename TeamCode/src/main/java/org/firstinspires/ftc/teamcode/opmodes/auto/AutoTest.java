@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -17,17 +18,20 @@ public class AutoTest extends BreadAutonomous {
 
         setup(false);
 
-        while (!isStarted()){
+        while (!isStarted()) {
 
             telemetry.addData("Status: ", "Initialized");
             telemetry.update();
 
         }
 
-        driveDistance(18,2000,opModeIsActive());
-        turnToPID(-90);
 
-        while (opModeIsActive()){
+        driveDistance(12,2000,opModeIsActive());
+        turnToPID(-90,3);
+
+
+
+        while (opModeIsActive()) {
 
         }
 
