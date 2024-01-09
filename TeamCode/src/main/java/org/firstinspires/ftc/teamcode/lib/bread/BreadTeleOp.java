@@ -79,9 +79,9 @@ public abstract class BreadTeleOp extends BreadOpMode {
             this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
 
         } else if (gamepad1.right_trigger > 0.01) {
-            double forward = Range.clip(-gamepad1.left_stick_y, -0.3, 0.3);
-            double strafe = Range.clip(gamepad1.left_stick_x, -0.45, 0.45);
-            double rotate = Range.clip(gamepad1.right_stick_x, -0.3, 0.3);
+            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * 0.3;
+            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1) * 0.45;
+            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1) * 0.3;
 
             double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
             forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
@@ -90,9 +90,9 @@ public abstract class BreadTeleOp extends BreadOpMode {
             this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
 
         } else {
-            double forward = Range.clip(-gamepad1.left_stick_y, -0.8, 0.8);
-            double strafe = Range.clip(gamepad1.left_stick_x, -0.9, 0.9);
-            double rotate = Range.clip(gamepad1.right_stick_x, -0.5, 0.5);
+            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * 0.8;
+            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1) * 0.9;
+            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1) * 0.5;
 
             double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
             forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);

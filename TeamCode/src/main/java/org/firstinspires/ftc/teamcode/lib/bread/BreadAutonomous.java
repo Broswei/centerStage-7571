@@ -172,7 +172,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
         while (Math.abs(degrees - bread.imu.getAngleDegrees()) > 2 && opModeIsActive() && timer.seconds() < time) {
 
             if(Math.abs(degrees - bread.imu.getAngleDegrees()) < 8) {
-                pid.setGains(BreadConstants.IMU_P * 0.15, BreadConstants.IMU_I, BreadConstants.IMU_D*0.2);
+                pid.setGains(BreadConstants.IMU_P * BreadConstants.IMU_P_REDUCTION, BreadConstants.IMU_I, BreadConstants.IMU_D * BreadConstants.IMU_D_REDUCTION);
             } else {
                 pid.setGains(BreadConstants.IMU_P, 0, BreadConstants.IMU_D);
             }
