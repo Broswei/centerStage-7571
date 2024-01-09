@@ -167,6 +167,8 @@ public abstract class BreadAutonomous extends BreadOpMode {
         pid.setGains(BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
         pid.resetIntegral();
 
+        // double time =
+
         while (Math.abs(degrees - bread.imu.getAngleDegrees()) > 2 && opModeIsActive() && timer.seconds() < time) {
 
             if(Math.abs(degrees - bread.imu.getAngleDegrees()) < 8) {
@@ -304,4 +306,10 @@ public abstract class BreadAutonomous extends BreadOpMode {
     }
 
 
+
+    public void aimForYellow(){
+        bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_LOW_DEPO_ANG);
+        bread.arm.updateArm();
+        bread.arm.setLowDepoPos();
+    }
 }
