@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
-import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
 
 @Autonomous(group="norm autos")
-public class BlueLeft extends BreadAutonomous {
+public class BlueClose extends BreadAutonomous {
 
     private int spikeMark;
 
@@ -59,7 +57,7 @@ public class BlueLeft extends BreadAutonomous {
         }
         else{
             driveDistance(18, 2000, opModeIsActive());
-            turnToPID(-90,2);
+            turnToPID(90,2);
             bread.arm.setPickUpPos();
             if (this.spikeMark == 1){
                 aprilTag = 1;
@@ -72,8 +70,8 @@ public class BlueLeft extends BreadAutonomous {
                 turnToPID(90,3);
                 aimForYellow();
                 sleep(3500);
-                driveDistance(4,2000,opModeIsActive());
-                strafeDistance(13,2000,opModeIsActive());
+                driveDistance(7,2000,opModeIsActive());
+                strafeDistance(4,2000,opModeIsActive());
                 turnToPID(90,2);
                 sleep(1000);
             }
@@ -82,12 +80,15 @@ public class BlueLeft extends BreadAutonomous {
                 driveDistance(3,2750,opModeIsActive());
                 bread.arm.setLeftUnclamped();
                 sleep(1000);
-                driveDistance(24, 2000,opModeIsActive());
+                turnToPID(90,2);
+                driveDistance(16, 2000,opModeIsActive());
                 bread.arm.setLeftClamped();
                 aimForYellow();
                 sleep(3500);
-                turnToPID(-90,2);
-                strafeDistance(-16,2000,opModeIsActive());
+                turnToPID(90,2);
+                strafeDistance(-23,2000,opModeIsActive());
+                turnToPID(90,2);
+                driveDistance(6,2000,opModeIsActive());
                 sleep(1000);
             }
         }
@@ -98,17 +99,17 @@ public class BlueLeft extends BreadAutonomous {
         bread.arm.bringHome();
         bread.arm.setRightClamped();
         bread.arm.setRestPos();
-        turnToPID(-180,2);
+        turnToPID(180,2);
         if (this.spikeMark == 3){
-            driveDistance(34, 2000, opModeIsActive());
+            driveDistance(32, 2000, opModeIsActive());
         }
         else if (this.spikeMark == 1){
-            driveDistance(15, 2000, opModeIsActive());
+            driveDistance(14, 2000, opModeIsActive());
         }
         else{
             driveDistance(21, 2000, opModeIsActive());
         }
-        strafeDistance(-20, 2000, opModeIsActive());
+        strafeDistance(-22, 2000, opModeIsActive());
 
         while (opModeIsActive()){
 

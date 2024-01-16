@@ -83,7 +83,6 @@ public class RedClose extends BreadAutonomous {
                 turnToPID(-90,3);
                 aimForYellow();
                 sleep(3500);
-                driveDistance(4,2000,opModeIsActive());
                 strafeDistance(-11,2000,opModeIsActive());
                 turnToPID(-90,2);
                 sleep(1000);
