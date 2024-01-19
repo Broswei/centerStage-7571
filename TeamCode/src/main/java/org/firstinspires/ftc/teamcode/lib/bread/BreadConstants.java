@@ -16,11 +16,11 @@ public class BreadConstants {
 
     // drive related... //
 
-    public static double IMU_P = 1;
-    public static double IMU_I = 0.2;
+    public static double IMU_P = 0.9;
+    public static double IMU_I = 0;
     public static double IMU_D = 0.1;
 
-    public static double IMU_P_REDUCTION = 0.15;
+    public static double IMU_P_REDUCTION = 0.5;
 
     public static double IMU_D_REDUCTION = 0.2;
     public static double IMU_TARGET = 90;
@@ -66,7 +66,7 @@ public class BreadConstants {
 
     //launcher related...//
     public static double LAUNCH_ANGLE_POS = 0.15;
-    public static double LAUNCH_DEFAULT_REST = 0.25;
+    public static double LAUNCH_DEFAULT_REST = 0.29;
 
     public static double LAUNCH_DOWN = 0.35;
 

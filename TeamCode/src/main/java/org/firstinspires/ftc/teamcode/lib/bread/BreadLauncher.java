@@ -30,7 +30,7 @@ public class BreadLauncher {
      * @brief FIRE IN THE HOLE!
      */
     public void launch(){
-        launcher.setPosition(0.5);
+        launcher.setPosition(0.53);
     }
     public void release(){launcher.setPosition(0);}
 

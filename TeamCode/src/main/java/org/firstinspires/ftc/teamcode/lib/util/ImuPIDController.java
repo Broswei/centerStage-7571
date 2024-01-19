@@ -9,9 +9,11 @@ import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 public class ImuPIDController {
 
     private ElapsedTime timer = new ElapsedTime();
-    private double lastError = 0;
+    public double lastError = 0;
     public double integralSum = 0;
 
+
+    public double error = 0;
     double kP;
     double kI;
     double kD;
@@ -35,7 +37,7 @@ public class ImuPIDController {
 
 
     public double PIDControl(double refrence, double state) {
-        double error = angleWrap(refrence - state);
+        error = angleWrap(refrence - state);
 
         integralSum += error * timer.seconds();
 
