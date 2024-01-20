@@ -267,6 +267,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
         //telemetry...//
         telemetry.addData("Rotator Angle: ", this.bread.arm.getRotatorDegrees());
         telemetry.addData("Launcher Ready?: ", aiming);
+        telemetry.addData("Launcher servo pos: ",bread.launcher.getPosition());
         telemetry.addData("Rails Height: ", BreadRails.rotationsToInches(this.bread.rails.getRotations()));
         telemetry.addData("Gyro Offset: ", gyroOffset);
         telemetry.addData("Control Mode: ", currentControlMode);

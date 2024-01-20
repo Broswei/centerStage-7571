@@ -65,10 +65,10 @@ public class BreadConstants {
 
 
     //launcher related...//
-    public static double LAUNCH_ANGLE_POS = 0.15;
-    public static double LAUNCH_DEFAULT_REST = 0.29;
+    public static double LAUNCH_ANGLE_POS = 0;
+    public static double LAUNCH_DEFAULT_REST = 0.4;
 
-    public static double LAUNCH_DOWN = 0.35;
+    public static double LAUNCH_DOWN = 0.45;
 
 
 }

@@ -35,4 +35,8 @@ public class BreadLauncher {
     public void release(){launcher.setPosition(0);}
 
     public void climb(){angleAdjuster.setPosition(BreadConstants.LAUNCH_DOWN);}
+
+    public double getPosition(){
+        return angleAdjuster.getPosition();
+    }
 }
