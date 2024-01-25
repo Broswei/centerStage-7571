@@ -148,7 +148,8 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
     }
 
-    public void turnNoPID(double degrees){
+    public void turnNoPID(double degrees, double time){
+        timer.reset();
         bread.imu.resetAngle();
         double error = degrees;
         while (opModeIsActive() && Math.abs(error) > 2){
@@ -158,6 +159,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
             telemetry.addData("error", error);
             telemetry.update();
         }
+        bread.drive.setPowers(0,0,0,02);
     }
 
 
@@ -170,7 +172,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
         // double time =
 
-        while ( Math.abs(degrees - bread.imu.getAngleDegrees()) > 0.5 + 5 * timer.seconds()/time  && opModeIsActive() && timer.seconds() < time) {
+        while ( Math.abs(degrees - bread.imu.getAngleDegrees()) > 2  && opModeIsActive() && timer.seconds() < time) {
 
 //        while (opModeIsActive()) {
 
@@ -179,8 +181,6 @@ public abstract class BreadAutonomous extends BreadOpMode {
             double power = pid.PIDControl(Math.toRadians(degrees), Math.toRadians(bread.imu.getAngleDegrees()));
 
             power = Math.sqrt(Range.clip(Math.abs(power),0,1)) * Math.signum(power);
-
-            power = Range.clip(power, -0.6, 0.6);
 
             bread.drive.setPowers(-0.83 * power, -power, power, 0.83 * power);
 
@@ -201,7 +201,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
         }
 
-//        bread.drive.setPowers(0,0,0,0);
+        bread.drive.setPowers(0,0,0,0);
     }
 
     public void initAprilTag() {
