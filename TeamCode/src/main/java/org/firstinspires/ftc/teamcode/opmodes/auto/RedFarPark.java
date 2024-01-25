@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
+import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 
 @Autonomous(group="norm autos")
-public class BlueFar extends BreadAutonomous {
+public class RedFarPark extends BreadAutonomous {
 
     private int spikeMark;
 
@@ -16,11 +15,11 @@ public class BlueFar extends BreadAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup(true);
+        setup(false);
 
         boolean found = false;
 
-        while(!isStarted()) {
+        while (!isStarted()){
 
             if (gamepad1.a || gamepad2.a){
                 this.bread.arm.setHandClamped();
@@ -41,9 +40,9 @@ public class BlueFar extends BreadAutonomous {
         }
 
         closeCameraAsync();
+        //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
         if (this.spikeMark == 2) {
             aprilTag = 2;
-            strafeDistance(-6,2000,opModeIsActive());
             driveDistance(50, 1750, opModeIsActive());
             bread.arm.setPickUpPos();
             sleep(1000);
@@ -52,26 +51,11 @@ public class BlueFar extends BreadAutonomous {
             bread.arm.setRestPos();
             sleep(1000);
             bread.arm.setLeftClamped();
-            driveDistance(4,2000,opModeIsActive());
-            turnNoPID(70,3);
-            driveDistance(80,2000,opModeIsActive());
+            turnNoPID(-80,3);
+            driveDistance(90,2000,opModeIsActive());
         }
         else if (this.spikeMark == 1) {
-            driveDistance(22, 2000, opModeIsActive());
-            aprilTag = 1;
-            turnNoPID(80,3);
-            driveDistance(23, 2000, opModeIsActive());
-            bread.drive.setPowers(0,0,0,0);
-            bread.arm.setPickUpPos();
-            sleep(1000);
-            bread.arm.setLeftUnclamped();
-            sleep(1000);
-            bread.arm.setRestPos();
-            bread.arm.setLeftClamped();
-        }
-        else if (this.spikeMark == 3){
-            aprilTag = 3;
-            strafeDistance(-14,1750,opModeIsActive());
+            strafeDistance(15,1750,opModeIsActive());
             driveDistance(48, 1500, opModeIsActive());
             bread.arm.setPickUpPos();
             sleep(1000);
@@ -80,21 +64,33 @@ public class BlueFar extends BreadAutonomous {
             bread.arm.setRestPos();
             sleep(1000);
             bread.arm.setLeftClamped();
-            driveDistance(4,2000,opModeIsActive());
-            turnNoPID(65,3);
-            bread.drive.setPowers(0,0,0,0);
-            driveDistance(100,2000,opModeIsActive());
-
+            turnNoPID(-80,3);
+            driveDistance(110,2000,opModeIsActive());
         }
-
+        else if (this.spikeMark == 3){
+            driveDistance(22, 2000, opModeIsActive());
+            aprilTag = 1;
+            turnNoPID(-80,3);
+            driveDistance(20, 2000, opModeIsActive());
+            bread.drive.setPowers(0,0,0,0);
+            bread.arm.setPickUpPos();
+            sleep(1000);
+            bread.arm.setLeftUnclamped();
+            sleep(1000);
+            bread.arm.setRestPos();
+            bread.arm.setLeftClamped();
+        }
         bread.drive.setPowers(0,0,0,0);
-
 
         while (opModeIsActive()){
 
         }
 
-
     }
 
+    public void aimForYellow(){
+        bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_LOW_DEPO_ANG);
+        bread.arm.updateArm();
+        bread.arm.setLowDepoPos();
+    }
 }

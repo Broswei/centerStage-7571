@@ -36,13 +36,11 @@ public class StaticHeading extends BreadAutonomous {
         waitForStart();
 
         while(opModeIsActive()) {
-            turnToPID(-90,3);
-
-            sleep(500);
-
-            turnToPID(0,3);
-
-            sleep(500);
+            telemetry.addData("Target IMU Angle", refrenceAngle);
+            telemetry.addData("Current IMU Angle", Math.toRadians(bread.imu.getAngleDegrees()));
+            double power = PIDControl(refrenceAngle, Math.toRadians(bread.imu.getAngleDegrees()));
+            bread.drive.setPowers(-0.83*power, -power, power, 0.83*power);
+            telemetry.update();
         }
 
     }
