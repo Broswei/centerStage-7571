@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.bread.BreadAutonomous;
-import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
+import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 
 @Autonomous(group="norm autos")
-public class RedRight extends BreadAutonomous {
+public class RedFar extends BreadAutonomous {
 
     private int spikeMark;
 
@@ -50,11 +49,11 @@ public class RedRight extends BreadAutonomous {
             bread.arm.setRightUnclamped();
             sleep(1000);
             bread.arm.setRightClamped();
-            driveDistance(7,2000,opModeIsActive());
+            driveDistance(7, 2000, opModeIsActive());
             turnToPID(-90, 2);
             driveDistance(28, 2000, opModeIsActive());
-            turnToPID(-90,2);
-            strafeDistance(8,2000,opModeIsActive());
+            turnToPID(-90, 2);
+            strafeDistance(8, 2000, opModeIsActive());
             sleep(1000);
         }
         else{
@@ -66,7 +65,7 @@ public class RedRight extends BreadAutonomous {
                 driveDistance(3,2750,opModeIsActive());
                 bread.arm.setRightUnclamped();
                 sleep(1000);
-                driveDistance(24, 2000,opModeIsActive());
+                driveDistance(22, 2000,opModeIsActive());
                 bread.arm.setRightClamped();
                 aimForYellow();
                 sleep(3500);
@@ -116,7 +115,7 @@ public class RedRight extends BreadAutonomous {
     }
 
     public void aimForYellow(){
-        bread.arm.setRotatorAngleDegrees(195);
+        bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_LOW_DEPO_ANG);
         bread.arm.updateArm();
         bread.arm.setLowDepoPos();
     }

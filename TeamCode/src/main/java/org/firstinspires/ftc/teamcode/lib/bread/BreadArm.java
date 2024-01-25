@@ -141,35 +141,35 @@ public class BreadArm {
         rightRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/3);
     }
 
-    public void updatePIDArm () {
-
-        double dt = deltaTimer.milliseconds() - lastTime;
-
-        // proportional
-        rotatorError = getRotatorRadians();
-
-        // derivative
-        rotatorDervError = (rotatorError-rotatorLastError) / dt;
-
-        // integral
-        rotatorTotalError += rotatorError * dt;
-
-        // integral windup preventer
-        if(Math.abs(rotatorTotalError) > 1/BreadConstants.ROT_I_GAIN) {
-            rotatorTotalError = Math.signum(rotatorTotalError) * 1/BreadConstants.ROT_I_GAIN;
-        }
-
-
-        double correction =
-                BreadConstants.ROT_P_GAIN * rotatorError +
-                BreadConstants.ROT_I_GAIN * rotatorTotalError +
-                BreadConstants.ROT_D_GAIN * rotatorDervError;
-
-        leftRotator.rotateSpeedRadians(correction);
-        rightRotator.rotateSpeedRadians(correction);
-
-        rotatorLastError = rotatorError;
-    }
+//    public void updatePIDArm () {
+//
+//        double dt = deltaTimer.milliseconds() - lastTime;
+//
+//        // proportional
+//        rotatorError = getRotatorRadians();
+//
+//        // derivative
+//        rotatorDervError = (rotatorError-rotatorLastError) / dt;
+//
+//        // integral
+//        rotatorTotalError += rotatorError * dt;
+//
+//        // integral windup preventer
+//        if(Math.abs(rotatorTotalError) > 1/BreadConstants.ROT_I_GAIN) {
+//            rotatorTotalError = Math.signum(rotatorTotalError) * 1/BreadConstants.ROT_I_GAIN;
+//        }
+//
+//
+//        double correction =
+//                BreadConstants.ROT_P_GAIN * rotatorError +
+//                BreadConstants.ROT_I_GAIN * rotatorTotalError +
+//                BreadConstants.ROT_D_GAIN * rotatorDervError;
+//
+//        leftRotator.rotateSpeedRadians(correction);
+//        rightRotator.rotateSpeedRadians(correction);
+//
+//        rotatorLastError = rotatorError;
+//    }
 
     public void updateArmPID(){
         while (Math.abs(leftRotator.getAngleDegrees() - getDesiredRotatorDegrees()) > 1){
@@ -193,6 +193,15 @@ public class BreadArm {
     public void setRestPos(){this.hand.setRest();}
 
     public void bringHome(){
+        this.leftRotator.setRawPosition(0);
+        this.rightRotator.setRawPosition(0);
+        this.leftRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.rightRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.leftRotator.setRawVelocity(BreadConstants.ROT_TPR/6);
+        this.rightRotator.setRawVelocity(BreadConstants.ROT_TPR/6);
+    }
+
+    public void secondPurplePix(){
         this.leftRotator.setRawPosition(0);
         this.rightRotator.setRawPosition(0);
         this.leftRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);

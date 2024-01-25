@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -167,17 +168,19 @@ public abstract class BreadAutonomous extends BreadOpMode {
         pid.setGains(BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
         pid.resetIntegral();
 
-        while (Math.abs(degrees - bread.imu.getAngleDegrees()) > 2 && opModeIsActive() && timer.seconds() < time) {
+        // double time =
 
-            if(Math.abs(degrees - bread.imu.getAngleDegrees()) < 8) {
-                pid.setGains(BreadConstants.IMU_P * BreadConstants.IMU_P_REDUCTION, BreadConstants.IMU_I, BreadConstants.IMU_D * BreadConstants.IMU_D_REDUCTION);
-            } else {
-                pid.setGains(BreadConstants.IMU_P, 0, BreadConstants.IMU_D);
-            }
+        while ( Math.abs(degrees - bread.imu.getAngleDegrees()) > 0.5 + 5 * timer.seconds()/time  && opModeIsActive() && timer.seconds() < time) {
+
+//        while (opModeIsActive()) {
+
+            pid.setGains(BreadConstants.IMU_P, BreadConstants.IMU_I, BreadConstants.IMU_D);
 
             double power = pid.PIDControl(Math.toRadians(degrees), Math.toRadians(bread.imu.getAngleDegrees()));
 
-            power = Range.clip(power,-1,1);
+            power = Math.sqrt(Range.clip(Math.abs(power),0,1)) * Math.signum(power);
+
+            power = Range.clip(power, -0.6, 0.6);
 
             bread.drive.setPowers(-0.83 * power, -power, power, 0.83 * power);
 
@@ -188,15 +191,17 @@ public abstract class BreadAutonomous extends BreadOpMode {
             telemetry.addData("degrees: ", degrees);
             telemetry.addData("current: ", bread.imu.getAngleDegrees());
             telemetry.addData("powers: ", power);
-            telemetry.addData("timer", timer.seconds());
-            telemetry.addData("I", pid.integralSum);
+            telemetry.addData("Gains P: ", BreadConstants.IMU_P);
+            telemetry.addData("Gains I: ", BreadConstants.IMU_I);
+            telemetry.addData("Gains D: ", BreadConstants.IMU_D);
+            telemetry.addData("I", pid.integralSum * BreadConstants.IMU_I);
 
             telemetry.addLine("currently pleuhhing");
             telemetry.update();
 
         }
 
-        bread.drive.setPowers(0,0,0,0);
+//        bread.drive.setPowers(0,0,0,0);
     }
 
     public void initAprilTag() {
@@ -304,4 +309,10 @@ public abstract class BreadAutonomous extends BreadOpMode {
     }
 
 
+
+    public void aimForYellow(){
+        bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_LOW_DEPO_ANG);
+        bread.arm.updateArm();
+        bread.arm.setLowDepoPos();
+    }
 }

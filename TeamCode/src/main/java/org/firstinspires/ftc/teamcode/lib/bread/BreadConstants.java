@@ -16,11 +16,11 @@ public class BreadConstants {
 
     // drive related... //
 
-    public static double IMU_P = 1;
-    public static double IMU_I = 0.2;
+    public static double IMU_P = 0.9;
+    public static double IMU_I = 0;
     public static double IMU_D = 0.1;
 
-    public static double IMU_P_REDUCTION = 0.15;
+    public static double IMU_P_REDUCTION = 0.5;
 
     public static double IMU_D_REDUCTION = 0.2;
     public static double IMU_TARGET = 90;
@@ -37,7 +37,7 @@ public class BreadConstants {
 
     public static double ROT_NORM_DEPO_ANG = 190;
 
-    public static double ROT_LOW_DEPO_ANG = 202;
+    public static double ROT_LOW_DEPO_ANG = 200;
 
     public static double ROT_P_GAIN  = 0.007;
     public static double ROT_I_GAIN = 0;
@@ -56,7 +56,7 @@ public class BreadConstants {
     // wrist related... //
     public static double WRIST_DEPO_POS = 0.4;
 
-    public static double WRIST_LOW_POS = 0.34;
+    public static double WRIST_LOW_POS = 0.32;
     public static double WRIST_REST_POS = 0.34;
 
     // not used ATM, but will be;
@@ -65,10 +65,10 @@ public class BreadConstants {
 
 
     //launcher related...//
-    public static double LAUNCH_ANGLE_POS = 0.15;
-    public static double LAUNCH_DEFAULT_REST = 0.25;
+    public static double LAUNCH_ANGLE_POS = 0;
+    public static double LAUNCH_DEFAULT_REST = 0.4;
 
-    public static double LAUNCH_DOWN = 0.35;
+    public static double LAUNCH_DOWN = 0.45;
 
 
 }
