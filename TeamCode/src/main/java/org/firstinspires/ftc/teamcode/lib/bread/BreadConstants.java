@@ -57,7 +57,7 @@ public class BreadConstants {
     public static double WRIST_REST_POS = 0.34;
 
     // not used ATM, but will be;
-    public static double WRIST_MIN_POS = 0;
+    public static double WRIST_MIN_POS = 0.4;
 
 
 
