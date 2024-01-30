@@ -27,14 +27,14 @@ public class TSEDetectionProcessor implements VisionProcessor {
 
     private int spikeMark = 0;
 
-    int getSpikeMark() {return spikeMark;}
+    public int getSpikeMark() {return spikeMark;}
     boolean detectingBlue;
 
-    TSEDetectionProcessor(boolean detectingBlue) {
+    public TSEDetectionProcessor(boolean detectingBlue) {
         this.detectingBlue = detectingBlue;
     }
 
-    TSEDetectionProcessor() {
+    public TSEDetectionProcessor() {
         this.detectingBlue = false;
     }
     @Override

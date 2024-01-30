@@ -10,7 +10,10 @@ import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.ArrayList;
 
 
 public class BreadVision {
@@ -18,7 +21,16 @@ public class BreadVision {
     AprilTagProcessor aprilTagProcessor;
     TSEDetectionProcessor tseDetectionProcessor;
     VisionPortal innerVisionPortal;
-    BreadVision (AprilTagProcessor aprilTagProcessor, TSEDetectionProcessor tseDetectionProcessor) {
+
+    public Modes mode = Modes.NONE;
+
+    public enum Modes {
+        APRIL_TAG,
+        TSE,
+        NONE,
+    }
+
+    public BreadVision (AprilTagProcessor aprilTagProcessor, TSEDetectionProcessor tseDetectionProcessor) {
         this.tseDetectionProcessor = tseDetectionProcessor;
         this.aprilTagProcessor = aprilTagProcessor;
 
@@ -31,17 +43,31 @@ public class BreadVision {
                 .setAutoStopLiveView(true)
                 .build();
 
+
+
         // TODO: do this later this is a faithful start
     }
 
-    public void runAprilTag() {
+    public void detectAprilTags() {
         innerVisionPortal.setProcessorEnabled(tseDetectionProcessor,false);
         innerVisionPortal.setProcessorEnabled(aprilTagProcessor,true);
+
+        mode = Modes.APRIL_TAG;
     }
 
-    public void runTSEDetection() {
+    public void detectTSE() {
         innerVisionPortal.setProcessorEnabled(aprilTagProcessor,false);
         innerVisionPortal.setProcessorEnabled(tseDetectionProcessor,true);
+
+        mode = Modes.TSE;
+    }
+
+    public ArrayList<AprilTagDetection> getDetections () {
+        return aprilTagProcessor.getDetections();
+    }
+
+    public int getSpikeMark () {
+        return tseDetectionProcessor.getSpikeMark();
     }
 
 }
