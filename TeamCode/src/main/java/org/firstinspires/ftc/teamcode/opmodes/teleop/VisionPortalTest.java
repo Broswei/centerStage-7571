@@ -31,7 +31,7 @@ public class VisionPortalTest extends BreadTeleOp {
 
         TSEDetectionProcessor tseProcessor = new TSEDetectionProcessor(false);
 
-        BreadVision vision = new BreadVision(tagProcessor,tseProcessor);
+        BreadVision vision = new BreadVision(tagProcessor,tseProcessor, bread.webcamName);
 
         // TODO: make this a breadbot thing later
         vision.detectTSE();

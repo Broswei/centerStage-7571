@@ -31,12 +31,12 @@ public class BreadVision {
         NONE,
     }
 
-    public BreadVision (AprilTagProcessor aprilTagProcessor, TSEDetectionProcessor tseDetectionProcessor, Camera camera) {
+    public BreadVision (AprilTagProcessor aprilTagProcessor, TSEDetectionProcessor tseDetectionProcessor, WebcamName camera) {
         this.tseDetectionProcessor = tseDetectionProcessor;
         this.aprilTagProcessor = aprilTagProcessor;
 
         innerVisionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "webcam"))
+                .setCamera(camera)
                 .addProcessor(aprilTagProcessor)
                 .addProcessor(tseDetectionProcessor)
                 .setCameraResolution(new Size(640, 480))

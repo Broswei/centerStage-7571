@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.lib.bread;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
 import org.firstinspires.ftc.teamcode.lib.util.Imu;
 
@@ -15,11 +16,14 @@ public class BreadBot {
     public BreadRails rails;
     public BreadLauncher launcher;
 
+    public WebcamName webcamName;
+
     public BreadBot(HardwareMap hardwareMap){
 
         //load hardware
         BreadConfig.Hardware hardware = BreadConfig.loadHardware(hardwareMap);
 
+        webcamName = hardware.webcamName;
         //load drive
         drive = new BreadDrive(hardwareMap);
 
