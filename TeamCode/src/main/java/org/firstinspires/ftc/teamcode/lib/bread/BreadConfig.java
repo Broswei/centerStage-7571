@@ -70,7 +70,7 @@ public class BreadConfig {
         hardware.leftClaw.setDirection(Servo.Direction.REVERSE);
         hardware.rightClaw = hardwareMap.get(Servo.class, "rightClaw");
 
-        hardware.webcam = hardwareMap.get(WebcamName.class, "webcam");
+        hardware.webcamName = hardwareMap.get(WebcamName.class, "webcam");
 
         return hardware;
     }
