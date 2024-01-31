@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import android.graphics.Canvas;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -14,6 +15,7 @@ import org.opencv.core.Mat;
 
 import java.util.ArrayList;
 
+@TeleOp
 public class VisionPortalTest extends BreadTeleOp {
 
     @Override

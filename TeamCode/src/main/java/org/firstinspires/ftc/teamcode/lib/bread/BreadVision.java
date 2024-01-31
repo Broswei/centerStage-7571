@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
 
 import android.util.Size;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.CameraControl;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
@@ -30,12 +31,12 @@ public class BreadVision {
         NONE,
     }
 
-    public BreadVision (AprilTagProcessor aprilTagProcessor, TSEDetectionProcessor tseDetectionProcessor) {
+    public BreadVision (AprilTagProcessor aprilTagProcessor, TSEDetectionProcessor tseDetectionProcessor, Camera camera) {
         this.tseDetectionProcessor = tseDetectionProcessor;
         this.aprilTagProcessor = aprilTagProcessor;
 
         innerVisionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .setCamera(hardwareMap.get(WebcamName.class, "webcam"))
                 .addProcessor(aprilTagProcessor)
                 .addProcessor(tseDetectionProcessor)
                 .setCameraResolution(new Size(640, 480))

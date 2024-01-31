@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+
 public class BreadConfig {
     public static class Hardware {
         // drive related hardware not included //
@@ -26,6 +29,8 @@ public class BreadConfig {
         public Servo wristServo;
         public Servo leftClaw;
         public Servo rightClaw;
+
+        public WebcamName webcamName;
 
         public boolean complete(){   //make sure all hardware is configured (!null)
             return this.rightRail != null && this.leftRail !=null && angleAdjuster != null && launcher !=null && leftRotator != null && rightRotator != null  && leftClaw != null && rightClaw != null && wristServo !=null;
@@ -64,6 +69,8 @@ public class BreadConfig {
         hardware.leftClaw = hardwareMap.get(Servo.class, "leftClaw");
         hardware.leftClaw.setDirection(Servo.Direction.REVERSE);
         hardware.rightClaw = hardwareMap.get(Servo.class, "rightClaw");
+
+        hardware.webcam = hardwareMap.get(WebcamName.class, "webcam");
 
         return hardware;
     }

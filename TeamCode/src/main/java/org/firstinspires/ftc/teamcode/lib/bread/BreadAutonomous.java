@@ -159,7 +159,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
             telemetry.addData("error", error);
             telemetry.update();
         }
-        bread.drive.setPowers(0,0,0,02);
+        bread.drive.setPowers(0,0,0,0);
     }
 
 
