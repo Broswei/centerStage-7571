@@ -49,6 +49,10 @@ public class BreadVision {
         // TODO: do this later this is a faithful start
     }
 
+    public void setDetectingBlueTSE(boolean detectingBlue) {
+        tseDetectionProcessor.setDetectingBlue(detectingBlue);
+    }
+
     public void detectAprilTags() {
         innerVisionPortal.setProcessorEnabled(tseDetectionProcessor,false);
         innerVisionPortal.setProcessorEnabled(aprilTagProcessor,true);

@@ -28,20 +28,30 @@ public class TSEDetectionProcessor implements VisionProcessor {
     private int spikeMark = 0;
 
     public int getSpikeMark() {return spikeMark;}
-    boolean detectingBlue;
+    private boolean detectingBlue;
+
+    public boolean isReady;
 
     public TSEDetectionProcessor(boolean detectingBlue) {
         this.detectingBlue = detectingBlue;
+        isReady = true;
     }
 
     public TSEDetectionProcessor() {
         this.detectingBlue = false;
+    }
+
+    public void setDetectingBlue (boolean detectingBlue) {
+        this.detectingBlue = detectingBlue;
+        isReady = true;
     }
     @Override
     public void init(int width, int height, CameraCalibration cameraCalibration){}
 
     @Override
     public Object processFrame (Mat frame, long captureTimeNS) {
+        if(!isReady) {return null;}
+
         Imgproc.cvtColor(frame, YCbCr, Imgproc.COLOR_RGB2YCrCb);
 
         Core.extractChannel(YCbCr,redMat, 2);
@@ -76,6 +86,7 @@ public class TSEDetectionProcessor implements VisionProcessor {
 
         return value;
     }
+
 
 
     @Override

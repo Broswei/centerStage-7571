@@ -29,7 +29,7 @@ public class BreadBot {
 
         AprilTagProcessor tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
 
-        TSEDetectionProcessor tseProcessor = new TSEDetectionProcessor(false);
+        TSEDetectionProcessor tseProcessor = new TSEDetectionProcessor();
 
         vision = new BreadVision(tagProcessor, tseProcessor,hardware.webcamName);
         //load drive

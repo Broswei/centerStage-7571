@@ -27,14 +27,10 @@ public class VisionPortalTest extends BreadTeleOp {
         this.bread.launcher.putDown();
         this.bread.arm.setHandClamped();
 
-        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder().build();
-
-        TSEDetectionProcessor tseProcessor = new TSEDetectionProcessor(false);
-
-        BreadVision vision = new BreadVision(tagProcessor,tseProcessor, bread.webcamName);
+        this.bread.vision.setDetectingBlueTSE(false);
 
         // TODO: make this a breadbot thing later
-        vision.detectTSE();
+        bread.vision.detectTSE();
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -47,21 +43,21 @@ public class VisionPortalTest extends BreadTeleOp {
             }
 
             if (gamepad1.right_bumper) {
-                vision.detectAprilTags();
+                bread.vision.detectAprilTags();
             }
 
             if (gamepad1.left_bumper) {
-                vision.detectTSE();
+                bread.vision.detectTSE();
             }
 
-            if(vision.mode == BreadVision.Modes.TSE) {
-                int spikeMark = vision.getSpikeMark();
+            if(bread.vision.mode == BreadVision.Modes.TSE) {
+                int spikeMark = bread.vision.getSpikeMark();
 
                 telemetry.addData("spike mark:", spikeMark);
             }
 
-            if(vision.mode == BreadVision.Modes.APRIL_TAG) {
-                int detections = vision.getDetections().size();
+            if(bread.vision.mode == BreadVision.Modes.APRIL_TAG) {
+                int detections = bread.vision.getDetections().size();
 
                 telemetry.addData("detections:", detections);
             }
