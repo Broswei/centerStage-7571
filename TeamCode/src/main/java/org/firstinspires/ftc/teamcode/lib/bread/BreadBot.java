@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.lib.motion.PositionableMotor;
+import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionProcessor;
 import org.firstinspires.ftc.teamcode.lib.util.Imu;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 public class BreadBot {
 
@@ -16,14 +18,20 @@ public class BreadBot {
     public BreadRails rails;
     public BreadLauncher launcher;
 
-    public WebcamName webcamName;
+//    public WebcamName webcamName;
+
+    public BreadVision vision;
 
     public BreadBot(HardwareMap hardwareMap){
 
         //load hardware
         BreadConfig.Hardware hardware = BreadConfig.loadHardware(hardwareMap);
 
-        webcamName = hardware.webcamName;
+        AprilTagProcessor tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+
+        TSEDetectionProcessor tseProcessor = new TSEDetectionProcessor(false);
+
+        vision = new BreadVision(tagProcessor, tseProcessor,hardware.webcamName);
         //load drive
         drive = new BreadDrive(hardwareMap);
 

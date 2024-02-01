@@ -39,7 +39,7 @@ public class BreadVision {
                 .setCamera(camera)
                 .addProcessor(aprilTagProcessor)
                 .addProcessor(tseDetectionProcessor)
-                .setCameraResolution(new Size(640, 480))
+                .setCameraResolution(new Size(1280, 720))
                 .setStreamFormat(VisionPortal.StreamFormat.YUY2)
                 .setAutoStopLiveView(true)
                 .build();
