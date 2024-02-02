@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.lib.bread;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import android.util.Size;
+import android.view.Display;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -29,6 +31,7 @@ public class BreadVision {
         APRIL_TAG,
         TSE,
         NONE,
+        NOT_STREAMING
     }
 
     public BreadVision (AprilTagProcessor aprilTagProcessor, TSEDetectionProcessor tseDetectionProcessor, WebcamName camera) {
@@ -49,12 +52,43 @@ public class BreadVision {
         // TODO: do this later this is a faithful start
     }
 
-    public void stopProccessors () {
+    public void stopProcessors () {
+        innerVisionPortal.setProcessorEnabled(tseDetectionProcessor, false);
+        innerVisionPortal.setProcessorEnabled(aprilTagProcessor, false);
 
+        mode = Modes.NONE;
     }
 
     public void stopStreaming() {
+        stopProcessors();
+        innerVisionPortal.stopStreaming();
 
+        mode = Modes.NOT_STREAMING;
+    }
+
+    public void startStreaming(Modes startMode) {
+        if(mode != Modes.NOT_STREAMING ) {
+            throw new RuntimeException("called startStreaming while BreadVision instance was already streaming \n\n pure idiocy, check up on ur codebase");
+        }
+
+        if(startMode == Modes.NOT_STREAMING) {
+            throw new RuntimeException("Started streaming with invalid mode NOT_STREAMING");
+        }
+
+        if(startMode == Modes.APRIL_TAG) {detectAprilTags();}
+        else if(startMode == Modes.TSE) {detectTSE();}
+
+
+        innerVisionPortal.resumeStreaming();
+    }
+
+    public void startStreaming() {
+        if(mode != Modes.NOT_STREAMING) {
+            throw new RuntimeException("called startStreaming while BreadVision instance was already streaming \n\n pure idiocy, check up on ur codebase");
+        }
+
+        stopProcessors();
+        innerVisionPortal.resumeStreaming();
     }
 
     public void setDetectingBlueTSE(boolean detectingBlue) {

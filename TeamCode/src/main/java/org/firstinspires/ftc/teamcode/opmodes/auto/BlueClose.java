@@ -26,7 +26,7 @@ public class BlueClose extends BreadAutonomous {
                 this.bread.arm.setHandClamped();
             }
 
-            spikeMark = pipeline.getSpikeMark();
+            spikeMark = bread.vision.getSpikeMark();
             if (spikeMark != 0){
                 found = true;
             }

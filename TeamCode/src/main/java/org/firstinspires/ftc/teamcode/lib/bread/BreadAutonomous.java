@@ -55,19 +55,25 @@ public abstract class BreadAutonomous extends BreadOpMode {
     public void setup(boolean detectingBlue) {
 
         initialize(hardwareMap);
-        camera = createCamera("webcam");
-        pipeline = new TSEDetectionPipeline(detectingBlue);
-        camera.setPipeline(pipeline);
+//       camera = createCamera("webcam");
+//       pipeline = new TSEDetectionPipeline(detectingBlue);
+//       camera.setPipeline(pipeline);
         //initAprilTag();
 
         openCameraAndStreamAsync();
         //setManualExposure(6,250);
+
+        this.bread.vision.startStreaming(BreadVision.Modes.NONE);
 
         this.bread.launcher.putDown();
         this.bread.arm.setRotatorAngleDegrees(0);
         this.bread.arm.setRestPos();
 
         this.bread.arm.updateArm();
+
+    }
+
+    public void detectionLoop () {
 
     }
 

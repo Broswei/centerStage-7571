@@ -29,7 +29,7 @@ public class RedClose extends BreadAutonomous {
                 this.bread.arm.setHandClamped();
             }
 
-            spikeMark = pipeline.getSpikeMark();
+            spikeMark = bread.vision.getSpikeMark();
             if (spikeMark != 0){
                 found = true;
             }
@@ -44,6 +44,7 @@ public class RedClose extends BreadAutonomous {
         }
 
         closeCameraAsync();
+        bread.vision.stopProcessors(); // TODO: change to detectAprilTag ltr;
         //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
         if (this.spikeMark == 2) {
             aprilTag = 5;
