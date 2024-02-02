@@ -60,10 +60,10 @@ public abstract class BreadAutonomous extends BreadOpMode {
 //       camera.setPipeline(pipeline);
         //initAprilTag();
 
-        openCameraAndStreamAsync();
+//        openCameraAndStreamAsync();
         //setManualExposure(6,250);
 
-        this.bread.vision.startStreaming(BreadVision.Modes.NONE);
+        this.bread.vision.startStreaming();
 
         this.bread.launcher.putDown();
         this.bread.arm.setRotatorAngleDegrees(0);

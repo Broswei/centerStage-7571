@@ -41,7 +41,7 @@ public class RedFar extends BreadAutonomous {
             telemetry.update();
         }
 
-        closeCameraAsync();
+//        closeCameraAsync();
         bread.vision.stopProcessors(); // change to detectAprilTags later
         //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
         if (this.spikeMark == 2) {

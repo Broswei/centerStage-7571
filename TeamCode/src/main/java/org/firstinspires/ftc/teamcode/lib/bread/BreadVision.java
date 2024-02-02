@@ -77,7 +77,7 @@ public class BreadVision {
 
         if(startMode == Modes.APRIL_TAG) {detectAprilTags();}
         else if(startMode == Modes.TSE) {detectTSE();}
-
+        else stopProcessors();
 
         innerVisionPortal.resumeStreaming();
     }

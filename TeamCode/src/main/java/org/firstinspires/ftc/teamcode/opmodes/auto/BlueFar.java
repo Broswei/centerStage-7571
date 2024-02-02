@@ -42,7 +42,8 @@ public class BlueFar extends BreadAutonomous {
             telemetry.update();
         }
 
-        closeCameraAsync();
+//        closeCameraAsync();
+        bread.vision.stopProcessors();
         if (this.spikeMark == 2) {
             aprilTag = 2;
             strafeDistance(-6,2000,opModeIsActive());
