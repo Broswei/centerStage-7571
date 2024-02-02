@@ -30,9 +30,9 @@ public class BreadLauncher {
      * @brief FIRE IN THE HOLE!
      */
     public void launch(){
-        launcher.setPosition(0.53);
+        launcher.setPosition(0);
     }
-    public void release(){launcher.setPosition(0);}
+    public void release(){launcher.setPosition(0.53);}
 
     public void climb(){angleAdjuster.setPosition(BreadConstants.LAUNCH_DOWN);}
 
