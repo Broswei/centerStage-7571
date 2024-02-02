@@ -12,10 +12,14 @@ public class RedClose extends BreadAutonomous {
 
     private int aprilTag;
 
+
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         setup(false);
+
+        this.bread.vision.setDetectingBlueTSE(false);
 
         boolean found = false;
 

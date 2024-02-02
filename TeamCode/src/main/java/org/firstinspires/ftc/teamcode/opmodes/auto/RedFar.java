@@ -17,6 +17,8 @@ public class RedFar extends BreadAutonomous {
 
         setup(false);
 
+        this.bread.vision.setDetectingBlueTSE(false);
+
         boolean found = false;
 
         while (!isStarted()){

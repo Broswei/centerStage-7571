@@ -16,6 +16,8 @@ public class BlueClose extends BreadAutonomous {
 
         setup(true);
 
+        this.bread.vision.setDetectingBlueTSE(true);
+
         boolean found = false;
 
         while (!isStarted()){

@@ -49,6 +49,14 @@ public class BreadVision {
         // TODO: do this later this is a faithful start
     }
 
+    public void stopProccessors () {
+
+    }
+
+    public void stopStreaming() {
+
+    }
+
     public void setDetectingBlueTSE(boolean detectingBlue) {
         tseDetectionProcessor.setDetectingBlue(detectingBlue);
     }
