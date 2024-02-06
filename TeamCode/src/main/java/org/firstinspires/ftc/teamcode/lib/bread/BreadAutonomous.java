@@ -112,6 +112,26 @@ public abstract class BreadAutonomous extends BreadOpMode {
         });
     }
 
+    public void alignToAprilTag (int id, double distance, int maxTime) {
+        double error = Double.POSITIVE_INFINITY;
+        double time = getGlobalTimeSeconds();
+
+
+        while (error > 0.2 && getGlobalTimeSeconds()-time < maxTime) {
+            error = moveTowardAprilTag(id, distance);
+        }
+    }
+
+    public void alignToAprilTag (double distance, int maxTime) {
+        double error = Double.POSITIVE_INFINITY;
+        double time = getGlobalTimeSeconds();
+
+
+        while (error > 0.2 && getGlobalTimeSeconds()-time < maxTime) {
+            error = moveTowardAprilTag(distance);
+        }
+    }
+
     public void strafeDistance(double distanceIn, int velocity, boolean isRunning) {
         timer.reset();
         ticks = (-distanceIn / (Math.PI * (2* DriveConstants.WHEEL_RADIUS)) * ticksPerRotation*1.1);

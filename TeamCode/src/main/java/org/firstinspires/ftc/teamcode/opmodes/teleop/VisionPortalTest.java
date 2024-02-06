@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadTeleOp;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadVision;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionProcessor;
@@ -58,6 +59,10 @@ public class VisionPortalTest extends BreadTeleOp {
 
             if(bread.vision.mode == BreadVision.Modes.APRIL_TAG) {
                 int detections = bread.vision.getDetections().size();
+
+                if(gamepad1.y) {
+                    moveTowardAprilTag(BreadConstants.DESIRED_DISTANCE);
+                }
 
                 telemetry.addData("detections:", detections);
             }

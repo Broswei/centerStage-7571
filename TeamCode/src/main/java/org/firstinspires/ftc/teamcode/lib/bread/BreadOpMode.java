@@ -80,10 +80,10 @@ public abstract class BreadOpMode extends LinearOpMode {
         gamepadEx2.updateControllerStates();
     }
 
-    public void moveTowardAprilTag(int tagId, double distance) {
+    public double moveTowardAprilTag(int tagId, double distance) {
         ArrayList<AprilTagDetection> detections = bread.vision.getDetections();
 
-        if(detections.size() == 0) return;
+        if(detections.size() == 0) return 0;
 
         AprilTagDetection desiredTag = null;
 
@@ -95,7 +95,7 @@ public abstract class BreadOpMode extends LinearOpMode {
             break;
         }
 
-        if (desiredTag != null) { return; }
+        if (desiredTag != null) { return 0; }
 
         double  rangeError      = (desiredTag.ftcPose.range - distance);
         double  headingError    = desiredTag.ftcPose.bearing;
@@ -108,12 +108,14 @@ public abstract class BreadOpMode extends LinearOpMode {
 
         bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,turn);
 
+        return (rangeError + yawError + headingError) * 0.333333;
+
     }
 
-    public void moveToAprilTag (double distance) {
+    public double moveTowardAprilTag (double distance) {
         ArrayList<AprilTagDetection> detections = bread.vision.getDetections();
 
-        if(detections.size() == 0) return;
+        if(detections.size() == 0) return 0;
 
         AprilTagDetection desiredTag = detections.get(0);
 
@@ -127,5 +129,7 @@ public abstract class BreadOpMode extends LinearOpMode {
         double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
 
         bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,turn);
+
+        return (rangeError + yawError + headingError) * 0.333333;
     }
 }
