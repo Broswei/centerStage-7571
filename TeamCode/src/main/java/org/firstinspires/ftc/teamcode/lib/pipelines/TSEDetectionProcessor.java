@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.lib.pipelines;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.telecom.VideoProfile;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -24,6 +26,10 @@ public class TSEDetectionProcessor implements VisionProcessor {
     Rect rectLeft = new Rect (1, 200, 426, 479); // right
     Rect rectMiddle = new Rect (457, 200, 366, 479); // middle
     Rect rectRight = new Rect (853, 200, 426, 479); // left
+
+    public double scoreLeft;
+    public double scoreMiddle;
+    public double scoreRight;
 
     private int spikeMark = 0;
 
@@ -57,9 +63,9 @@ public class TSEDetectionProcessor implements VisionProcessor {
         Core.extractChannel(YCbCr,redMat, 2);
         Core.extractChannel(YCbCr,blueMat, 1);
 
-        double scoreLeft   = getTSEValue(blueMat,redMat,rectLeft);
-        double scoreMiddle = getTSEValue(blueMat,redMat,rectMiddle);
-        double scoreRight  = getTSEValue(blueMat,redMat,rectRight);
+        scoreLeft   = getTSEValue(blueMat,redMat,rectLeft);
+        scoreMiddle = getTSEValue(blueMat,redMat,rectMiddle);
+        scoreRight  = getTSEValue(blueMat,redMat,rectRight);
 
         if(scoreLeft > scoreMiddle && scoreLeft > scoreRight) {
             spikeMark = 1;
@@ -78,7 +84,7 @@ public class TSEDetectionProcessor implements VisionProcessor {
         blueSubmat = blueInput.submat(area);
         redSubmat = redInput.submat(area);
 
-        double value = Core.mean(redSubmat).val[0] - Core.mean(blueSubmat).val[0];
+        double value =  Core.mean(blueSubmat).val[0] - Core.mean(redSubmat).val[0];
 
         if(detectingBlue) value *= -1;
 
@@ -88,5 +94,24 @@ public class TSEDetectionProcessor implements VisionProcessor {
 
 
     @Override
-    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {}
+    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
+        Paint rectPaint = new Paint();
+        rectPaint.setColor(Color.RED);
+        rectPaint.setStyle(Paint.Style.STROKE);
+        rectPaint.setStrokeWidth(scaleCanvasDensity * 4);
+
+        canvas.drawRect(makeGraphicsRect(rectLeft, scaleBmpPxToCanvasPx), rectPaint);
+        canvas.drawRect(makeGraphicsRect(rectMiddle, scaleBmpPxToCanvasPx), rectPaint);
+        canvas.drawRect(makeGraphicsRect(rectRight, scaleBmpPxToCanvasPx), rectPaint);
+    }
+
+    private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
+        int left = Math.round(rect.x * scaleBmpPxToCanvasPx);
+        int top = Math.round(rect.y * scaleBmpPxToCanvasPx);
+        int right = left + Math.round(rect.width * scaleBmpPxToCanvasPx);
+        int bottom = top + Math.round(rect.height * scaleBmpPxToCanvasPx);
+
+        return new android.graphics.Rect(left, top, right, bottom);
+    }
+
 }

@@ -105,6 +105,18 @@ public class BreadDrive {
         double bl = forward - strafe + rotate;
         double br = forward + strafe - rotate;
 
+
+        double largestPower = Math.max(fl, fr);
+        largestPower = Math.max(br, largestPower);
+        largestPower = Math.max(br, largestPower);
+
+        if(largestPower > 1) {
+            fl /= largestPower;
+            fr /= largestPower;
+            bl /= largestPower;
+            br /= largestPower;
+        }
+
         roadrunnerDrive.setMotorPowers(0.83*fl, bl, br, 0.83*fr);
     }
 

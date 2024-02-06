@@ -10,8 +10,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.util.GamepadEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.Range;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BreadOpMode extends LinearOpMode {
@@ -74,5 +78,54 @@ public abstract class BreadOpMode extends LinearOpMode {
     public void updateControllerStates(){
         gamepadEx1.updateControllerStates();
         gamepadEx2.updateControllerStates();
+    }
+
+    public void moveTowardAprilTag(int tagId, double distance) {
+        ArrayList<AprilTagDetection> detections = bread.vision.getDetections();
+
+        if(detections.size() == 0) return;
+
+        AprilTagDetection desiredTag = null;
+
+        for (AprilTagDetection detection:detections) {
+            if (detection.id != tagId) { continue; }
+
+            desiredTag = detection;
+
+            break;
+        }
+
+        if (desiredTag != null) { return; }
+
+        double  rangeError      = (desiredTag.ftcPose.range - distance);
+        double  headingError    = desiredTag.ftcPose.bearing;
+        double  yawError        = desiredTag.ftcPose.yaw;
+
+        // Use the speed and turn "gains" to calculate how we want the robot to move.
+        double drive  = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -1, 1);
+        double turn   = Range.clip(headingError * BreadConstants.TURN_GAIN, -1, 1);
+        double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
+
+        bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,turn);
+
+    }
+
+    public void moveToAprilTag (double distance) {
+        ArrayList<AprilTagDetection> detections = bread.vision.getDetections();
+
+        if(detections.size() == 0) return;
+
+        AprilTagDetection desiredTag = detections.get(0);
+
+        double  rangeError      = (desiredTag.ftcPose.range - distance);
+        double  headingError    = desiredTag.ftcPose.bearing;
+        double  yawError        = desiredTag.ftcPose.yaw;
+
+        // Use the speed and turn "gains" to calculate how we want the robot to move.
+        double drive  = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -1, 1);
+        double turn   = Range.clip(headingError * BreadConstants.TURN_GAIN, -1, 1);
+        double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
+
+        bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,turn);
     }
 }

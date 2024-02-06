@@ -38,6 +38,10 @@ public class BlueFar extends BreadAutonomous {
                 telemetry.addData("Spike Mark: ", spikeMark);
             }
 
+            telemetry.addData("left score: ", bread.vision.tseDetectionProcessor.scoreLeft);
+            telemetry.addData("mid score: ", bread.vision.tseDetectionProcessor.scoreMiddle);
+            telemetry.addData("right score: ", bread.vision.tseDetectionProcessor.scoreRight);
+
             telemetry.addData("Status: ", "Initialized");
             telemetry.update();
         }

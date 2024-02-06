@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class BreadVision {
 
-    AprilTagProcessor aprilTagProcessor;
-    TSEDetectionProcessor tseDetectionProcessor;
+    public AprilTagProcessor aprilTagProcessor;
+    public TSEDetectionProcessor tseDetectionProcessor;
     VisionPortal innerVisionPortal;
 
     public Modes mode = Modes.NONE;
