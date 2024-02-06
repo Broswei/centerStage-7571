@@ -31,9 +31,9 @@ public class BreadBot {
 
         TSEDetectionProcessor tseProcessor = new TSEDetectionProcessor();
 
-        vision = new BreadVision(tagProcessor, tseProcessor,hardware.webcamName);
+        vision = new BreadVision(tagProcessor, tseProcessor, hardware.webcamName);
 
-        vision.stopStreaming();
+//      vision.stopStreaming();
         //load drive
         drive = new BreadDrive(hardwareMap);
 

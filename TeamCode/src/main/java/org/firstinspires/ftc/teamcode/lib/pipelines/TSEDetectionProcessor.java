@@ -63,15 +63,13 @@ public class TSEDetectionProcessor implements VisionProcessor {
 
         if(scoreLeft > scoreMiddle && scoreLeft > scoreRight) {
             spikeMark = 1;
-            return null;
         }
 
-        if(scoreMiddle > scoreRight) {
+        else if(scoreMiddle > scoreRight && scoreMiddle > scoreLeft) {
             spikeMark = 2;
-            return null;
         }
 
-        spikeMark = 3;
+        else if (scoreRight > scoreLeft && scoreRight > scoreMiddle){ spikeMark = 3; }
 
         return null;
     }
