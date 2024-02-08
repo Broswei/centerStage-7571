@@ -23,9 +23,9 @@ public class TSEDetectionProcessor implements VisionProcessor {
 
 
 
-    Rect rectLeft = new Rect (1, 200, 426, 479); // right
-    Rect rectMiddle = new Rect (457, 200, 366, 479); // middle
-    Rect rectRight = new Rect (853, 200, 426, 479); // left
+    Rect rectLeft = new Rect (1, 200, 426, 279); // right
+    Rect rectMiddle = new Rect (457, 200, 366, 279); // middle
+    Rect rectRight = new Rect (853, 200, 426, 279); // left
 
     public double scoreLeft;
     public double scoreMiddle;
