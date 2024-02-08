@@ -68,17 +68,17 @@ public class VisionPortalTest extends BreadTeleOp {
             }
 
 
+            if(!gamepad1.y) {
+                double forward = Range.clip(-gamepad1.left_stick_y, -1, 1);
+                double strafe = Range.clip(gamepad1.left_stick_x, -1, 1);
+                double rotate = Range.clip(gamepad1.right_stick_x, -1, 1);
 
-            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1);
-            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1);
-            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1);
+                double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
+                forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
+                strafe = temp;
 
-            double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
-            forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
-            strafe = temp;
-
-            this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
-
+                this.bread.drive.noRoadRunnerDriveFieldOriented(forward, strafe, rotate);
+            }
 
             telemetry.update();
         }
