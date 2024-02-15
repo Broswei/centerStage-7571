@@ -27,7 +27,12 @@ public class BreadBot {
         //load hardware
         BreadConfig.Hardware hardware = BreadConfig.loadHardware(hardwareMap);
 
-        AprilTagProcessor tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+                .setDrawTagID(true)
+                .setDrawAxes(true)
+                .setDrawCubeProjection(true)
+                .setDrawTagOutline(true)
+                .build();
 
         TSEDetectionProcessor tseProcessor = new TSEDetectionProcessor();
 
