@@ -83,7 +83,10 @@ public abstract class BreadOpMode extends LinearOpMode {
     public double moveTowardAprilTag(int tagId, double distance) {
         ArrayList<AprilTagDetection> detections = bread.vision.getDetections();
 
-        if(detections.size() == 0) return 0;
+        if(detections.size() == 0) {
+            bread.drive.noRoadRunnerDriveFieldOriented(0,0,0);
+            return 0;
+        }
 
         AprilTagDetection desiredTag = null;
 
@@ -95,7 +98,11 @@ public abstract class BreadOpMode extends LinearOpMode {
             break;
         }
 
-        if (desiredTag != null) { return 0; }
+        if (desiredTag != null) {
+            bread.drive.noRoadRunnerDriveFieldOriented(0,0,0);
+
+            return 0;
+        }
 
         double  rangeError      = (desiredTag.ftcPose.range - distance);
         double  headingError    = desiredTag.ftcPose.bearing;
@@ -104,9 +111,18 @@ public abstract class BreadOpMode extends LinearOpMode {
         // Use the speed and turn "gains" to calculate how we want the robot to move.
         double drive  = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -1, 1);
         double turn   = Range.clip(headingError * BreadConstants.TURN_GAIN, -1, 1);
-        double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
+        double strafe = Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
 
-        bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,turn);
+        // when in doubt, slap a sqrt ccurve on it
+        drive = Math.signum(drive) * Math.sqrt(Math.abs(drive));
+        turn = Math.signum(turn) * Math.sqrt(Math.abs(turn));
+        strafe = Math.signum(strafe) * Math.sqrt(Math.abs(strafe));
+
+        bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,0);
+
+        telemetry.addData("fwd:", drive);
+        telemetry.addData("rot:", turn);
+        telemetry.addData("strafe:", strafe);
 
         return (rangeError + yawError + headingError) * 0.333333;
 
@@ -115,7 +131,10 @@ public abstract class BreadOpMode extends LinearOpMode {
     public double moveTowardAprilTag (double distance) {
         ArrayList<AprilTagDetection> detections = bread.vision.getDetections();
 
-        if(detections.size() == 0) return 0;
+        if(detections.size() == 0) {
+            bread.drive.noRoadRunnerDriveFieldOriented(0,0,0);
+            return 0;
+        }
 
         AprilTagDetection desiredTag = detections.get(0);
 
@@ -126,9 +145,19 @@ public abstract class BreadOpMode extends LinearOpMode {
         // Use the speed and turn "gains" to calculate how we want the robot to move.
         double drive  = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -1, 1);
         double turn   = Range.clip(headingError * BreadConstants.TURN_GAIN, -1, 1);
-        double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
+        double strafe = Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
 
-        bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,turn);
+        // when in doubt, slap a sqrt curve on it
+        drive = Math.signum(drive) * Math.sqrt(Math.abs(drive));
+        turn = Math.signum(turn) * Math.sqrt(Math.abs(turn));
+        strafe = Math.signum(strafe) * Math.sqrt(Math.abs(strafe));
+
+
+        bread.drive.noRoadRunnerDriveFieldOriented(drive,strafe,0);
+
+        telemetry.addData("fwd:", drive);
+        telemetry.addData("rot:", turn);
+        telemetry.addData("strafe:", strafe);
 
         return (rangeError + yawError + headingError) * 0.333333;
     }

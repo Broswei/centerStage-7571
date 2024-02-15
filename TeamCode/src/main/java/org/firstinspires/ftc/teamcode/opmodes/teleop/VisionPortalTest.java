@@ -31,7 +31,7 @@ public class VisionPortalTest extends BreadTeleOp {
         this.bread.vision.setDetectingBlueTSE(false);
 
         // TODO: make this a breadbot thing later
-        bread.vision.detectTSE();
+        bread.vision.detectAprilTags();
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -65,6 +65,8 @@ public class VisionPortalTest extends BreadTeleOp {
                 }
 
                 telemetry.addData("detections:", detections);
+
+
             }
 
 
