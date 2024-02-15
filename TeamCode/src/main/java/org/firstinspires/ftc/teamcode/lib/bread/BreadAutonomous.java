@@ -159,7 +159,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
         bread.drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         bread.drive.setMotorVelocities(velocity);
 
-        if (Math.abs(distanceIn) <= 4){
+        if (Math.abs(distanceIn) <= 6){
             timer.reset();
             while (opModeIsActive() && bread.drive.isRegBusy() && timer.seconds() < 2) {
             }

@@ -78,7 +78,7 @@ public class BlueFar extends BreadAutonomous {
         }
         else if (this.spikeMark == 3){
             aprilTag = 3;
-            strafeDistance(-14,1750,opModeIsActive());
+            strafeDistance(-12.5,1750,opModeIsActive());
             driveDistance(48, 1500, opModeIsActive());
             bread.arm.setPickUpPos();
             sleep(1000);

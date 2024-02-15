@@ -34,7 +34,7 @@ public class BreadConstants {
 
     public static double ROT_NORM_DEPO_ANG = 190;
 
-    public static double ROT_LOW_DEPO_ANG = 206;
+    public static double ROT_LOW_DEPO_ANG = 200;
 
     public static double ROT_P_GAIN  = 0.007;
     public static double ROT_I_GAIN = 0;
@@ -53,7 +53,7 @@ public class BreadConstants {
     // wrist related... //
     public static double WRIST_DEPO_POS = 0.4;
 
-    public static double WRIST_LOW_POS = 0.30;
+    public static double WRIST_LOW_POS = 0.32;
     public static double WRIST_REST_POS = 0.34;
 
     // not used ATM, but will be;

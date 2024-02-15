@@ -21,7 +21,6 @@ public class AdvancedDrive extends BreadTeleOp {
         setup();
         this.bread.arm.setRestPos();
         this.bread.arm.setRotatorAngleDegrees(0);
-        this.bread.launcher.putDown();
         this.bread.arm.setHandClamped();
 
         telemetry.addData("Status", "Initialized");

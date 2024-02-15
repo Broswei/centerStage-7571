@@ -48,15 +48,17 @@ public class RedCloseAhmedCertifiedNumTwo extends BreadAutonomous {
         if (this.spikeMark == 2) {
             aprilTag = 5;
             driveDistance(36, 2000, opModeIsActive());
-//            aimForYellow();
-            sleep(3500);
+            sleep(1000);
+            turnNoPID(-80,2);
+            driveDistance(8,2000,opModeIsActive());
+            bread.arm.setPickUpPos();
+            sleep(1000);
             bread.arm.setRightUnclamped();
             sleep(1000);
+            bread.arm.setRestPos();
             bread.arm.setRightClamped();
-//            driveDistance(9,2000,opModeIsActive());
-//            turnNoPID(-80,3);
-//            driveDistance(28, 2000, opModeIsActive());
-//            sleep(1000);
+            strafeDistance(-8,2000,opModeIsActive());
+            driveDistance(20,2000,opModeIsActive());
         }
         else{
             driveDistance(18, 2000, opModeIsActive());

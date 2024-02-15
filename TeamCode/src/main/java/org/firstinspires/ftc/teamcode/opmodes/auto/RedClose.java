@@ -48,7 +48,7 @@ public class RedClose extends BreadAutonomous {
         //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
         if (this.spikeMark == 2) {
             aprilTag = 5;
-            driveDistance(9, 2000, opModeIsActive());
+            driveDistance(9.5, 2000, opModeIsActive());
             aimForYellow();
             sleep(3500);
             bread.arm.setRightUnclamped();
@@ -60,8 +60,8 @@ public class RedClose extends BreadAutonomous {
             sleep(1000);
         }
         else{
-            driveDistance(18, 2000, opModeIsActive());
-            turnNoPID(-80,3);
+            driveDistance(21, 2000, opModeIsActive());
+            turnNoPID(-85,3);
             bread.arm.setPickUpPos();
             if (this.spikeMark == 1){
                 aprilTag = 4;
@@ -69,16 +69,14 @@ public class RedClose extends BreadAutonomous {
                 bread.arm.setRightUnclamped();
                 bread.drive.setPowers(0,0,0,0);
                 sleep(1000);
-                driveDistance(22, 2000,opModeIsActive());
+                driveDistance(24, 2000,opModeIsActive());
                 bread.arm.setRightClamped();
                 aimForYellow();
                 sleep(3500);
-                turnToPID(-90,2);
-                strafeDistance(14,2000,opModeIsActive());
             }
             else if (this.spikeMark == 3){
                 aprilTag = 6;
-                driveDistance(22, 2000, opModeIsActive());
+                driveDistance(24, 2000, opModeIsActive());
                 strafeDistance(8,2000,opModeIsActive());
                 bread.arm.setRightUnclamped();
                 bread.drive.setPowers(0,0,0,0);
@@ -87,10 +85,8 @@ public class RedClose extends BreadAutonomous {
                 bread.arm.setRightClamped();
                 aimForYellow();
                 sleep(3500);
+                strafeDistance(-30,2000,opModeIsActive());
                 driveDistance(4,2000,opModeIsActive());
-                strafeDistance(-20,2000,opModeIsActive());
-                turnToPID(80,3);
-
                 sleep(1000);
             }
         }
@@ -103,17 +99,18 @@ public class RedClose extends BreadAutonomous {
         bread.arm.bringHome();
         bread.arm.setLeftClamped();
         bread.arm.setRestPos();
-        turnToPID(45,2);
+        turnNoPID(-90,2);
         if (this.spikeMark == 3){
             driveDistance(13, 2000, opModeIsActive());
         }
         else if (this.spikeMark == 1){
-            driveDistance(32, 2000, opModeIsActive());
+            driveDistance(30, 2000, opModeIsActive());
         }
         else{
-            driveDistance(19, 2000, opModeIsActive());
+            driveDistance(22, 2000, opModeIsActive());
         }
         strafeDistance(20, 2000, opModeIsActive());
+        driveDistance(6,2000,opModeIsActive());
 
         while (opModeIsActive()){
 

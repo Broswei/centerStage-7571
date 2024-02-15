@@ -80,9 +80,9 @@ public abstract class BreadTeleOp extends BreadOpMode {
             this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
 
         } else if (gamepad1.right_trigger > 0.01) {
-            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * (2-0.3)*0.3;
-            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1) * (2-0.45)*0.45;
-            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1) * (2-0.3)*0.3;
+            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * 0.3;
+            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1) * 0.45;
+            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1) *0.3;
 
             double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
             forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
@@ -91,9 +91,9 @@ public abstract class BreadTeleOp extends BreadOpMode {
             this.bread.drive.noRoadRunnerDriveFieldOriented(forward,strafe,rotate);
 
         } else {
-            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * (2-0.8)*0.8;
-            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1) * (2-0.9)*0.9;
-            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1) * (2-0.5)*0.5;
+            double forward = Range.clip(-gamepad1.left_stick_y, -1, 1) * 0.8;
+            double strafe = Range.clip(gamepad1.left_stick_x, -1, 1) * 0.9;
+            double rotate = Range.clip(gamepad1.right_stick_x, -1, 1) * 0.5;
 
             double temp = strafe * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset);
             forward = -strafe * Math.sin(super.bread.imu.getAngleRadians() - gyroOffset) + forward * Math.cos(super.bread.imu.getAngleRadians() - gyroOffset);
@@ -133,9 +133,9 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 //controller states
 
                 boolean climb = gamepadEx2.y_pressed;
+                boolean resetArm = gamepadEx2.x_pressed;
                 boolean switchTowers = gamepadEx2.b_pressed;
-                boolean launching = gamepad2.left_trigger > 0.05;
-                boolean aimPlane = gamepadEx2.x_pressed;
+                boolean launching = gamepad2.left_trigger > 0.5;
                 boolean openWideMF = gamepad2.right_trigger > 0.05;
                 boolean switchMode = gamepadEx2.a_pressed;
                 boolean swingSwang = gamepadEx2.right_bumper_pressed;
@@ -156,12 +156,16 @@ public abstract class BreadTeleOp extends BreadOpMode {
                     this.bread.arm.setRestPos();
                 }
 
-                if (climb) {
+                if (climb && !climbed) {
                     this.bread.arm.setRotatorAngleDegrees(148);
                     this.bread.launcher.climb();
                     this.bread.rails.rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS,BreadConstants.TOWERS_NORM_VELOCITY);
                     climbed = true;
                     needToGoDown=false;
+                }
+
+                if (resetArm){
+                    this.bread.arm.setRotatorAngleDegrees(BreadConstants.ROT_DEFAULT_DEGREES);
                 }
 
                 if (switchTowers) {
@@ -178,16 +182,6 @@ public abstract class BreadTeleOp extends BreadOpMode {
                     this.bread.launcher.launch();
                 } else {
                     this.bread.launcher.release();
-                }
-                if (aimPlane) {
-                    if (!aiming){
-                        this.bread.launcher.readyAim();
-                        aiming = true;
-                    }
-                    else{
-                        this.bread.launcher.putDown();
-                        aiming = false;
-                    }
                 }
 
                 if (switchMode) {
