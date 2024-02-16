@@ -57,6 +57,8 @@ public class RedCloseAhmedCertifiedNumTwo extends BreadAutonomous {
             sleep(1000);
             bread.arm.setRestPos();
             bread.arm.setRightClamped();
+            aimForYellow();
+            sleep(3500);
             strafeDistance(-8,2000,opModeIsActive());
             driveDistance(20,2000,opModeIsActive());
         }
