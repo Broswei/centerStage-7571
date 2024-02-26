@@ -9,6 +9,8 @@ import android.view.Display;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.CameraControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionPipeline;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -17,15 +19,19 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class BreadVision {
 
     public AprilTagProcessor aprilTagProcessor;
     public TSEDetectionProcessor tseDetectionProcessor;
+
+    public ExposureControl exposureController;
+    public GainControl gainController;
     VisionPortal innerVisionPortal;
 
-    public Modes mode = Modes.NONE;
+    public static Modes mode = Modes.NONE;
 
     public enum Modes {
         APRIL_TAG,
@@ -47,9 +53,30 @@ public class BreadVision {
                 .setAutoStopLiveView(true)
                 .build();
 
-
+        this.exposureController = innerVisionPortal.getCameraControl(ExposureControl.class);
+        this.gainController = innerVisionPortal.getCameraControl(GainControl.class);
 
         // TODO: do this later this is a faithful start
+    }
+
+    public void setExposure (int exposure, TimeUnit unit) {
+        exposureController.setExposure(exposure, unit);
+    }
+    public long getExposure (TimeUnit unit) {
+        return exposureController.getExposure(unit);
+    }
+    public void setExposureMode (ExposureControl.Mode mode) {
+        exposureController.setMode(mode);
+    }
+
+    public ExposureControl.Mode getExposureMode() {
+        return exposureController.getMode();
+    }
+    public void setGain(int gain) {
+        gainController.setGain(gain);
+    }
+    public int getGain() {
+        return gainController.getGain();
     }
 
     public void stopProcessors () {

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadTeleOp;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.opencv.core.Mat;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 @TeleOp
 public class VisionPortalTest extends BreadTeleOp {
@@ -37,6 +39,10 @@ public class VisionPortalTest extends BreadTeleOp {
         telemetry.update();
 
         waitForStart();
+
+        bread.vision.setExposureMode(ExposureControl.Mode.Manual);
+        bread.vision.setExposure(6, TimeUnit.MILLISECONDS);
+        bread.vision.setGain(250);
 
         while(!isStopRequested() && opModeIsActive()) {
             if (gamepad1.y) {
