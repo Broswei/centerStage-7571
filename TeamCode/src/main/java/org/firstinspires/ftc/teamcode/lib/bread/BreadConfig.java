@@ -52,8 +52,8 @@ public class BreadConfig {
         hardware.leftRail = hardwareMap.get(DcMotorEx.class, "leftRail");
         hardware.rightRail = hardwareMap.get(DcMotorEx.class, "rightRail");
 
-        hardware.leftRail.setDirection(DcMotorSimple.Direction.FORWARD);
-        hardware.rightRail.setDirection(DcMotorSimple.Direction.FORWARD);
+        hardware.leftRail.setDirection(DcMotorSimple.Direction.REVERSE);
+        hardware.rightRail.setDirection(DcMotorSimple.Direction.REVERSE);
 
         hardware.leftRotator = hardwareMap.get(DcMotorEx.class, "leftRotator");
         hardware.rightRotator = hardwareMap.get(DcMotorEx.class, "rightRotator");
