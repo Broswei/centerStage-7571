@@ -53,10 +53,14 @@ public class BreadVision {
                 .setAutoStopLiveView(true)
                 .build();
 
-        this.exposureController = innerVisionPortal.getCameraControl(ExposureControl.class);
-        this.gainController = innerVisionPortal.getCameraControl(GainControl.class);
+
 
         // TODO: do this later this is a faithful start
+    }
+
+    public void createControllers () {
+        this.exposureController = innerVisionPortal.getCameraControl(ExposureControl.class);
+        this.gainController = innerVisionPortal.getCameraControl(GainControl.class);
     }
 
     public void setExposure (int exposure, TimeUnit unit) {
