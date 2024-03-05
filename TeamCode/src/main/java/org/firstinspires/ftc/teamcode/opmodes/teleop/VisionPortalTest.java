@@ -36,10 +36,8 @@ public class VisionPortalTest extends BreadTeleOp {
         // TODO: make this a breadbot thing later
         bread.vision.detectAprilTags();
 
-        while (bread.vision.innerVisionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {}
 
-        bread.vision.createControllers();
-
+        // phoenix wuz here
         bread.vision.setExposureMode(ExposureControl.Mode.Manual);
         bread.vision.setExposure(6, TimeUnit.MILLISECONDS);
         bread.vision.setGain(250);

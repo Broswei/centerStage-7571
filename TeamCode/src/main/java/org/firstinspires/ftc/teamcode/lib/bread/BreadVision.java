@@ -54,6 +54,10 @@ public class BreadVision {
                 .build();
 
 
+        while (innerVisionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {}
+
+        createControllers();
+
 
         // TODO: do this later this is a faithful start
     }
