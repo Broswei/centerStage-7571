@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.lib.bread.BreadConstants;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadTeleOp;
 import org.firstinspires.ftc.teamcode.lib.bread.BreadVision;
 import org.firstinspires.ftc.teamcode.lib.pipelines.TSEDetectionProcessor;
+import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.opencv.core.Mat;
@@ -35,14 +36,19 @@ public class VisionPortalTest extends BreadTeleOp {
         // TODO: make this a breadbot thing later
         bread.vision.detectAprilTags();
 
+        while (bread.vision.innerVisionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {}
+
+        bread.vision.createControllers();
+
+        bread.vision.setExposureMode(ExposureControl.Mode.Manual);
+        bread.vision.setExposure(6, TimeUnit.MILLISECONDS);
+        bread.vision.setGain(250);
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         waitForStart();
 
-        bread.vision.setExposureMode(ExposureControl.Mode.Manual);
-        bread.vision.setExposure(6, TimeUnit.MILLISECONDS);
-        bread.vision.setGain(250);
 
         while(!isStopRequested() && opModeIsActive()) {
             if (gamepad1.y) {

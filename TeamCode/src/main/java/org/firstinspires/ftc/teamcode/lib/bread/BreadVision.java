@@ -29,7 +29,7 @@ public class BreadVision {
 
     public ExposureControl exposureController;
     public GainControl gainController;
-    VisionPortal innerVisionPortal;
+    public VisionPortal innerVisionPortal;
 
     public static Modes mode = Modes.NONE;
 
