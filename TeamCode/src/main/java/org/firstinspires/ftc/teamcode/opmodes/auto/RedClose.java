@@ -48,16 +48,21 @@ public class RedClose extends BreadAutonomous {
         //hi - saeid (random 13406 member that definitely isn't the captain and definitely did not type "hi" when I wasn't looking)
         if (this.spikeMark == 2) {
             aprilTag = 5;
-            driveDistance(9.5, 2000, opModeIsActive());
-            aimForYellow();
-            sleep(3500);
+            driveDistance(36, 2000, opModeIsActive());
+            sleep(1000);
+            turnNoPID(-85,2);
+            driveDistance(8,2000,opModeIsActive());
+            bread.arm.setPickUpPos();
+            sleep(1000);
             bread.arm.setRightUnclamped();
             sleep(1000);
+            bread.arm.setRestPos();
             bread.arm.setRightClamped();
-            driveDistance(9,2000,opModeIsActive());
-            turnNoPID(-80,3);
-            driveDistance(28, 2000, opModeIsActive());
-            sleep(1000);
+            aimForYellow();
+            sleep(3500);
+            aimForYellow();
+            strafeDistance(-15,2000,opModeIsActive());
+            driveDistance(15,2000,opModeIsActive());
         }
         else{
             driveDistance(21, 2000, opModeIsActive());

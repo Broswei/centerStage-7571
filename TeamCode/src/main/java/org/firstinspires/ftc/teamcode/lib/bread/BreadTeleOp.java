@@ -161,7 +161,6 @@ public abstract class BreadTeleOp extends BreadOpMode {
                     this.bread.launcher.climb();
                     this.bread.rails.rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS,BreadConstants.TOWERS_NORM_VELOCITY);
                     climbed = true;
-                    needToGoDown=false;
                 }
 
                 if (resetArm){
@@ -169,13 +168,7 @@ public abstract class BreadTeleOp extends BreadOpMode {
                 }
 
                 if (switchTowers) {
-                    if (needToGoDown) {
-                        this.bread.rails.rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS,BreadConstants.TOWERS_NORM_VELOCITY);
-                        needToGoDown = false;
-                    } else {
-                        this.bread.rails.rotateTo(0,BreadConstants.TOWERS_NORM_VELOCITY);
-                        needToGoDown = true;
-                    }
+                    this.bread.rails.rotateTo(0,BreadConstants.TOWERS_NORM_VELOCITY);
                 }
 
                 if (launching) {
