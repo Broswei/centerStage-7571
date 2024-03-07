@@ -145,7 +145,7 @@ public abstract class BreadOpMode extends LinearOpMode {
         // Use the speed and turn "gains" to calculate how we want the robot to move.
         double drive  = -Range.clip(rangeError * BreadConstants.SPEED_GAIN, -1, 1);
         double turn   = Range.clip(headingError * BreadConstants.TURN_GAIN, -1, 1);
-        double strafe = Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
+        double strafe = -Range.clip(-yawError * BreadConstants.STRAFE_GAIN, -1, 1);
 
         // when in doubt, slap a sqrt curve on it
         drive = Math.signum(drive) * Math.sqrt(Math.abs(drive));

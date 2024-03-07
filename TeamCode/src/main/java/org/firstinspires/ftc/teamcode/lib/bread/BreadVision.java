@@ -29,7 +29,7 @@ public class BreadVision {
 
     public ExposureControl exposureController;
     public GainControl gainController;
-    VisionPortal innerVisionPortal;
+    public VisionPortal innerVisionPortal;
 
     public static Modes mode = Modes.NONE;
 
@@ -53,6 +53,10 @@ public class BreadVision {
                 .setAutoStopLiveView(true)
                 .build();
 
+
+        while (innerVisionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {}
+
+        createControllers();
 
 
         // TODO: do this later this is a faithful start
