@@ -44,11 +44,11 @@ public class BreadConstants {
     public static double ROT_GAINS_SCALE = 1;
 
     // towers related //
-    public static double TOWERS_TPR = 415.2;//103.8; //this for 435 RPM (3.7 cycle time) --> 1620 RPM = 103.8
+    public static double TOWERS_TPR = 384.5; //this for 435 RPM (3.7 cycle time) --> 1620 RPM = 103.8
     public static double TOWERS_GEAR_RATIO = 1;
     public static double TOWERS_MAX_ROTATIONS = 26.736;
 
-    public static double TOWERS_NORM_VELOCITY = 2000/TOWERS_TPR;
+    public static double TOWERS_NORM_VELOCITY = 2500/TOWERS_TPR;
 
     // wrist related... //
     public static double WRIST_DEPO_POS = 0.4;
