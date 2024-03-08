@@ -72,9 +72,11 @@ public class BlueFar extends BreadAutonomous {
             bread.arm.setPickUpPos();
             sleep(1000);
             bread.arm.setLeftUnclamped();
+            bread.arm.setRightUnclamped();
             sleep(1000);
             bread.arm.setRestPos();
             bread.arm.setLeftClamped();
+            bread.arm.setRightClamped();
         }
         else if (this.spikeMark == 3){
             aprilTag = 3;

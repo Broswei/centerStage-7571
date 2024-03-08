@@ -34,7 +34,7 @@ public class BreadConstants {
 
     public static double ROT_NORM_DEPO_ANG = 190;
 
-    public static double ROT_LOW_DEPO_ANG = 200;
+    public static double ROT_LOW_DEPO_ANG = 195;
 
     public static double ROT_P_GAIN  = 0.007;
     public static double ROT_I_GAIN = 0;

@@ -137,8 +137,8 @@ public class BreadArm {
     }
 
     public void updateArm(){
-        leftRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/3);
-        rightRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/3);
+        leftRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/2);
+        rightRotator.rotateToRadians(this.rotatorAngleRadians, Math.PI/2);
     }
 
 //    public void updatePIDArm () {
@@ -197,8 +197,8 @@ public class BreadArm {
         this.rightRotator.setRawPosition(0);
         this.leftRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.rightRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.leftRotator.setRawVelocity(BreadConstants.ROT_TPR/6);
-        this.rightRotator.setRawVelocity(BreadConstants.ROT_TPR/6);
+        this.leftRotator.setRawVelocity(BreadConstants.ROT_TPR/3);
+        this.rightRotator.setRawVelocity(BreadConstants.ROT_TPR/3);
     }
 
     public void secondPurplePix(){

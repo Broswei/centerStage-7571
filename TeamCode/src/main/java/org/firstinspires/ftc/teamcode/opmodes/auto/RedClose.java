@@ -59,8 +59,6 @@ public class RedClose extends BreadAutonomous {
             bread.arm.setRestPos();
             bread.arm.setRightClamped();
             aimForYellow();
-            sleep(3500);
-            aimForYellow();
             strafeDistance(-15,2000,opModeIsActive());
             driveDistance(15,2000,opModeIsActive());
         }
@@ -106,7 +104,7 @@ public class RedClose extends BreadAutonomous {
         bread.arm.setRestPos();
         turnNoPID(-90,2);
         if (this.spikeMark == 3){
-            driveDistance(13, 2000, opModeIsActive());
+            driveDistance(8, 2000, opModeIsActive());
         }
         else if (this.spikeMark == 1){
             driveDistance(30, 2000, opModeIsActive());

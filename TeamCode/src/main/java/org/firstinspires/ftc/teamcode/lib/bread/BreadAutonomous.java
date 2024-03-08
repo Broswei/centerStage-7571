@@ -142,7 +142,7 @@ public abstract class BreadAutonomous extends BreadOpMode {
 
         if (Math.abs(distanceIn) <= 8){
             timer.reset();
-            while (opModeIsActive() && bread.drive.isRegBusy() && timer.seconds() < 4) {
+            while (opModeIsActive() && bread.drive.isRegBusy() && timer.seconds() < 2) {
             }
         }
         else{

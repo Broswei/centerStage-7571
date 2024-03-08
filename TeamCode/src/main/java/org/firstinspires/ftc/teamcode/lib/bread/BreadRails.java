@@ -89,7 +89,7 @@ public class BreadRails {
             rotateTo(0,BreadConstants.TOWERS_NORM_VELOCITY);
         }
         if (level == 2){
-            rotateTo(18.2245,BreadConstants.TOWERS_NORM_VELOCITY);
+            rotateTo(12,BreadConstants.TOWERS_NORM_VELOCITY);
         }
         if (level == 3){
             rotateTo(BreadConstants.TOWERS_MAX_ROTATIONS, BreadConstants.TOWERS_NORM_VELOCITY);
