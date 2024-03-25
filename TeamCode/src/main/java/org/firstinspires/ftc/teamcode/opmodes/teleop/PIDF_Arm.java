@@ -35,23 +35,9 @@ public class PIDF_Arm extends BreadAutonomous {
         initialize(hardwareMap);
         waitForStart();
 
-        while(opModeIsActive()){
-            controller.setPID(BreadConstants.ROT_P_GAIN*scale,BreadConstants.ROT_I_GAIN*scale,BreadConstants.ROT_D_GAIN*scale);
-            scale = BreadConstants.ROT_GAINS_SCALE;
+        bread.arm.setNormalDepoPos();
 
-            double current = bread.arm.getPosition();
-            double pid = controller.calculate(current, target);
-            double ff = Math.sin(Math.toRadians(current/ticks_in_degree + 49.68)) * BreadConstants.ROT_F_GAIN;
-
-            double power = pid + ff;
-
-            bread.arm.setPowers(power);
-
-            telemetry.addData("arm pos: ", current);
-            telemetry.addData("target: ", target);
-            telemetry.update();
-
-        }
+        bread.arm.updateArmPID();
 
     }
 

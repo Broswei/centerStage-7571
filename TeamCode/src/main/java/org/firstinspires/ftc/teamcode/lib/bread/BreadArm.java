@@ -172,6 +172,10 @@ public class BreadArm {
 //    }
 
     public void updateArmPID(){
+        leftRotator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRotator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
         while (Math.abs(leftRotator.getAngleDegrees() - getDesiredRotatorDegrees()) > 1){
             double current = this.getRotatorDegrees() * BreadConstants.ROT_TPR/360;
             double pid = controller.calculate(current, this.rotatorAngleRadians * BreadConstants.ROT_TPR/(2* Math.PI));
@@ -180,6 +184,10 @@ public class BreadArm {
 
             setPowers(power);
         }
+
+
+        setPowers(0);
+
     }
 
     public void setNormalDepoPos(){
